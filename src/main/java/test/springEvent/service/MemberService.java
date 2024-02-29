@@ -7,37 +7,23 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import test.springEvent.entity.Member;
+import test.springEvent.event.RegisteredEvent;
+import test.springEvent.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MemberService {
 
     private final ApplicationEventPublisher publisher;
-    private final PlatformTransactionManager transactionManager;
-    private final TestService testService;
+    private final MemberRepository memberRepository;
 
-    public void register(String name) {
-        // 프로그래밍 방식으로 트랜잭션 정의
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+    @Transactional
+    public void register(String name) throws Exception {
+        // 회원가입 처리 로직
+        memberRepository.save(Member.builder().name(name).build());
 
-        // 트랜잭션 상태 가져오기
-        TransactionStatus status = transactionManager.getTransaction(def);
-
-        try {
-            // 회원가입 처리 로직
-//            System.out.println("회원 추가 완료");
-
-            // 이벤트 등록
-//            publisher.publishEvent(new RegisteredEvent(name));
-
-            testService.a();
-
-            // 트랜잭션 커밋
-            transactionManager.commit(status);
-        } catch (Exception e) {
-            transactionManager.rollback(status);
-            System.out.println("트랜잭션 롤백");
-        }
+        // 이벤트 등록
+        publisher.publishEvent(new RegisteredEvent(name));
     }
 }

@@ -12,7 +12,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 가입 테스트")
-    void register() {
+    void register() throws Exception {
         String name = "dgjinsu";
 
         memberService.register(name);
