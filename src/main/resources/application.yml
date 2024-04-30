@@ -1,9 +1,15 @@
 spring:
   datasource:
+#    master:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/testDB
+    url: jdbc:mysql://localhost:3306/test
     username: root
     password: kjsgun3206
+#    slave:
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      jdbc-url: jdbc:mysql://192.168.56.101:32776/test
+#      username: root
+#      password: 1234
 
   jpa:
     hibernate:
@@ -12,3 +18,12 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+
+#server:
+#  tomcat:
+#    threads:
+#      max: 2 # 생성할 수 있는 thread의 총 개수
+##      min-spare: 1 # 항상 활성화 되어있는(idle) thread의 개수
+#    accept-count: 1 # 작업 큐의 사이즈
+#    max-connections: 100 # 연결 가능한 connection의 수
