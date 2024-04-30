@@ -19,6 +19,12 @@ spring:
         show_sql: true
         format_sql: true
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true # 시작과 동시에 실행되는 것 방지
+
 
 #server:
 #  tomcat:
