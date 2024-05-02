@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.skip.SkipException;
@@ -26,6 +27,7 @@ public class JobConfig {
     public Job testJob(JobRepository jobRepository, Step testStep) {
         return new JobBuilder("testJob", jobRepository)
                 .start(testStep)
+                .incrementer(new RunIdIncrementer())
                 .build();
     }
 
@@ -36,8 +38,10 @@ public class JobConfig {
                 .processor(customItemProcessor())
                 .writer(customItemWriter())
                 .faultTolerant()
-                .skip(CustomException.class)
-                .skipLimit(3)
+//                .skip(CustomException.class)
+//                .skipLimit(3)
+                .retry(CustomException.class)
+                .retryLimit(2)
                 .build();
     }
 
@@ -49,11 +53,8 @@ public class JobConfig {
             @Override
             public String read() throws SkipException {
                 i++;
-//                if (i == 3) {
-//                    throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "error");
-//                }
                 System.out.println("itemReader : " + i);
-                return i > 12 ? null : String.valueOf(i);
+                return i > 5 ? null : String.valueOf(i);
             }
         };
     }
@@ -61,7 +62,11 @@ public class JobConfig {
     @Bean
     public ItemProcessor<? super String, String> customItemProcessor() {
         return item -> {
-            System.out.println("itemProcessor " + item);
+            if (item.equals("3")){
+                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "error");
+            }
+
+            System.out.println("itemProcessor : " + item);
             return item;
         };
     }
@@ -69,12 +74,7 @@ public class JobConfig {
     @Bean
     public ItemWriter<? super String> customItemWriter() {
         return items -> {
-            for (String item : items) {
-                if (item.equals("3")){
-                    throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "error");
-                }
-            }
-            System.out.println("items = " + items);
+            System.out.println("items : " + items);
         };
     }
 }
