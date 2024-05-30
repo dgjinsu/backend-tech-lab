@@ -32,6 +32,12 @@ dependencies {
 
 	// spring batch
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
+	// Redisson
+	implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
 }
 
 tasks.named('test') {
