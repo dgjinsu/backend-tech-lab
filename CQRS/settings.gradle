@@ -1,0 +1,4 @@
+rootProject.name = 'cqrs-project'
+include 'order'
+include 'product'
+include 'order-query'

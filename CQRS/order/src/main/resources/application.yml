@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  # H2 Database ??
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: 'jdbc:h2:mem:test'
+
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/order_query?authSource=admin
+
+  # H2 Console ??
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org:
+      springframework.data.mongodb.core: DEBUG
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
