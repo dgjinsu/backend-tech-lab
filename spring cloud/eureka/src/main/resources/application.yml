@@ -1,0 +1,33 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discoveryservice
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
+
+  cloud:
+    config:
+      uri: http://localhost:8888
+      name: ecommerce
+
+eureka:
+  client:
+    register-with-eureka: false # ?? ??? ???? ???? ??
+    fetch-registry: false
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

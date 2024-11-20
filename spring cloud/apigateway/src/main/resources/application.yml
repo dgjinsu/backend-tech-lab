@@ -1,0 +1,73 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: apigateway
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
+
+  cloud:
+    gateway:
+      routes:
+        - id: todo-app
+          uri: lb://TODO-APP
+          predicates:
+            - Path=/todo-app/**
+#          filters:
+#            - name: JwtAuthenticationFilter
+#              args:
+#                requiredRole: MEMBER
+
+        - id: temp-server
+          uri: lb://TEMP-SERVER
+          predicates:
+            - Path=/temp-server/**
+#          filters:
+#            - name: JwtAuthenticationFilter
+#              args:
+#                requiredRole: MEMBER
+
+        - id: member-server
+          uri: lb://MEMBER-SERVER
+          predicates:
+            - Path=/member-server/**
+#          filters:
+#            - name: JwtAuthenticationFilter
+#              args:
+#                requiredRole: MEMBER
+
+      default-filters:
+        - JwtAuthenticationFilter # 모든 라우트에서 기본적으로 적용
+
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+app:
+  auth:
+    secret-key: zliufgzesliufgzselufgzliesgfiuzezliugfzlisuegzliufglziguf
