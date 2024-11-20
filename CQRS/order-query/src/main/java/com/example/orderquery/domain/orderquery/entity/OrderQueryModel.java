@@ -18,19 +18,26 @@ public class OrderQueryModel {
     @Id
     private ObjectId id;
     private Long orderId;
+    private OrderStatus status;
     private LocalDateTime orderTime;
     private Long productId;
     private Integer quantity;
     private String productName; // Product 이름 (Product 정보 포함)
     private Integer productPrice; // Product 가격
 
-    public OrderQueryModel(Long orderId, LocalDateTime orderTime, Long productId, Integer quantity,
-        String productName, Integer productPrice) {
+    public OrderQueryModel(Long orderId, OrderStatus status, LocalDateTime orderTime,
+        Long productId,
+        Integer quantity, String productName, Integer productPrice) {
         this.orderId = orderId;
+        this.status = status;
         this.orderTime = orderTime;
         this.productId = productId;
         this.quantity = quantity;
         this.productName = productName;
         this.productPrice = productPrice;
+    }
+
+    public void updateStatus(OrderStatus orderStatus) {
+        this.status = orderStatus;
     }
 }

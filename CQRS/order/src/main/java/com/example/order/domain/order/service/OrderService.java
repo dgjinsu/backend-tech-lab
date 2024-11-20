@@ -1,8 +1,10 @@
 package com.example.order.domain.order.service;
 
 import com.example.order.domain.order.dto.OrderSaveRequest;
+import com.example.order.domain.order.dto.OrderStatusUpdateRequest;
 import com.example.order.domain.order.dto.feign.ProductResponse;
 import com.example.order.domain.order.dto.message.OrderCreatedEvent;
+import com.example.order.domain.order.dto.message.OrderStatusUpdateEvent;
 import com.example.order.domain.order.dto.message.ProductReduceStockRequest;
 import com.example.order.domain.order.entity.Order;
 import com.example.order.domain.order.entity.OrderProduct;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderService {
+
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
     private final ProductClient productClient;
@@ -53,6 +56,7 @@ public class OrderService {
         // Query 전용 Order Model 저장
         OrderCreatedEvent event = new OrderCreatedEvent(
             order.getId(),
+            order.getStatus(),
             order.getOrderTime(),
             productResponse.getProductId(),
             request.getQuantity(),
@@ -61,5 +65,18 @@ public class OrderService {
         );
 
         orderEventProducer.publishOrderCreatedEvent(event);
+    }
+
+    public void updateOrderStatus(Long orderId, OrderStatusUpdateRequest request) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.updateOrderStatus(request.getOrderStatus());
+
+        OrderStatusUpdateEvent event = new OrderStatusUpdateEvent(
+            order.getId(),
+            order.getStatus()
+        );
+        orderEventProducer.publishOrderUpdateEvent(event);
     }
 }

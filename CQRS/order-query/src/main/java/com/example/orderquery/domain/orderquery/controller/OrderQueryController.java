@@ -1,6 +1,6 @@
 package com.example.orderquery.domain.orderquery.controller;
 
-import com.example.orderquery.domain.orderquery.dto.feign.OrderHistoryResponse;
+import com.example.orderquery.domain.orderquery.dto.OrderHistoryResponse;
 import com.example.orderquery.domain.orderquery.service.OrderQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

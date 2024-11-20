@@ -1,6 +1,7 @@
-package com.example.orderquery.domain.orderquery.dto.feign;
+package com.example.orderquery.domain.orderquery.dto;
 
 import com.example.orderquery.domain.orderquery.entity.OrderQueryModel;
+import com.example.orderquery.domain.orderquery.entity.OrderStatus;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderResponse {
     private Long orderId;
+    private OrderStatus orderStatus;
     private LocalDateTime orderTime;
     private Long productId;
     private Integer quantity;
@@ -22,6 +24,7 @@ public class OrderResponse {
     public static OrderResponse from(OrderQueryModel orderQueryModel) {
         return OrderResponse.builder()
             .orderId(orderQueryModel.getOrderId())
+            .orderStatus(orderQueryModel.getStatus())
             .orderTime(orderQueryModel.getOrderTime())
             .productId(orderQueryModel.getProductId())
             .quantity(orderQueryModel.getQuantity())

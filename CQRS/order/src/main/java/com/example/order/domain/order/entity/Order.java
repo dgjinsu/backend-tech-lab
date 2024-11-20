@@ -32,4 +32,8 @@ public class Order {
         this.status = status;
         this.orderTime = orderTime;
     }
+
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.status = orderStatus;
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.orderquery.domain.orderquery.dto.feign;
+package com.example.orderquery.domain.orderquery.dto;
 
 import com.example.orderquery.domain.orderquery.entity.OrderQueryModel;
 import java.util.List;
