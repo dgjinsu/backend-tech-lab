@@ -1,21 +1,16 @@
-package com.example.order.domain.orderquery.entity;
+package com.example.orderquery.domain.orderquery.dto.message;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Builder
-public class OrderQueryModel {
-    @Id
+public class OrderCreatedEvent {
     private Long orderId;
     private LocalDateTime orderTime;
     private Long productId;

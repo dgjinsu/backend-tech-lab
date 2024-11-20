@@ -7,10 +7,6 @@ spring:
     driver-class-name: org.h2.Driver
     url: 'jdbc:h2:mem:test'
 
-  data:
-    mongodb:
-      uri: mongodb://admin:admin@localhost:27017/order_query?authSource=admin
-
   # H2 Console ??
   h2:
     console:
@@ -28,7 +24,6 @@ spring:
 logging:
   level:
     org:
-      springframework.data.mongodb.core: DEBUG
       hibernate:
         type:
           descriptor:

@@ -1,6 +1,6 @@
-package com.example.order.domain.order.dto;
+package com.example.orderquery.domain.orderquery.dto.feign;
 
-import com.example.order.domain.orderquery.entity.OrderQueryModel;
+import com.example.orderquery.domain.orderquery.entity.OrderQueryModel;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

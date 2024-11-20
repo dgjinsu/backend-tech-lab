@@ -1,7 +1,5 @@
 package com.example.order.domain.order.service;
 
-import com.example.order.domain.order.dto.OrderHistoryResponse;
-import com.example.order.domain.order.dto.OrderResponse;
 import com.example.order.domain.order.dto.OrderSaveRequest;
 import com.example.order.domain.order.dto.feign.ProductResponse;
 import com.example.order.domain.order.dto.message.OrderCreatedEvent;
@@ -11,13 +9,10 @@ import com.example.order.domain.order.entity.OrderProduct;
 import com.example.order.domain.order.entity.OrderStatus;
 import com.example.order.domain.order.repository.OrderProductRepository;
 import com.example.order.domain.order.repository.OrderRepository;
-import com.example.order.domain.orderquery.entity.OrderQueryModel;
-import com.example.order.domain.orderquery.repository.OrderQueryRepository;
 import com.example.order.global.feign.ProductClient;
 import com.example.order.global.kafka.OrderEventProducer;
 import com.example.order.global.kafka.ProductProducer;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
-    private final OrderQueryRepository orderQueryRepository;
     private final ProductClient productClient;
     private final ProductProducer productProducer;
     private final OrderEventProducer orderEventProducer;
@@ -67,15 +61,5 @@ public class OrderService {
         );
 
         orderEventProducer.publishOrderCreatedEvent(event);
-    }
-
-    public OrderHistoryResponse findOrderList() {
-        List<OrderQueryModel> orderQueryModelList = orderQueryRepository.findAll();
-
-        List<OrderResponse> orderResponseList = orderQueryModelList.stream()
-            .map(OrderResponse::from)
-            .toList();
-
-        return new OrderHistoryResponse(orderResponseList);
     }
 }

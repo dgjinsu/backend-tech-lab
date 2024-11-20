@@ -1,0 +1,16 @@
+server:
+  port: 8083
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/order_query?authSource=admin
+
+logging:
+  level:
+    org:
+      springframework.data.mongodb.core: DEBUG
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

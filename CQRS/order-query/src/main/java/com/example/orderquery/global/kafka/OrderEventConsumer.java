@@ -1,8 +1,8 @@
-package com.example.order.global.kafka;
+package com.example.orderquery.global.kafka;
 
-import com.example.order.domain.order.dto.message.OrderCreatedEvent;
-import com.example.order.domain.orderquery.entity.OrderQueryModel;
-import com.example.order.domain.orderquery.repository.OrderQueryRepository;
+import com.example.orderquery.domain.orderquery.dto.message.OrderCreatedEvent;
+import com.example.orderquery.domain.orderquery.entity.OrderQueryModel;
+import com.example.orderquery.domain.orderquery.repository.OrderQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
