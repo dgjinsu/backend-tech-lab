@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "SampleProto";
+option java_package = "com.example.grpc.proto";
+
+package com.example.grpc;
+
+// req 메시지 정의
+message SampleRequest {
+  string userId = 1;   // userId 필드의 식별자: 1
+  string message = 2;  // message 필드의 식별자: 2
+}
+
+// res 메시지 정의
+message SampleResponse {
+  string message = 1;
+}
+
+// 서비스 정의
+service SampleService {
+  rpc SampleCall (SampleRequest) returns (SampleResponse) {}
+}
