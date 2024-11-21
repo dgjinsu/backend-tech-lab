@@ -1,0 +1,19 @@
+{
+  "name": "postgres-order-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "postgres-order",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgres",
+    "database.dbname": "order_service",
+    "database.server.name": "postgres-order",
+    "plugin.name": "pgoutput",
+    "slot.name": "debezium_slot_order",
+    "publication.name": "debezium_pub_order",
+    "table.include.list": "public.orders",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "postgres-order-schema-changes",
+    "topic.prefix": "postgres-order"
+  }
+}

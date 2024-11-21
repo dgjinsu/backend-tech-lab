@@ -1,0 +1,19 @@
+{
+  "name": "mongo-sink-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mongodb.MongoDbSinkConnector",
+    "tasks.max": "1",
+    "topics": "postgres-order.public.orders",
+    "connection.uri": "mongodb://admin:admin@mongodb:27017",
+    "database": "order_query",
+    "collection": "order_query_model",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "document.id.strategy": "com.mongodb.kafka.connect.sink.processor.id.strategy.BsonOidStrategy",
+    "writemodel.strategy": "com.mongodb.kafka.connect.sink.writemodel.strategy.ReplaceOneDefaultStrategy",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "op, ts_ms"
+  }
+}

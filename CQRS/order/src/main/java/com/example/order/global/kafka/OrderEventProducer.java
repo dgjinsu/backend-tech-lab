@@ -44,4 +44,19 @@ public class OrderEventProducer {
             throw new RuntimeException("Failed to publish OrderCreatedEvent", e);
         }
     }
+
+    public void publishOrderCreatedEventWithCDC(OrderCreatedEvent event) {
+        try {
+            // OrderCreatedEvent 객체를 JSON 문자열로 직렬화
+            String message = objectMapper.writeValueAsString(event);
+
+            // Kafka 토픽으로 메시지 전송
+            kafkaTemplate.send("order-events", message); // "order-events"는 MongoDB Sink Connector와 연결된 토픽
+
+            log.info("Published OrderCreatedEvent to Kafka: {}", message);
+        } catch (Exception e) {
+            log.error("Failed to publish OrderCreatedEvent", e);
+            throw new RuntimeException("Failed to publish OrderCreatedEvent", e);
+        }
+    }
 }
