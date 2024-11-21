@@ -4,14 +4,11 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/CQRS" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/transaction" />
         <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/CQRS" />
-            <option value="$PROJECT_DIR$/CQRS/order" />
-            <option value="$PROJECT_DIR$/CQRS/order-query" />
-            <option value="$PROJECT_DIR$/CQRS/product" />
+            <option value="$PROJECT_DIR$/transaction" />
           </set>
         </option>
       </GradleProjectSettings>

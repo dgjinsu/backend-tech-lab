@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/backend-tech-lab.iml" filepath="$PROJECT_DIR$/.idea/backend-tech-lab.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-query/cqrs-project.order-query.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-query/cqrs-project.order-query.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order/cqrs-project.order.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order/cqrs-project.order.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/product/cqrs-project.product.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product/cqrs-project.product.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/transaction.main.iml" filepath="$PROJECT_DIR$/.idea/modules/transaction.main.iml" />
     </modules>
   </component>
 </project>
