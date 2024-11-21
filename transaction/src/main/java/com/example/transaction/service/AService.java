@@ -5,6 +5,7 @@ import com.example.transaction.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -18,16 +19,24 @@ public class AService {
     @Transactional
     public void saveWithRequiredSuccess(Member aMember, Member bMember) {
         memberRepository.save(aMember);
-
-        // 예외 발생
         bService.saveMemberSuccess(bMember);
     }
 
     @Transactional
     public void saveWithRequiredFail(Member aMember, Member bMember) {
         memberRepository.save(aMember);
-
         // 예외 발생
         bService.saveMember(bMember);
+    }
+
+    @Transactional
+    public void saveWithMandatorySuccess(Member aMember, Member bMember) {
+        memberRepository.save(aMember);
+        bService.saveMemberWithMandatory(bMember);
+    }
+
+    public void saveWithMandatoryFail(Member aMember, Member bMember) {
+        memberRepository.save(aMember);
+        bService.saveMemberSuccess(bMember);
     }
 }

@@ -9,6 +9,7 @@ import com.example.transaction.service.AService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.TransactionSystemException;
 
 @SpringBootTest
 class IntegrationTest {
@@ -38,6 +39,28 @@ class IntegrationTest {
             .isInstanceOf(RuntimeException.class);
 
         assertThat(memberRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    public void saveWithMandatorySuccessTest() {
+        Member aMember = new Member(1L);
+        Member bMember = new Member(2L);
+
+        aService.saveWithMandatorySuccess(aMember, bMember);
+
+        assertThat(memberRepository.findAll()).size().isEqualTo(2);
+    }
+
+    @Test
+    public void saveWithMandatoryFailTest() {
+        Member aMember = new Member(1L);
+        Member bMember = new Member(2L);
+
+        aService.saveWithMandatoryFail(aMember, bMember);
+
+//        // 부모에서 트랜잭션 없이 실행
+//        assertThatThrownBy(() -> aService.saveWithMandatoryFail(aMember, bMember))
+//            .isInstanceOf(TransactionSystemException.class);
     }
 
 }
