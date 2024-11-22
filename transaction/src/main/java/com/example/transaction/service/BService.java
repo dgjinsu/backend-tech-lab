@@ -13,7 +13,7 @@ public class BService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveMember(Member bMember) {
+    public void saveMemberFail(Member bMember) {
         memberRepository.save(bMember);
         throw new RuntimeException();
     }
@@ -26,5 +26,26 @@ public class BService {
     @Transactional(propagation = Propagation.MANDATORY)
     public void saveMemberWithMandatory(Member bMember) {
         memberRepository.save(bMember);
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void saveWithNotSupported(Member bMember) {
+        memberRepository.save(bMember);
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    public void saveWithNeverFail(Member bMember) {
+        memberRepository.save(bMember);
+    }
+
+    @Transactional(propagation = Propagation.NESTED)
+    public void saveWithNestedParentException(Member bMember) {
+        memberRepository.save(bMember);
+    }
+
+    @Transactional(propagation = Propagation.NESTED)
+    public void saveWithNestedChildException(Member bMember) {
+        memberRepository.save(bMember);
+        throw new RuntimeException();
     }
 }

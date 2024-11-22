@@ -26,7 +26,11 @@ public class AService {
     public void saveWithRequiredFail(Member aMember, Member bMember) {
         memberRepository.save(aMember);
         // 예외 발생
-        bService.saveMember(bMember);
+        try {
+            bService.saveMemberFail(bMember);
+        } catch (RuntimeException e) {
+            System.out.println("Required 트랜잭션 롤백 처리: " + e.getMessage());
+        }
     }
 
     @Transactional
@@ -37,6 +41,36 @@ public class AService {
 
     public void saveWithMandatoryFail(Member aMember, Member bMember) {
         memberRepository.save(aMember);
-        bService.saveMemberSuccess(bMember);
+        bService.saveMemberWithMandatory(bMember);
+    }
+
+    @Transactional
+    public void saveWithNotSupported(Member aMember, Member bMember) {
+        memberRepository.save(aMember);
+        bService.saveWithNotSupported(bMember);
+        throw new RuntimeException();
+    }
+
+    @Transactional
+    public void saveWithNeverFail(Member aMember, Member bMember) {
+        memberRepository.save(aMember);
+        bService.saveWithNeverFail(bMember);
+    }
+
+    @Transactional
+    public void saveWithNestedParentException(Member aMember, Member bMember) {
+        memberRepository.save(aMember);
+        bService.saveWithNestedParentException(bMember);
+        throw new RuntimeException();
+    }
+
+    @Transactional
+    public void saveWithNestedChildException(Member aMember, Member bMember) {
+        memberRepository.save(aMember);
+        try {
+            bService.saveWithNestedChildException(bMember); // 중첩 트랜잭션
+        } catch (RuntimeException e) {
+            System.out.println("중첩 트랜잭션 롤백 처리: " + e.getMessage());
+        }
     }
 }
