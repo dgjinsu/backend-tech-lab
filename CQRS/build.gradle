@@ -35,6 +35,16 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     }
 
+    ext {
+        set('springCloudVersion', "2023.0.3")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
     tasks.named('test') {
         useJUnitPlatform()
     }

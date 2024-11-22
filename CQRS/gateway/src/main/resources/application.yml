@@ -1,0 +1,41 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: product
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/product/**
+          filters:
+            - StripPrefix=1
+
+        - id: order
+          uri: lb://ORDER
+          predicates:
+            - Path=/order/**
+          filters:
+            - StripPrefix=1
+
+        - id: order-query
+          uri: lb://ORDER-QUERY
+          predicates:
+            - Path=/order-query/**
+          filters:
+            - StripPrefix=1
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG

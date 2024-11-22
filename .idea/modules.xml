@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/backend-tech-lab.iml" filepath="$PROJECT_DIR$/.idea/backend-tech-lab.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/transaction.main.iml" filepath="$PROJECT_DIR$/.idea/modules/transaction.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-query/cqrs-project.order-query.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-query/cqrs-project.order-query.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order/cqrs-project.order.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order/cqrs-project.order.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/product/cqrs-project.product.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product/cqrs-project.product.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CQRS/gateway/gateway.iml" filepath="$PROJECT_DIR$/CQRS/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shop/product/product.iml" filepath="$PROJECT_DIR$/shop/product/product.iml" />
     </modules>
   </component>
 </project>
