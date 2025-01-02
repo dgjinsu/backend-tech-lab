@@ -25,18 +25,8 @@ public class Member {
 
     private String name;
 
-//    private String test;
+    private Integer age;
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
-
-    public void addPost(Post post) {
-        posts.add(post);
-        post.setMember(this);
-    }
-
-    public void removePost(Post post) {
-        posts.remove(post);
-        post.setMember(null);
-    }
 }
