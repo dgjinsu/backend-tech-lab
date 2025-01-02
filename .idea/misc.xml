@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
     <file type="web" url="file://$PROJECT_DIR$/transaction" />
   </component>

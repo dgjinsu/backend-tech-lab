@@ -15,5 +15,4 @@ public class TodoAppServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(TodoAppServerApplication.class, args);
     }
-
 }

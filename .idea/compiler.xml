@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
+        </processorPath>
+        <module name="JpaTableMapping.main" />
+      </profile>
+    </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="apigateway" target="21" />
       <module name="apigateway.main" target="21" />
       <module name="apigateway.test" target="21" />
+      <module name="cqrs-project" target="21" />
       <module name="cqrs-project.apigateway" target="21" />
       <module name="cqrs-project.apigateway.main" target="21" />
       <module name="cqrs-project.apigateway.test" target="21" />
       <module name="cqrs-project.eureka" target="21" />
       <module name="cqrs-project.eureka.main" target="21" />
       <module name="cqrs-project.eureka.test" target="21" />
+      <module name="cqrs-project.gateway" target="21" />
+      <module name="cqrs-project.gateway.main" target="21" />
+      <module name="cqrs-project.gateway.test" target="21" />
+      <module name="cqrs-project.main" target="21" />
+      <module name="cqrs-project.order" target="21" />
+      <module name="cqrs-project.order-query" target="21" />
+      <module name="cqrs-project.order-query.main" target="21" />
+      <module name="cqrs-project.order-query.test" target="21" />
+      <module name="cqrs-project.order.main" target="21" />
+      <module name="cqrs-project.order.test" target="21" />
+      <module name="cqrs-project.product" target="21" />
+      <module name="cqrs-project.product.main" target="21" />
+      <module name="cqrs-project.product.test" target="21" />
+      <module name="cqrs-project.test" target="21" />
+      <module name="eureka" target="21" />
+      <module name="eureka.main" target="21" />
+      <module name="eureka.test" target="21" />
+      <module name="gateway" target="21" />
+      <module name="gateway.main" target="21" />
+      <module name="gateway.test" target="21" />
+      <module name="multi-module" target="21" />
+      <module name="multi-module.main" target="21" />
+      <module name="multi-module.test" target="21" />
       <module name="product" target="21" />
       <module name="product.main" target="21" />
       <module name="product.test" target="21" />
