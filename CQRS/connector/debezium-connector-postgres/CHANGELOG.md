@@ -4128,7 +4128,7 @@ None
 * PostgreSQL connector task fails to resume streaming because replication slot is active [DBZ-3068](https://issues.jboss.org/browse/DBZ-3068)
 * SQL Server connector buffers all CDC events in memory if more than one table is captured [DBZ-3486](https://issues.jboss.org/browse/DBZ-3486)
 * SQLServer low throughput tables increase usage of TempDB [DBZ-3515](https://issues.jboss.org/browse/DBZ-3515)
-* Incorrectly identifies primary member of replica set [DBZ-3522](https://issues.jboss.org/browse/DBZ-3522)
+* Incorrectly identifies primary memberEntity of replica set [DBZ-3522](https://issues.jboss.org/browse/DBZ-3522)
 * Cannot enable binlog streaming when INITIAL_ONLY snapshot mode configured [DBZ-3529](https://issues.jboss.org/browse/DBZ-3529)
 * Connector CRD name and database.server.name cannot use the same value in OCP test-suite [DBZ-3538](https://issues.jboss.org/browse/DBZ-3538)
 * SelectLobParser checks for lowercase "is null" instead of uppercase "IS NULL" [DBZ-3545](https://issues.jboss.org/browse/DBZ-3545)
