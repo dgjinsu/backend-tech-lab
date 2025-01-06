@@ -4,11 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/cleanArchitecture" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/security-jwt" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/cleanArchitecture" />
+            <option value="$PROJECT_DIR$/security-jwt" />
           </set>
         </option>
       </GradleProjectSettings>
