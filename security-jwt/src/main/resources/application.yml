@@ -20,3 +20,8 @@ spring:
     redis:
       host: localhost
       port: 16378
+
+
+jwt:
+  expiration_time: 86400000 # 1일
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHasgesgse
