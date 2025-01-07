@@ -6,6 +6,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -69,6 +70,16 @@ public class ArchTest {
             // 클래스 명 규칙
             .should().haveSimpleNameEndingWith("Command")
             .orShould().haveSimpleNameEndingWith("Query");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    @DisplayName("Entity 에는 @setter 가 있으면 안 된다.")
+    void annotations_should_not_contain_setter_in_name() {
+        ArchRule rule = ArchRuleDefinition.noMethods()
+            .that().areDeclaredInClassesThat().haveSimpleNameEndingWith("Entity")
+            .should().haveNameStartingWith("set");
 
         rule.check(importedClasses);
     }

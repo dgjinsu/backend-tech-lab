@@ -4,10 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/security-jwt" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/arch-unit-test" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/security-jwt" />
+            <option value="$PROJECT_DIR$/arch-unit-test" />
           </set>
         </option>
       </GradleProjectSettings>

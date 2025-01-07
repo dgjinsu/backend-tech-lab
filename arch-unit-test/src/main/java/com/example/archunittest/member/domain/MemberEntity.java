@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class MemberEntity {
+
     @Id
     @GeneratedValue
     private Long id;
