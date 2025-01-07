@@ -5,6 +5,8 @@
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
+    <file type="web" url="file://$PROJECT_DIR$/multi-module" />
+    <file type="web" url="file://$PROJECT_DIR$/multi-module/Listener" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
     <file type="web" url="file://$PROJECT_DIR$/transaction" />

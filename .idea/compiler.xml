@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <annotationProcessing>
-      <profile name="Gradle Imported" enabled="true">
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
-        </processorPath>
-        <module name="arch-unit-test.main" />
-      </profile>
-    </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="apigateway" target="21" />
       <module name="apigateway.main" target="21" />
       <module name="apigateway.test" target="21" />
+      <module name="arch-unit-test" target="21" />
+      <module name="arch-unit-test.main" target="21" />
+      <module name="arch-unit-test.test" target="21" />
       <module name="cleanArchitecture" target="21" />
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
@@ -47,9 +41,15 @@
       <module name="JpaTableMapping" target="21" />
       <module name="JpaTableMapping.main" target="21" />
       <module name="JpaTableMapping.test" target="21" />
-      <module name="multi-module" target="21" />
-      <module name="multi-module.main" target="21" />
-      <module name="multi-module.test" target="21" />
+      <module name="Listener" target="21" />
+      <module name="Listener.main" target="21" />
+      <module name="Listener.test" target="21" />
+      <module name="loader" target="21" />
+      <module name="loader.main" target="21" />
+      <module name="loader.test" target="21" />
+      <module name="persistence" target="21" />
+      <module name="persistence.main" target="21" />
+      <module name="persistence.test" target="21" />
       <module name="product" target="21" />
       <module name="product.main" target="21" />
       <module name="product.test" target="21" />

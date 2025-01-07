@@ -1,0 +1,12 @@
+rootProject.name = 'multi-module'
+include 'listener'
+include 'listener:infrastructure'
+include 'listener:application'
+include 'listener:domain'
+include 'listener:persistence'
+
+include 'loader'
+include 'loader:infrastructure'
+include 'loader:application'
+include 'loader:domain'
+include 'loader:persistence'
