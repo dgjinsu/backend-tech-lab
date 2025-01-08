@@ -33,6 +33,13 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.3.0'
+
+	// 테스트 환경에서 LOMBOK
+//	testCompileOnly 'org.projectlombok:lombok:1.18.12'
+//	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

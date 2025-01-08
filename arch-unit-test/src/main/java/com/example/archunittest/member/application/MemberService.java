@@ -15,7 +15,7 @@ public class MemberService implements MemberUseCase {
     private final MemberRepositorySpec memberRepositorySpec;
 
     public void save(MemberSaveCommand command) {
-        memberRepositorySpec.saveMember(new MemberEntity());
+        memberRepositorySpec.saveMember(new MemberEntity("name"));
     }
 
 }

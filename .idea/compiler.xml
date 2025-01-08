@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
+        </processorPath>
+        <module name="arch-unit-test.main" />
+        <module name="arch-unit-test.test" />
+      </profile>
+    </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="apigateway" target="21" />
       <module name="apigateway.main" target="21" />
       <module name="apigateway.test" target="21" />
-      <module name="arch-unit-test" target="21" />
-      <module name="arch-unit-test.main" target="21" />
-      <module name="arch-unit-test.test" target="21" />
+      <module name="application" target="21" />
+      <module name="application.main" target="21" />
+      <module name="application.test" target="21" />
       <module name="cleanArchitecture" target="21" />
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
@@ -32,12 +43,18 @@
       <module name="cqrs-project.product.main" target="21" />
       <module name="cqrs-project.product.test" target="21" />
       <module name="cqrs-project.test" target="21" />
+      <module name="domain" target="21" />
+      <module name="domain.main" target="21" />
+      <module name="domain.test" target="21" />
       <module name="eureka" target="21" />
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />
+      <module name="infrastructure" target="21" />
+      <module name="infrastructure.main" target="21" />
+      <module name="infrastructure.test" target="21" />
       <module name="JpaTableMapping" target="21" />
       <module name="JpaTableMapping.main" target="21" />
       <module name="JpaTableMapping.test" target="21" />
@@ -47,6 +64,39 @@
       <module name="loader" target="21" />
       <module name="loader.main" target="21" />
       <module name="loader.test" target="21" />
+      <module name="multi-module" target="21" />
+      <module name="multi-module.listener" target="21" />
+      <module name="multi-module.listener.application" target="21" />
+      <module name="multi-module.listener.application.main" target="21" />
+      <module name="multi-module.listener.application.test" target="21" />
+      <module name="multi-module.listener.domain" target="21" />
+      <module name="multi-module.listener.domain.main" target="21" />
+      <module name="multi-module.listener.domain.test" target="21" />
+      <module name="multi-module.listener.infrastructure" target="21" />
+      <module name="multi-module.listener.infrastructure.main" target="21" />
+      <module name="multi-module.listener.infrastructure.test" target="21" />
+      <module name="multi-module.listener.main" target="21" />
+      <module name="multi-module.listener.persistence" target="21" />
+      <module name="multi-module.listener.persistence.main" target="21" />
+      <module name="multi-module.listener.persistence.test" target="21" />
+      <module name="multi-module.listener.test" target="21" />
+      <module name="multi-module.loader" target="21" />
+      <module name="multi-module.loader.application" target="21" />
+      <module name="multi-module.loader.application.main" target="21" />
+      <module name="multi-module.loader.application.test" target="21" />
+      <module name="multi-module.loader.domain" target="21" />
+      <module name="multi-module.loader.domain.main" target="21" />
+      <module name="multi-module.loader.domain.test" target="21" />
+      <module name="multi-module.loader.infrastructure" target="21" />
+      <module name="multi-module.loader.infrastructure.main" target="21" />
+      <module name="multi-module.loader.infrastructure.test" target="21" />
+      <module name="multi-module.loader.main" target="21" />
+      <module name="multi-module.loader.persistence" target="21" />
+      <module name="multi-module.loader.persistence.main" target="21" />
+      <module name="multi-module.loader.persistence.test" target="21" />
+      <module name="multi-module.loader.test" target="21" />
+      <module name="multi-module.main" target="21" />
+      <module name="multi-module.test" target="21" />
       <module name="persistence" target="21" />
       <module name="persistence.main" target="21" />
       <module name="persistence.test" target="21" />

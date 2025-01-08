@@ -4,40 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/multi-module" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/arch-unit-test" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/multi-module" />
-            <option value="$PROJECT_DIR$/multi-module/listener" />
-            <option value="$PROJECT_DIR$/multi-module/listener/application" />
-            <option value="$PROJECT_DIR$/multi-module/listener/domain" />
-            <option value="$PROJECT_DIR$/multi-module/listener/infrastructure" />
-            <option value="$PROJECT_DIR$/multi-module/listener/persistence" />
-            <option value="$PROJECT_DIR$/multi-module/loader" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/multi-module/loader/application" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/multi-module/loader/application" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/multi-module/loader/domain" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/multi-module/loader/domain" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/multi-module/loader/infrastructure" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/multi-module/loader/infrastructure" />
+            <option value="$PROJECT_DIR$/arch-unit-test" />
           </set>
         </option>
       </GradleProjectSettings>
