@@ -10,4 +10,13 @@ COPY build/libs/arch-unit-test-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
 # 애플리케이션 실행 명령
-ENTRYPOINT ["java", "-jar","-javaagent:/pinpoint/pinpoint-bootstrap-3.0.1.jar", "-Dpinpoint.agentId=appDev","-Dpinpoint.applicationName=app1","-Dpinpoint.config=/pinpoint/pinpoint-root.config", "-Duser.timezone=Asia/Seoul", "/app/app.jar"]
+ENTRYPOINT [
+  "java",
+  "-jar",
+  "-javaagent:/pinpoint/pinpoint-bootstrap-3.0.1.jar",
+  "-Dpinpoint.agentId=appDev",
+  "-Dpinpoint.applicationName=app1",
+  "-Dpinpoint.config=/pinpoint/pinpoint-root.config",
+  "-Duser.timezone=Asia/Seoul",
+  "/app/app.jar"
+]
