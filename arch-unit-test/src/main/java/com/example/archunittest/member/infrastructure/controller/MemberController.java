@@ -1,6 +1,6 @@
-package com.example.archunittest.member.api.controller;
+package com.example.archunittest.member.infrastructure.controller;
 
-import com.example.archunittest.member.api.dto.MemberSaveRequest;
+import com.example.archunittest.member.infrastructure.controller.dto.MemberSaveRequest;
 import com.example.archunittest.member.application.MemberUseCase;
 import com.example.archunittest.member.application.dto.MemberSaveCommand;
 import lombok.RequiredArgsConstructor;

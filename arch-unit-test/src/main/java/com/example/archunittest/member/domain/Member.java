@@ -10,5 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Member {
+
     private Long id;
+
+    private String name;
 }

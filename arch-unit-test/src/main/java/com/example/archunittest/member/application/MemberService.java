@@ -2,7 +2,8 @@ package com.example.archunittest.member.application;
 
 import com.example.archunittest.member.application.dto.MemberSaveCommand;
 import com.example.archunittest.member.application.spec.MemberRepositorySpec;
-import com.example.archunittest.member.domain.MemberEntity;
+import com.example.archunittest.member.domain.Member;
+import com.example.archunittest.member.persistence.entity.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ public class MemberService implements MemberUseCase {
     private final MemberRepositorySpec memberRepositorySpec;
 
     public void save(MemberSaveCommand command) {
-        memberRepositorySpec.saveMember(new MemberEntity("name"));
+        memberRepositorySpec.saveMember(Member.builder().name("name").build());
     }
 
 }

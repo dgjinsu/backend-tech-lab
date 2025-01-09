@@ -1,4 +1,4 @@
-package com.example.archunittest.member.domain;
+package com.example.archunittest.member.persistence.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

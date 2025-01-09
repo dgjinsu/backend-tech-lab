@@ -1,8 +1,9 @@
 package com.example.archunittest.member.application.spec;
 
-import com.example.archunittest.member.domain.MemberEntity;
+import com.example.archunittest.member.domain.Member;
+import com.example.archunittest.member.persistence.entity.MemberEntity;
 
 public interface MemberRepositorySpec {
 
-    void saveMember(MemberEntity memberEntity);
+    void saveMember(Member member);
 }

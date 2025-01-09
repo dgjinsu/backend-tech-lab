@@ -40,6 +40,9 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	// postgres
+	implementation 'org.postgresql:postgresql'
 }
 
 tasks.named('test') {

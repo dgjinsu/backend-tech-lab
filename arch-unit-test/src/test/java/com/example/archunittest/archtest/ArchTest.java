@@ -3,6 +3,7 @@ package com.example.archunittest.archtest;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.constructors;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noMethods;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaConstructor;
@@ -11,7 +12,6 @@ import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
-import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import org.junit.jupiter.api.DisplayName;
@@ -23,14 +23,13 @@ public class ArchTest {
         .importPackages("com.example"); // 프로젝트 루트 패키지
 
     @Test
-    @DisplayName("application 영역은 [api, infrastructure, persistence] 영역을 참조할 수 없다.")
+    @DisplayName("application 영역은 [infrastructure, persistence] 영역을 참조할 수 없다.")
     void application_area_test() {
         ArchRule rule = noClasses()
             .that().resideInAPackage("..application..")
 
             // 참조 금지 패키지 지정
             .should().dependOnClassesThat().resideInAnyPackage(
-                "com.example..api..",
                 "com.example..infrastructure..",
                 "com.example..persistence.."
             );
@@ -39,14 +38,13 @@ public class ArchTest {
     }
 
     @Test
-    @DisplayName("domain 영역은 [api, infrastructure, persistence, application] 영역을 참조할 수 없다.")
+    @DisplayName("domain 영역은 [infrastructure, persistence, application] 영역을 참조할 수 없다.")
     void domain_area_test() {
         ArchRule rule = noClasses()
             .that().resideInAPackage("..domain..")
 
             // 참조 금지 패키지 지정
             .should().dependOnClassesThat().resideInAnyPackage(
-                "com.example..api..",
                 "com.example..infrastructure..",
                 "com.example..persistence..",
                 "com.example..application.."
@@ -59,7 +57,7 @@ public class ArchTest {
     @DisplayName("controller.dto 의 클래스명은 [Request, Response] 로 끝나야 한다.")
     void controller_dto_suffix_test() {
         ArchRule rule = classes()
-            .that().resideInAPackage("..api.dto..")
+            .that().resideInAPackage("..infrastructure.controller.dto..")
 
             // 클래스 명 규칙
             .should().haveSimpleNameEndingWith("Request")
@@ -84,7 +82,7 @@ public class ArchTest {
     @Test
     @DisplayName("Entity 에는 @setter 가 있으면 안 된다.")
     void entity_should_not_have_setter() {
-        ArchRule rule = ArchRuleDefinition.noMethods()
+        ArchRule rule = noMethods()
             .that().areDeclaredInClassesThat().haveSimpleNameEndingWith("Entity")
             .should().haveNameStartingWith("set");
 
