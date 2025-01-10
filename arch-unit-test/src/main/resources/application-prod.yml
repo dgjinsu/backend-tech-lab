@@ -1,0 +1,31 @@
+spring:
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: 'jdbc:h2:mem:test'
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/testDB
+    username: postgres
+    password: postgres
+
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    bootstrap-servers: "kafka:9092"
+    consumer:
+      group-id: "test"
+
+
