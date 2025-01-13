@@ -27,8 +27,8 @@ public class MemberController {
         MemberSaveQuery memberSaveQuery = memberUseCase.save(new MemberSaveCommand());
         MemberSaveResponse memberSaveResponse =
             new MemberSaveResponse(memberSaveQuery.memberId(), memberSaveQuery.name());
-//        return ResponseEntity.ok(new ApiResult(memberSaveResponse, "저장 완료"));
         return ApiResult.ok(memberSaveResponse, "저장 완료");
+//        return ResponseEntity.ok(new ApiResult(memberSaveResponse, "저장 완료"));
     }
 
     @PostMapping("/api-call-test")
