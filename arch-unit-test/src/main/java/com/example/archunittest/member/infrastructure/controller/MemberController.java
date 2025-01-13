@@ -1,10 +1,16 @@
 package com.example.archunittest.member.infrastructure.controller;
 
+import com.example.archunittest.common.api.ApiResult;
+import com.example.archunittest.common.exception.CustomException;
+import com.example.archunittest.common.exception.MemberErrorCode;
+import com.example.archunittest.member.application.dto.MemberSaveQuery;
 import com.example.archunittest.member.infrastructure.controller.dto.MemberSaveRequest;
 import com.example.archunittest.member.application.MemberUseCase;
 import com.example.archunittest.member.application.dto.MemberSaveCommand;
+import com.example.archunittest.member.infrastructure.controller.dto.MemberSaveResponse;
 import com.example.archunittest.member.infrastructure.controller.dto.TodoResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +23,12 @@ public class MemberController {
     private final MemberUseCase memberUseCase;
 
     @PostMapping("")
-    public String test(@RequestBody MemberSaveRequest request) {
-        memberUseCase.save(new MemberSaveCommand());
-        return "test";
+    public ApiResult test(@RequestBody MemberSaveRequest request) {
+        MemberSaveQuery memberSaveQuery = memberUseCase.save(new MemberSaveCommand());
+        MemberSaveResponse memberSaveResponse =
+            new MemberSaveResponse(memberSaveQuery.memberId(), memberSaveQuery.name());
+//        return ResponseEntity.ok(new ApiResult(memberSaveResponse, "저장 완료"));
+        return ApiResult.ok(memberSaveResponse, "저장 완료");
     }
 
     @PostMapping("/api-call-test")

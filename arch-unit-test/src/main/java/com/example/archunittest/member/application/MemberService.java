@@ -1,6 +1,7 @@
 package com.example.archunittest.member.application;
 
 import com.example.archunittest.member.application.dto.MemberSaveCommand;
+import com.example.archunittest.member.application.dto.MemberSaveQuery;
 import com.example.archunittest.member.application.spec.KafkaSpec;
 import com.example.archunittest.member.application.spec.MemberRepositorySpec;
 import com.example.archunittest.member.domain.Member;
@@ -16,9 +17,10 @@ public class MemberService implements MemberUseCase {
     private final MemberRepositorySpec memberRepositorySpec;
     private final KafkaSpec kafkaSpec;
 
-    public void save(MemberSaveCommand command) {
-        memberRepositorySpec.saveMember(Member.builder().name("name").build());
+    public MemberSaveQuery save(MemberSaveCommand command) {
+        Member member = memberRepositorySpec.saveMember(Member.builder().name("name").build());
         kafkaSpec.sendTest("test");
+        return new MemberSaveQuery(member.getId(), member.getName());
     }
 
 }

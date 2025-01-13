@@ -5,5 +5,5 @@ import com.example.archunittest.member.persistence.entity.MemberEntity;
 
 public interface MemberRepositorySpec {
 
-    void saveMember(Member member);
+    Member saveMember(Member member);
 }

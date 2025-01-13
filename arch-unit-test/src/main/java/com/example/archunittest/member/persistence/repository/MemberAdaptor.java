@@ -13,7 +13,10 @@ public class MemberAdaptor implements MemberRepositorySpec {
     private final MemberRepository memberRepository;
 
     @Override
-    public void saveMember(Member member) {
-        memberRepository.save(MemberEntity.builder().name(member.getName()).build());
+    public Member saveMember(Member member) {
+        MemberEntity entity = memberRepository.save(
+            MemberEntity.builder().name(member.getName()).build());
+
+        return Member.builder().id(entity.getId()).name(entity.getName()).build();
     }
 }
