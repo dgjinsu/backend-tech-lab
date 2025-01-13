@@ -21,5 +21,4 @@ public record PageInfo (
             page.isLast()
         );
     }
-
 }
