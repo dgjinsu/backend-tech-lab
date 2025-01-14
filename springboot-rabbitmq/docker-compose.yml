@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management  # RabbitMQ 이미지 (Management UI 포함)
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"  # AMQP 프로토콜 포트 매핑 (기본 클라이언트 통신 포트)
+      - "15672:15672"  # 관리 콘솔 UI 접근 포트 매핑
+    environment:
+      RABBITMQ_DEFAULT_USER: admin  # 기본 관리자 계정 ID
+      RABBITMQ_DEFAULT_PASS: admin  # 기본 관리자 계정 비밀번호
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq  # 메시지 및 큐 데이터를 저장할 볼륨
+      - ./rabbitmq/logs:/var/log/rabbitmq  # 로그 데이터를 저장할 볼륨
+    networks:
+      - rabbitmq_network
+
+networks:
+  rabbitmq_network:
+    driver: bridge

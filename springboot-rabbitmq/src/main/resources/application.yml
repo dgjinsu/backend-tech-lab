@@ -1,0 +1,13 @@
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: admin
+  password: admin
+  exchangeName: example-exchange # ??? ????? ??
+  queues:
+    - name: queue1
+      routingKey: key1
+    - name: queue2
+      routingKey: key2
+    - name: queue3
+      routingKey: key3
