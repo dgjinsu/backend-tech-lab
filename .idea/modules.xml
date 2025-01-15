@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/arch-unit-test.main.iml" filepath="$PROJECT_DIR$/.idea/modules/arch-unit-test.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/arch-unit-test.test.iml" filepath="$PROJECT_DIR$/.idea/modules/arch-unit-test.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/backend-tech-lab.iml" filepath="$PROJECT_DIR$/.idea/backend-tech-lab.iml" />
       <module fileurl="file://$PROJECT_DIR$/shop/product/product.iml" filepath="$PROJECT_DIR$/shop/product/product.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.iml" />

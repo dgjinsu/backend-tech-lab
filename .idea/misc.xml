@@ -4,14 +4,16 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/java17-pinpoint" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />
-    <file type="web" url="file://$PROJECT_DIR$/multi-module/Listener" />
+    <file type="web" url="file://$PROJECT_DIR$/multi-module/listener" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
+    <file type="web" url="file://$PROJECT_DIR$/spring-integration-ftp" />
     <file type="web" url="file://$PROJECT_DIR$/transaction" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="21" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

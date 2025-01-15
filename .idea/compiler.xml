@@ -8,8 +8,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="arch-unit-test.main" />
-        <module name="arch-unit-test.test" />
+        <module name="java17-pinpoint.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +18,9 @@
       <module name="application" target="21" />
       <module name="application.main" target="21" />
       <module name="application.test" target="21" />
+      <module name="arch-unit-test" target="21" />
+      <module name="arch-unit-test.main" target="21" />
+      <module name="arch-unit-test.test" target="21" />
       <module name="cleanArchitecture" target="21" />
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
@@ -109,6 +111,12 @@
       <module name="shop" target="21" />
       <module name="shop.main" target="21" />
       <module name="shop.test" target="21" />
+      <module name="spring-integration-ftp" target="21" />
+      <module name="spring-integration-ftp.main" target="21" />
+      <module name="spring-integration-ftp.test" target="21" />
+      <module name="springboot-rabbitmq" target="21" />
+      <module name="springboot-rabbitmq.main" target="21" />
+      <module name="springboot-rabbitmq.test" target="21" />
       <module name="transaction" target="21" />
       <module name="transaction.main" target="21" />
       <module name="transaction.test" target="21" />
