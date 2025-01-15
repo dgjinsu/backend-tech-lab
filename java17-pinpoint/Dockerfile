@@ -10,5 +10,4 @@ COPY build/libs/java17-pinpoint-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
 # 애플리케이션 실행 명령
-ENTRYPOINT [ "java", "-jar", "-javaagent:/pinpoint/pinpoint-bootstrap-2.3.1.jar", "-Dpinpoint.agentId=appDev", "-Dpinpoint.applicationName=app1", "-Dpinpoint.config=/pinpoint/pinpoint-root.config", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "/app/app.jar"]
-#ENTRYPOINT [ "java", "-jar", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "/app/app.jar"]
+ENTRYPOINT [ "java", "-jar", "-javaagent:/scouter/scouter.agent.jar", "-Dscouter.config=/scouter/scouter.conf", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "/app/app.jar" ]
