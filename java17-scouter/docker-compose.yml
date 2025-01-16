@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app1:
+    container_name: app1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+    volumes:
+      - /home/js.kim/scouter/scouter/agent.java:/agent.java
+    networks:
+      - mirero
+
+networks:
+  mirero:
+    driver: bridge
