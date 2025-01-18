@@ -1,26 +1,26 @@
 version: '3.8'
 
 services:
-#  app1:
-#    container_name: app1
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8000:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/testDB
-#      SPRING_DATASOURCE_USERNAME: postgres
-#      SPRING_DATASOURCE_PASSWORD: postgres
-#    depends_on:
-#      - postgres
-#      - zookeeper
-#      - kafka
-#      - kafka-ui
-#    volumes:
-#      - /home/js.kim/pinpoint/pinpoint-agent-3.0.1:/pinpoint
-#    networks:
-#      - mirero
+  app1:
+    container_name: app1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/testDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+      - zookeeper
+      - kafka
+      # - kafka-ui
+    volumes:
+      - /home/js.kim/pinpoint/pinpoint-agent-3.0.1:/pinpoint
+    networks:
+      - mirero
 
   postgres:
     image: postgres
@@ -64,19 +64,19 @@ services:
     networks:
       - mirero
 
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    depends_on:
-      - kafka
-    ports:
-      - "9000:9000"
-    environment:
-      SERVER_PORT: 9000
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-    networks:
-      - mirero
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   container_name: kafka-ui
+  #   depends_on:
+  #     - kafka
+  #   ports:
+  #     - "9000:9000"
+  #   environment:
+  #     SERVER_PORT: 9000
+  #     KAFKA_CLUSTERS_0_NAME: local
+  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+  #   networks:
+  #     - mirero
 
 networks:
   mirero:

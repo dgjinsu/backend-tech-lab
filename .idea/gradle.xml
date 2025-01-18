@@ -4,10 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/java17-scouter" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/java17-pinpoint" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/java17-scouter" />
+            <option value="$PROJECT_DIR$/java17-pinpoint" />
           </set>
         </option>
       </GradleProjectSettings>
