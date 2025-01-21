@@ -1,0 +1,5 @@
+rootProject.name = 'pwm-sample'
+include 'member'
+include 'eureka'
+include 'gateway'
+include 'common'
