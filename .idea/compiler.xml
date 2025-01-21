@@ -8,7 +8,10 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="java17-pinpoint.main" />
+        <module name="pwm-sample.common.main" />
+        <module name="pwm-sample.eureka.main" />
+        <module name="pwm-sample.member.main" />
+        <module name="pwm-sample.gateway.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +27,9 @@
       <module name="cleanArchitecture" target="21" />
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
+      <module name="common" target="21" />
+      <module name="common.main" target="21" />
+      <module name="common.test" target="21" />
       <module name="cqrs-project" target="21" />
       <module name="cqrs-project.apigateway" target="21" />
       <module name="cqrs-project.apigateway.main" target="21" />
@@ -57,6 +63,12 @@
       <module name="infrastructure" target="21" />
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
+      <module name="java17-pinpoint" target="17" />
+      <module name="java17-pinpoint.main" target="17" />
+      <module name="java17-pinpoint.test" target="17" />
+      <module name="java17-scouter" target="17" />
+      <module name="java17-scouter.main" target="17" />
+      <module name="java17-scouter.test" target="17" />
       <module name="JpaTableMapping" target="21" />
       <module name="JpaTableMapping.main" target="21" />
       <module name="JpaTableMapping.test" target="21" />
@@ -66,6 +78,9 @@
       <module name="loader" target="21" />
       <module name="loader.main" target="21" />
       <module name="loader.test" target="21" />
+      <module name="member" target="21" />
+      <module name="member.main" target="21" />
+      <module name="member.test" target="21" />
       <module name="multi-module" target="21" />
       <module name="multi-module.listener" target="21" />
       <module name="multi-module.listener.application" target="21" />

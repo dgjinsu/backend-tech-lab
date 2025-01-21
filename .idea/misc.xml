@@ -8,6 +8,7 @@
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module/listener" />
+    <file type="web" url="file://$PROJECT_DIR$/pwm-sample" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
     <file type="web" url="file://$PROJECT_DIR$/spring-integration-ftp" />
