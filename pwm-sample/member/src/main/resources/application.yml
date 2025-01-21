@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: member
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: 'jdbc:h2:mem:test'
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+#  datasource:
+#    url: jdbc:oracle:thin:@localhost:1521:XE
+#    username: your_username
+#    password: your_password
+#    driver-class-name: oracle.jdbc.OracleDriver
+#  jpa:
+#    database-platform: org.hibernate.dialect.Oracle12cDialect
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
