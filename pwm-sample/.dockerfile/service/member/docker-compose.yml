@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  member:
+    build:
+      context: .
+    container_name: member
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+    networks:
+      - net
+
+networks:
+  net:
+    external: true
