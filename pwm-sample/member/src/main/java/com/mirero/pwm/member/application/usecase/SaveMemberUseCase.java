@@ -6,4 +6,6 @@ import com.mirero.pwm.member.application.dto.query.MemberQuery;
 public interface SaveMemberUseCase {
 
     MemberQuery saveMember(SaveMemberCommand command);
+
+    MemberQuery getMemberInfo(Long memberId);
 }

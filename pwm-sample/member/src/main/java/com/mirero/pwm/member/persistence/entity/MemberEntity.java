@@ -41,4 +41,11 @@ public class MemberEntity {
             .password(member.getPassword())
             .build();
     }
+
+    public Member toMember() {
+        return Member.builder()
+            .memberId(this.getId())
+            .loginId(this.getLoginId())
+            .build();
+    }
 }
