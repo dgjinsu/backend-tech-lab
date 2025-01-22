@@ -1,3 +1,6 @@
+server:
+  port: 0
+
 spring:
   application:
     name: member
@@ -24,3 +27,13 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /api-docs
+  enable-spring-security: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+

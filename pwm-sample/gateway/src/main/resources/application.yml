@@ -30,8 +30,6 @@ spring:
           filters:
             - StripPrefix=1
 
-# todo: swagger 통합 설정
-
 eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
@@ -42,3 +40,12 @@ eureka:
 jwt:
   secret:
     key: aajdtrhyergrdjcftjftgxehrdhxdrehxdrjxdrgfes
+
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    urls:
+      - name: 회원 서비스
+        url: /member/api-docs
+    operationsSorter: method
+    displayRequestDuration: true
