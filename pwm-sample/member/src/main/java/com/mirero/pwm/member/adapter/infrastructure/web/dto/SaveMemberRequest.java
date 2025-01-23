@@ -1,4 +1,4 @@
-package com.mirero.pwm.member.infrastructure.controller.dto;
+package com.mirero.pwm.member.adapter.infrastructure.web.dto;
 
 public record SaveMemberRequest(
     String loginId,

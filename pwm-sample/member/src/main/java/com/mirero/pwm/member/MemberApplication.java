@@ -7,8 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-//@Import({CommonExceptionConfig.class, SwaggerConfig.class})
-@Import({CommonExceptionConfig.class})
+@Import({CommonExceptionConfig.class, SwaggerConfig.class})
 public class MemberApplication {
 
     public static void main(String[] args) {

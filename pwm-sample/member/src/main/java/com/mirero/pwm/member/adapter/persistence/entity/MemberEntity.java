@@ -1,4 +1,4 @@
-package com.mirero.pwm.member.persistence.entity;
+package com.mirero.pwm.member.adapter.persistence.entity;
 
 import com.mirero.pwm.member.domain.Member;
 import jakarta.persistence.Column;
@@ -35,7 +35,7 @@ public class MemberEntity {
         this.password = password;
     }
 
-    public static MemberEntity of(Member member) {
+    public static MemberEntity from(Member member) {
         return MemberEntity.builder()
             .loginId(member.getLoginId())
             .password(member.getPassword())

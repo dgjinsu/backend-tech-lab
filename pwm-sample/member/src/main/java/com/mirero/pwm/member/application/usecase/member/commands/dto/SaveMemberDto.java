@@ -1,11 +1,11 @@
-package com.mirero.pwm.member.application.dto.command;
+package com.mirero.pwm.member.application.usecase.member.commands.dto;
 
 import com.mirero.pwm.member.domain.Member;
-import com.mirero.pwm.member.infrastructure.controller.dto.SaveMemberRequest;
+import com.mirero.pwm.member.adapter.infrastructure.web.dto.SaveMemberRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record SaveMemberCommand(
+public record SaveMemberDto(
     @NotBlank(message = "아이디는 필수 값입니다.")
     @Size(min = 5, max = 20, message = "Login ID는 5자 이상, 20자 이하이어야 합니다.")
     String loginId,
@@ -15,8 +15,8 @@ public record SaveMemberCommand(
     String password
 ) {
 
-    public static SaveMemberCommand from(SaveMemberRequest request) {
-        return new SaveMemberCommand(
+    public static SaveMemberDto from(SaveMemberRequest request) {
+        return new SaveMemberDto(
             request.loginId(),
             request.password()
         );
