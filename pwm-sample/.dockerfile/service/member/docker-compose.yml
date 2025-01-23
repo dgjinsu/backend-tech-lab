@@ -17,3 +17,4 @@ services:
 networks:
   net:
     external: true
+    name: mirero.pwm

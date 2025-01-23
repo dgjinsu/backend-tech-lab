@@ -5,4 +5,4 @@ LABEL category=service
 
 COPY ./*.jar app.jar
 
-ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
