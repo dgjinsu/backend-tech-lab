@@ -1,18 +1,27 @@
 package com.example.jpatablemapping;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.Table;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.Metamodel;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +31,7 @@ public class EntityDatabaseValidator {
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
 
-    private final EntityManager entityManager; // ✅ EntityManager 사용
+    private final JdbcTemplate jdbcTemplate;
 
     @PostConstruct
     public void onStartup() {
@@ -69,23 +78,20 @@ public class EntityDatabaseValidator {
         }
     }
 
-    // EntityManager를 활용하여 PK, FK 제외 후 DB 컬럼 가져오기
+    // PK, FK 제외 후 DB 컬럼 가져오기
     private Set<String> getDatabaseColumns(String tableName) {
-        String sql =
-            """
-            SELECT COLUMN_NAME
-            FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = '%s'
-            AND COLUMN_NAME NOT IN (
+        String sql = """
                 SELECT COLUMN_NAME
-                FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-                WHERE TABLE_NAME = '%s'
-            )
-            """
-            .formatted(tableName, tableName);
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = ?
+                AND COLUMN_NAME NOT IN (
+                    SELECT COLUMN_NAME
+                    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                    WHERE TABLE_NAME = ?
+                )
+                """;
 
-        List<String> columns = entityManager.createNativeQuery(sql).getResultList();
-
+        List<String> columns = jdbcTemplate.queryForList(sql, String.class, tableName, tableName);
         return new HashSet<>(columns);
     }
 
@@ -109,7 +115,8 @@ public class EntityDatabaseValidator {
                 continue;
             }
             Column column = field.getAnnotation(Column.class);
-            String columnName = (column != null) ? column.name() : convertCamelToSnake(field.getName());
+            String columnName =
+                (column != null) ? column.name() : convertCamelToSnake(field.getName());
             fields.add(columnName);
         }
         return fields;
