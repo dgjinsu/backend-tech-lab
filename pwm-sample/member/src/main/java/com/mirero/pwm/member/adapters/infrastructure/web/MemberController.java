@@ -1,12 +1,11 @@
-package com.mirero.pwm.member.adapter.infrastructure.web;
+package com.mirero.pwm.member.adapters.infrastructure.web;
 
 import com.mirero.pwm.member.application.usecase.member.commands.SaveMemberCommand;
 import com.mirero.pwm.member.application.usecase.member.commands.dto.SaveMemberDto;
 import com.mirero.pwm.member.application.usecase.member.queries.GetMemberQuery;
 import com.mirero.pwm.member.application.usecase.member.queries.dto.GetMemberDto;
-import com.mirero.pwm.member.application.usecase.member.commands.SaveMemberCommand_;
-import com.mirero.pwm.member.adapter.infrastructure.web.dto.MemberResponse;
-import com.mirero.pwm.member.adapter.infrastructure.web.dto.SaveMemberRequest;
+import com.mirero.pwm.member.adapters.infrastructure.web.dto.MemberResponse;
+import com.mirero.pwm.member.adapters.infrastructure.web.dto.SaveMemberRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

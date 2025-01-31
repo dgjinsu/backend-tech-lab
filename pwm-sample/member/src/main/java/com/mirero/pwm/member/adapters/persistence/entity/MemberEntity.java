@@ -1,4 +1,4 @@
-package com.mirero.pwm.member.adapter.persistence.entity;
+package com.mirero.pwm.member.adapters.persistence.entity;
 
 import com.mirero.pwm.member.domain.Member;
 import jakarta.persistence.Column;

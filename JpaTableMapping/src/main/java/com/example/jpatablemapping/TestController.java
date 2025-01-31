@@ -17,7 +17,6 @@ public class TestController {
     @GetMapping("/save")
     public String test() {
         Member member = Member.builder()
-            .name("name")
             .build();
         memberRepository.save(member);
         postRepository.saveAll(

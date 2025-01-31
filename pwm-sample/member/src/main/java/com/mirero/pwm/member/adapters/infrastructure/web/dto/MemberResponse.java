@@ -1,4 +1,4 @@
-package com.mirero.pwm.member.adapter.infrastructure.web.dto;
+package com.mirero.pwm.member.adapters.infrastructure.web.dto;
 
 import com.mirero.pwm.member.application.usecase.member.queries.dto.GetMemberDto;
 

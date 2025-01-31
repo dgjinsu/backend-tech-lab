@@ -54,6 +54,7 @@
       <module name="domain" target="21" />
       <module name="domain.main" target="21" />
       <module name="domain.test" target="21" />
+      <module name="eureka" target="21" />
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
       <module name="gateway" target="21" />

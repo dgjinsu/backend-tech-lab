@@ -1,7 +1,7 @@
 package com.mirero.pwm.member.application.usecase.member.commands.dto;
 
 import com.mirero.pwm.member.domain.Member;
-import com.mirero.pwm.member.adapter.infrastructure.web.dto.SaveMemberRequest;
+import com.mirero.pwm.member.adapters.infrastructure.web.dto.SaveMemberRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

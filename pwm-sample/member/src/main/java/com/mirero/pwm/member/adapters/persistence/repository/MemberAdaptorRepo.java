@@ -1,11 +1,11 @@
-package com.mirero.pwm.member.adapter.persistence.repository;
+package com.mirero.pwm.member.adapters.persistence.repository;
 
 import com.mirero.pwm.member.application.usecase.member.GetMemberInfoRepoPort;
 import com.mirero.pwm.member.application.usecase.member.SaveMemberRepoPort;
 import com.mirero.pwm.member.domain.Member;
 import com.mirero.pwm.member.domain.exception.MemberErrorCode;
 import com.mirero.pwm.member.domain.exception.MemberException;
-import com.mirero.pwm.member.adapter.persistence.entity.MemberEntity;
+import com.mirero.pwm.member.adapters.persistence.entity.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
