@@ -7,7 +7,6 @@ import jakarta.persistence.metamodel.Metamodel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -23,7 +22,7 @@ public class EntityDatabaseValidator {
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
 
-    private final JdbcTemplate jdbcTemplate;
+    private final EntityManager entityManager; // ✅ EntityManager 사용
 
     @PostConstruct
     public void onStartup() {
@@ -66,24 +65,27 @@ public class EntityDatabaseValidator {
             log.warn("[table: " + tableName + "] DB에는 있지만 엔티티에 없는 컬럼 존재: " + extraColumnsInDb);
         }
         if (!missingColumnsInDb.isEmpty()) {
-            // 이 경우, validate 옵션으로 에러 발생
             log.warn("[table: " + tableName + "] 엔티티에는 있지만 DB에는 없는 컬럼 존재: " + missingColumnsInDb);
         }
     }
 
-    // DB에서 PK, FK 제외하고 컬럼 가져오기
+    // EntityManager를 활용하여 PK, FK 제외 후 DB 컬럼 가져오기
     private Set<String> getDatabaseColumns(String tableName) {
-        String query = """
+        String sql =
+            """
+            SELECT COLUMN_NAME
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_NAME = '%s'
+            AND COLUMN_NAME NOT IN (
                 SELECT COLUMN_NAME
-                FROM INFORMATION_SCHEMA.COLUMNS
-                WHERE TABLE_NAME = ?
-                AND COLUMN_NAME NOT IN (
-                    SELECT COLUMN_NAME 
-                    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
-                    WHERE TABLE_NAME = ?
-                )
-                """;
-        List<String> columns = jdbcTemplate.queryForList(query, String.class, tableName, tableName);
+                FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                WHERE TABLE_NAME = '%s'
+            )
+            """
+            .formatted(tableName, tableName);
+
+        List<String> columns = entityManager.createNativeQuery(sql).getResultList();
+
         return new HashSet<>(columns);
     }
 
