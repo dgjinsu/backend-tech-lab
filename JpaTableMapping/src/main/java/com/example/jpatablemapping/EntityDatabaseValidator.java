@@ -27,9 +27,9 @@ public class EntityDatabaseValidator {
 
     @PostConstruct
     public void onStartup() {
-        log.info("[엔티티-DB 검증 시작]");
+        log.info("엔티티-DB 검증 시작");
         validateEntities();
-        log.info("[엔티티-DB 검증 완료]");
+        log.info("엔티티-DB 검증 완료");
     }
 
     public void validateEntities() {
@@ -38,7 +38,6 @@ public class EntityDatabaseValidator {
 
         Set<EntityType<?>> entities = metamodel.getEntities();
         for (EntityType<?> entity : entities) {
-            String entityName = entity.getName();
             Class<?> entityClass = entity.getJavaType();
 
             String tableName = getTableName(entityClass);
