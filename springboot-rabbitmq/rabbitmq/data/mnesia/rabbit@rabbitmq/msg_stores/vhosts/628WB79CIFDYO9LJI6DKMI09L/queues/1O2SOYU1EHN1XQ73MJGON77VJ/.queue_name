@@ -1,0 +1,3 @@
+VHOST: /
+QUEUE: queue2.dlq
+INDEX: v2
