@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SSE 실시간 알람</title>
+  <script>
+    let userId = "";
+    let eventSource = null;
+
+    function connectSSE() {
+      userId = document.getElementById("userId").value;
+      if (!userId) {
+        alert("유저 ID를 입력하세요!");
+        return;
+      }
+
+      eventSource = new EventSource(`/sse/subscribe/${userId}`);
+
+      eventSource.onmessage = function(event) {
+        console.log("Received:", event.data);
+        displayMessage(event.data);
+      };
+
+      eventSource.addEventListener("notification", function(event) {
+        console.log("New Notification:", event.data);
+        displayMessage(event.data);
+      });
+
+      eventSource.onerror = function() {
+        console.log("연결이 끊겼습니다. 다시 시도 중...");
+        eventSource.close();
+      };
+
+      document.getElementById("status").innerText = `User ${userId} 실시간 알람 구독 중...`;
+
+      // 사용자 목록 갱신
+      updateUserList();
+    }
+
+    function sendNotification() {
+      const selectedUser = document.getElementById("userList").value;
+      const message = document.getElementById("message").value;
+
+      if (!selectedUser || !message) {
+        alert("보낼 사용자와 메시지를 입력하세요!");
+        return;
+      }
+
+      fetch(`/sse/send/${selectedUser}?message=${encodeURIComponent(message)}`, {
+        method: "POST"
+      }).then(response => {
+        if (response.ok) {
+          console.log("알람 전송 성공");
+        } else {
+          console.error("알람 전송 실패");
+        }
+      });
+    }
+
+    function updateUserList() {
+      fetch('/sse/users')
+      .then(response => response.json())
+      .then(users => {
+        const userListDropdown = document.getElementById("userList");
+        userListDropdown.innerHTML = ""; // 기존 옵션 초기화
+
+        users.forEach(user => {
+          let option = document.createElement("option");
+          option.value = user;
+          option.textContent = user;
+          userListDropdown.appendChild(option);
+        });
+      });
+    }
+
+    function displayMessage(msg) {
+      const messageContainer = document.getElementById("messages");
+      const newMessage = document.createElement("p");
+      newMessage.textContent = msg;
+      messageContainer.appendChild(newMessage);
+    }
+  </script>
+</head>
+<body>
+<h2>SSE 실시간 알람 테스트</h2>
+
+<!-- 유저 구독 -->
+<label for="userId">User ID:</label>
+<input type="text" id="userId" placeholder="유저 ID 입력" />
+<button onclick="connectSSE()">SSE 구독</button>
+
+<h3 id="status">SSE 상태: 연결 안 됨</h3>
+
+<!-- 사용자 선택 후 알람 보내기 -->
+<label for="userList">보낼 사용자 선택:</label>
+<select id="userList">
+  <option value="">사용자 없음</option>
+</select>
+
+<label for="message">Message:</label>
+<input type="text" id="message" placeholder="보낼 메시지 입력" />
+<button onclick="sendNotification()">알람 보내기</button>
+
+<h3>알람 메시지</h3>
+<div id="messages"></div>
+</body>
+</html>

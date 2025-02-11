@@ -8,10 +8,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="pwm-sample.common.main" />
-        <module name="pwm-sample.eureka.main" />
-        <module name="pwm-sample.member.main" />
-        <module name="pwm-sample.gateway.main" />
+        <module name="sse.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -120,6 +117,21 @@
       <module name="product" target="21" />
       <module name="product.main" target="21" />
       <module name="product.test" target="21" />
+      <module name="pwm-sample" target="17" />
+      <module name="pwm-sample.common" target="21" />
+      <module name="pwm-sample.common.main" target="21" />
+      <module name="pwm-sample.common.test" target="21" />
+      <module name="pwm-sample.eureka" target="21" />
+      <module name="pwm-sample.eureka.main" target="21" />
+      <module name="pwm-sample.eureka.test" target="21" />
+      <module name="pwm-sample.gateway" target="21" />
+      <module name="pwm-sample.gateway.main" target="21" />
+      <module name="pwm-sample.gateway.test" target="21" />
+      <module name="pwm-sample.main" target="17" />
+      <module name="pwm-sample.member" target="21" />
+      <module name="pwm-sample.member.main" target="21" />
+      <module name="pwm-sample.member.test" target="21" />
+      <module name="pwm-sample.test" target="17" />
       <module name="security-jwt" target="21" />
       <module name="security-jwt.main" target="21" />
       <module name="security-jwt.test" target="21" />

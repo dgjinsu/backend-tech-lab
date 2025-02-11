@@ -4,14 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/pwm-sample" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/sse" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/pwm-sample" />
-            <option value="$PROJECT_DIR$/pwm-sample/common" />
-            <option value="$PROJECT_DIR$/pwm-sample/eureka" />
-            <option value="$PROJECT_DIR$/pwm-sample/gateway" />
-            <option value="$PROJECT_DIR$/pwm-sample/member" />
+            <option value="$PROJECT_DIR$/sse" />
           </set>
         </option>
       </GradleProjectSettings>
