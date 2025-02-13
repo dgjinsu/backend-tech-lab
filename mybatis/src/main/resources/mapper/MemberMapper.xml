@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.mybatis.repository.MemberMapper">
+
+  <insert id="saveMember" parameterType="com.example.mybatis.dto.SaveMemberRequest">
+    insert into member (loginId, age, name) values (#{loginId}, #{age}, #{name})
+  </insert>
+
+  <select id="findById" parameterType="Long" resultType="com.example.mybatis.dto.MemberResponse">
+    select * from member where memberId = #{memberId}
+  </select>
+</mapper>
