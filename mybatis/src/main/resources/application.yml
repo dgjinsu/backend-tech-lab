@@ -1,1 +1,9 @@
-spring.application.name=mybatis
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: mybatis
+    password: rlawlstn
+    driver-class-name: oracle.jdbc.OracleDriver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
