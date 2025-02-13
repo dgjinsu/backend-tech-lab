@@ -5,5 +5,10 @@ spring:
     password: rlawlstn
     driver-class-name: oracle.jdbc.OracleDriver
 
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
