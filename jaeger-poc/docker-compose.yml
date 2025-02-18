@@ -1,0 +1,15 @@
+#version: '3.8'
+
+services:
+  jaeger:
+    image: jaegertracing/jaeger:2.3.0
+    container_name: jaeger
+    restart: always
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+      - "5778:5778"    # Sampling config
+      - "9411:9411"    # Zipkin compatibility
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
