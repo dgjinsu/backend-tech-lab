@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/shop/product/product.iml" filepath="$PROJECT_DIR$/shop/product/product.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jaeger-poc/server2/server2.iml" filepath="$PROJECT_DIR$/jaeger-poc/server2/server2.iml" />
     </modules>
   </component>
 </project>

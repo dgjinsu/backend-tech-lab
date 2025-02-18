@@ -8,14 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/jaeger-poc" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/jaeger-poc/server1" />
-        <option name="modules">
-          <set>
             <option value="$PROJECT_DIR$/jaeger-poc/server1" />
+            <option value="$PROJECT_DIR$/jaeger-poc/server2" />
           </set>
         </option>
       </GradleProjectSettings>

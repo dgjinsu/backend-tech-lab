@@ -4,7 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
-    <file type="web" url="file://$PROJECT_DIR$/jaeger-poc/server1" />
+    <file type="web" url="file://$PROJECT_DIR$/jaeger-poc" />
     <file type="web" url="file://$PROJECT_DIR$/java17-pinpoint" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />
