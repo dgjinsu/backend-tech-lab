@@ -4,10 +4,18 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/sse" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/jaeger-poc" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/sse" />
+            <option value="$PROJECT_DIR$/jaeger-poc" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/jaeger-poc/server1" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/jaeger-poc/server1" />
           </set>
         </option>
       </GradleProjectSettings>

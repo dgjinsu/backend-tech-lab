@@ -4,10 +4,12 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/jaeger-poc/server1" />
     <file type="web" url="file://$PROJECT_DIR$/java17-pinpoint" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module/listener" />
+    <file type="web" url="file://$PROJECT_DIR$/mybatis" />
     <file type="web" url="file://$PROJECT_DIR$/pwm-sample" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
