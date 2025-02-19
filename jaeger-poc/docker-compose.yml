@@ -1,15 +1,20 @@
-#version: '3.8'
+version: "3.3"
 
 services:
-  jaeger:
-    image: jaegertracing/jaeger:2.3.0
-    container_name: jaeger
-    restart: always
+  collector:
+    image: otel/opentelemetry-collector:0.72.0
+    command: [ "--config=/etc/otel-collector-config.yml" ]
+    volumes:
+      - ./otel-config.yml:/etc/otel-collector-config.yml
     ports:
-      - "16686:16686"  # Jaeger UI
-      - "4317:4317"    # OTLP gRPC
-      - "4318:4318"    # OTLP HTTP
-      - "5778:5778"    # Sampling config
-      - "9411:9411"    # Zipkin compatibility
-    environment:
-      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+      - "4318:4318"
+    depends_on:
+      - jaeger-service
+  jaeger-service:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14250"
+      - "14268:14268"  # ✅ HTTP ingestion 포트 추가
+
+# java -javaagent:opentelemetry-javaagent.jar -jar build/libs/server1-0.0.1-SNAPSHOT.jar -Dotel.service.name=server1 -Dotel.traces.exporter=otlp -Dotel.exporter.otlp.endpoint=http://localhost:4318

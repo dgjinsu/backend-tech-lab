@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/backend-tech-lab.iml" filepath="$PROJECT_DIR$/.idea/backend-tech-lab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server1/jaeger-poc.server1.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server1/jaeger-poc.server1.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server2/jaeger-poc.server2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server2/jaeger-poc.server2.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/shop/product/product.iml" filepath="$PROJECT_DIR$/shop/product/product.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" />

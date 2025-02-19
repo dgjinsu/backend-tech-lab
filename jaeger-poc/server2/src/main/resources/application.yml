@@ -19,9 +19,14 @@ spring:
         show_sql: true
         format_sql: true
 
-opentracing:
-  jaeger:
-    service-name: server2 # jaeger service name
-    udp-sender:
-      host: localhost # jaeger server ip
-      port: 6831           # jaeger udp port
+  sleuth:
+    otel:
+      config:
+        trace-id-ratio-based: 1.0
+      exporter:
+        otlp:
+          endpoint: http://host.docker.internal:4317  # ✅ 수정
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
