@@ -25,8 +25,4 @@ spring:
         trace-id-ratio-based: 1.0
       exporter:
         otlp:
-          endpoint: http://host.docker.internal:4317  # ✅ 수정
-
-logging:
-  pattern:
-    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+          endpoint: http://host.docker.internal:4318  # ✅ 수정
