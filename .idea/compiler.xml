@@ -25,6 +25,8 @@
       <module name="cleanArchitecture" target="21" />
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
+      <module name="com.example.jaeger-poc.server1.main" target="21" />
+      <module name="com.example.jaeger-poc.server2.main" target="21" />
       <module name="common" target="21" />
       <module name="common.main" target="21" />
       <module name="common.test" target="21" />
@@ -61,6 +63,13 @@
       <module name="infrastructure" target="21" />
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
+      <module name="jaeger-poc" target="17" />
+      <module name="jaeger-poc.main" target="17" />
+      <module name="jaeger-poc.server1" target="21" />
+      <module name="jaeger-poc.server1.test" target="21" />
+      <module name="jaeger-poc.server2" target="21" />
+      <module name="jaeger-poc.server2.test" target="21" />
+      <module name="jaeger-poc.test" target="17" />
       <module name="java17-pinpoint" target="17" />
       <module name="java17-pinpoint.main" target="17" />
       <module name="java17-pinpoint.test" target="17" />
