@@ -1,0 +1,20 @@
+subprojects {
+    apply plugin: 'jacoco'
+
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        finalizedBy 'jacocoTestReport' // 테스트 후 JaCoCo 실행
+    }
+
+    tasks.named('jacocoTestReport') {
+        dependsOn test
+
+        reports {
+            xml.required = true
+            csv.required = true
+            html.required = true
+        }
+
+        executionData.from = fileTree(dir: "$buildDir/jacoco", includes: ["*.exec"])
+    }
+}
