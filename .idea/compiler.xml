@@ -55,6 +55,12 @@
       <module name="infrastructure" target="21" />
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
+      <module name="jacoco" target="21" />
+      <module name="jacoco-multi-module.jacoco" target="21" />
+      <module name="jacoco-multi-module.jacoco.main" target="21" />
+      <module name="jacoco-multi-module.jacoco.test" target="21" />
+      <module name="jacoco.main" target="21" />
+      <module name="jacoco.test" target="21" />
       <module name="jaeger-poc" target="17" />
       <module name="jaeger-poc.main" target="17" />
       <module name="jaeger-poc.server1" target="21" />
