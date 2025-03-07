@@ -1,5 +1,16 @@
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+plugins {
+    id 'base'
+    id 'jacoco-report-aggregation'
 }
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    jacocoAggregation project(":server1")
+    jacocoAggregation project(":server2")
+}
+
+bootJar.enabled = false
+jar.enabled = true
