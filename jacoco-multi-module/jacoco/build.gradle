@@ -14,3 +14,5 @@ dependencies {
 
 bootJar.enabled = false
 jar.enabled = true
+
+// command: ./gradlew testCodeCoverageReport
