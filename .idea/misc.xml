@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/jacoco-multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-poc" />
     <file type="web" url="file://$PROJECT_DIR$/java17-pinpoint" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />

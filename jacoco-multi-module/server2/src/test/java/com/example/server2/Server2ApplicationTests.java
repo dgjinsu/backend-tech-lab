@@ -1,13 +1,13 @@
-package com.example.jacocomultimodule;
+package com.example.server2;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JacocoMultiModuleApplicationTests {
+class Server2ApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

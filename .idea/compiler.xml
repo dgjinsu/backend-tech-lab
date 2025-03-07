@@ -3,14 +3,6 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Gradle Imported" enabled="true">
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
-        </processorPath>
-        <module name="jaeger-poc.server1.main" />
-        <module name="jaeger-poc.server2.main" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="apigateway" target="21" />
@@ -66,8 +58,10 @@
       <module name="jaeger-poc" target="17" />
       <module name="jaeger-poc.main" target="17" />
       <module name="jaeger-poc.server1" target="21" />
+      <module name="jaeger-poc.server1.main" target="21" />
       <module name="jaeger-poc.server1.test" target="21" />
       <module name="jaeger-poc.server2" target="21" />
+      <module name="jaeger-poc.server2.main" target="21" />
       <module name="jaeger-poc.server2.test" target="21" />
       <module name="jaeger-poc.test" target="17" />
       <module name="java17-pinpoint" target="17" />
