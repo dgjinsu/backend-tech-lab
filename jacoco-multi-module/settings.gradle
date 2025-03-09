@@ -1,4 +1,3 @@
 rootProject.name = 'jacoco-multi-module'
 include 'server1'
 include 'server2'
-include 'jacoco'

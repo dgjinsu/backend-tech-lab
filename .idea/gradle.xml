@@ -8,7 +8,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/jacoco-multi-module" />
-            <option value="$PROJECT_DIR$/jacoco-multi-module/jacoco" />
             <option value="$PROJECT_DIR$/jacoco-multi-module/server1" />
             <option value="$PROJECT_DIR$/jacoco-multi-module/server2" />
           </set>

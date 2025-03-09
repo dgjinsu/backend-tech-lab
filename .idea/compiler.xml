@@ -19,6 +19,10 @@
       <module name="cleanArchitecture.test" target="21" />
       <module name="com.example.jaeger-poc.server1.main" target="21" />
       <module name="com.example.jaeger-poc.server2.main" target="21" />
+      <module name="com.mirero.pwm.pwm-sample.common.main" target="21" />
+      <module name="com.mirero.pwm.pwm-sample.eureka.main" target="21" />
+      <module name="com.mirero.pwm.pwm-sample.gateway.main" target="21" />
+      <module name="com.mirero.pwm.pwm-sample.member.main" target="21" />
       <module name="common" target="21" />
       <module name="common.main" target="21" />
       <module name="common.test" target="21" />
@@ -56,6 +60,9 @@
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
       <module name="jacoco" target="21" />
+      <module name="jacoco-multi-module.jacoco" target="21" />
+      <module name="jacoco-multi-module.jacoco.main" target="21" />
+      <module name="jacoco-multi-module.jacoco.test" target="21" />
       <module name="jacoco.main" target="21" />
       <module name="jacoco.test" target="21" />
       <module name="jaeger-poc" target="17" />
