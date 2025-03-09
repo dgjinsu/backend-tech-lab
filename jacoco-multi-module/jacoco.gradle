@@ -15,7 +15,7 @@ subprojects {
 }
 
 task testCodeCoverageReport(type: JacocoReport) {
-    dependsOn subprojects.test  // 모든 서브 프로젝트의 test 실행 후 실행
+    dependsOn subprojects.test  // 모든 하위 모듈의 test 실행 후 실행
 
     // 하위 모듈의 test.exec 를 가져옴
     executionData.from = files(subprojects.jacocoTestReport.executionData)
