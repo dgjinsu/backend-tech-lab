@@ -158,6 +158,12 @@
       <module name="server2" target="21" />
       <module name="server2.main" target="21" />
       <module name="server2.test" target="21" />
+      <module name="server3" target="21" />
+      <module name="server3.main" target="21" />
+      <module name="server3.test" target="21" />
+      <module name="service" target="21" />
+      <module name="service.main" target="21" />
+      <module name="service.test" target="21" />
       <module name="shop" target="21" />
       <module name="shop.main" target="21" />
       <module name="shop.test" target="21" />

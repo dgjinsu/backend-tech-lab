@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$/jacoco-multi-module" />
             <option value="$PROJECT_DIR$/jacoco-multi-module/server1" />
             <option value="$PROJECT_DIR$/jacoco-multi-module/server2" />
+            <option value="$PROJECT_DIR$/jacoco-multi-module/service" />
+            <option value="$PROJECT_DIR$/jacoco-multi-module/service/server3" />
           </set>
         </option>
       </GradleProjectSettings>
