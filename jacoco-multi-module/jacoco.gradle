@@ -20,25 +20,42 @@ subprojects {
         classDirectories.setFrom(
                 files(sourceSets.main.output)
                         .filter { it.exists() }
-                        .asFileTree.matching {
-                    exclude "**/dto/**"      // DTO 패키지 제외
-                    exclude "**/Q*.class"    // QueryDSL Q-Class 제외
-                }
+                        .asFileTree.matching(excludePatternRules())
         )
     }
 }
 
+def excludePatternRules() {
+    return {
+        exclude "**/dto/**"      // DTO 패키지 제외
+        exclude "**/Q*.class"    // QueryDSL Q-Class 제외
+    }
+}
+
 task testCodeCoverageReport(type: JacocoReport) {
-    dependsOn subprojects.test  // 모든 하위 모듈의 test 실행 후 실행
 
-    // 하위 모듈의 test.exec 를 가져옴
-    executionData.from = files(subprojects.jacocoTestReport.executionData)
+    // service 하위 모듈들에 대해서만
+    def microserviceModules = subprojects.findAll { it.path.startsWith(":service:") }
 
-    // 하위 모듈의 클래스 파일 가져옴
-    additionalClassDirs.setFrom(files(subprojects.sourceSets.main.output))
+    // 테스트 끝난 후 실행
+    dependsOn microserviceModules.test
 
-    // 하위 모듈의 소스 코드 경로를 가져옴
-    sourceDirectories.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    // test.exec 가져오기
+    executionData.from = files(microserviceModules.jacocoTestReport.executionData)
+
+    // 클래스 파일 가져오기
+    additionalClassDirs.setFrom(
+            files(microserviceModules*.sourceSets.main.output)
+                    .filter { it.exists() }
+                    .asFileTree.matching(excludePatternRules())
+    )
+
+    // 소스 코드 가져오기
+    sourceDirectories.setFrom(
+            files(microserviceModules*.sourceSets.main.allSource.srcDirs)
+                    .filter { it.exists() }
+                    .asFileTree.matching(excludePatternRules())
+    )
 
     reports {
         xml.required = false
