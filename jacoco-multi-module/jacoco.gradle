@@ -1,6 +1,11 @@
 subprojects {
     apply plugin: 'jacoco'
 
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        finalizedBy 'jacocoTestReport' // 테스트 후 JaCoCo 실행
+    }
+
     tasks.named('jacocoTestReport') {
         dependsOn test
 
@@ -11,6 +16,16 @@ subprojects {
         }
 
         executionData.from = fileTree(dir: "$buildDir/jacoco", includes: ["*.exec"])
+
+        // ✅ DTO & Q-Class 제외 (필터링 강화)
+        classDirectories.setFrom(
+                files(sourceSets.main.output)
+                        .filter { it.exists() }
+                        .asFileTree.matching {
+                    exclude "**/dto/**"      // DTO 패키지 제외
+                    exclude "**/Q*.class"    // QueryDSL Q-Class 제외
+                }
+        )
     }
 }
 
