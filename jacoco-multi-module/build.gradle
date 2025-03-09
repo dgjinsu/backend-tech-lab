@@ -8,6 +8,10 @@ plugins {
 
 bootJar.enabled = false;
 
+repositories {
+	mavenCentral()
+}
+
 subprojects {
 	group = 'com.example'
 	version = '0.0.1-SNAPSHOT'
@@ -42,3 +46,7 @@ subprojects {
 }
 
 apply from: "${rootDir}/jacoco.gradle"
+
+tasks.named('build') {
+	finalizedBy tasks.named('testCodeCoverageReport')
+}
