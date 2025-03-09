@@ -17,7 +17,6 @@ subprojects {
 
         executionData.from = fileTree(dir: "$buildDir/jacoco", includes: ["*.exec"])
 
-        // ✅ DTO & Q-Class 제외 (필터링 강화)
         classDirectories.setFrom(
                 files(sourceSets.main.output)
                         .filter { it.exists() }
