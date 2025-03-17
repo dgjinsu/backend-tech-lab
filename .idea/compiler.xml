@@ -60,9 +60,24 @@
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
       <module name="jacoco" target="21" />
+      <module name="jacoco-multi-module" target="17" />
       <module name="jacoco-multi-module.jacoco" target="21" />
       <module name="jacoco-multi-module.jacoco.main" target="21" />
       <module name="jacoco-multi-module.jacoco.test" target="21" />
+      <module name="jacoco-multi-module.main" target="17" />
+      <module name="jacoco-multi-module.server1" target="21" />
+      <module name="jacoco-multi-module.server1.main" target="21" />
+      <module name="jacoco-multi-module.server1.test" target="21" />
+      <module name="jacoco-multi-module.server2" target="21" />
+      <module name="jacoco-multi-module.server2.main" target="21" />
+      <module name="jacoco-multi-module.server2.test" target="21" />
+      <module name="jacoco-multi-module.service" target="21" />
+      <module name="jacoco-multi-module.service.main" target="21" />
+      <module name="jacoco-multi-module.service.server3" target="21" />
+      <module name="jacoco-multi-module.service.server3.main" target="21" />
+      <module name="jacoco-multi-module.service.server3.test" target="21" />
+      <module name="jacoco-multi-module.service.test" target="21" />
+      <module name="jacoco-multi-module.test" target="17" />
       <module name="jacoco.main" target="21" />
       <module name="jacoco.test" target="21" />
       <module name="jaeger-poc" target="17" />

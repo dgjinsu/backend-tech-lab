@@ -4,14 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/jacoco-multi-module" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/jaeger-test" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/jacoco-multi-module" />
-            <option value="$PROJECT_DIR$/jacoco-multi-module/server1" />
-            <option value="$PROJECT_DIR$/jacoco-multi-module/server2" />
-            <option value="$PROJECT_DIR$/jacoco-multi-module/service" />
-            <option value="$PROJECT_DIR$/jacoco-multi-module/service/server3" />
+            <option value="$PROJECT_DIR$/jaeger-test" />
           </set>
         </option>
       </GradleProjectSettings>

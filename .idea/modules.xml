@@ -3,6 +3,21 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/backend-tech-lab.iml" filepath="$PROJECT_DIR$/.idea/backend-tech-lab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jacoco-multi-module.iml" filepath="$PROJECT_DIR$/.idea/modules/jacoco-multi-module.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jacoco-multi-module.main.iml" filepath="$PROJECT_DIR$/.idea/modules/jacoco-multi-module.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server1/jacoco-multi-module.server1.iml" filepath="$PROJECT_DIR$/.idea/modules/server1/jacoco-multi-module.server1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server1/jacoco-multi-module.server1.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server1/jacoco-multi-module.server1.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server1/jacoco-multi-module.server1.test.iml" filepath="$PROJECT_DIR$/.idea/modules/server1/jacoco-multi-module.server1.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server2/jacoco-multi-module.server2.iml" filepath="$PROJECT_DIR$/.idea/modules/server2/jacoco-multi-module.server2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server2/jacoco-multi-module.server2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server2/jacoco-multi-module.server2.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server2/jacoco-multi-module.server2.test.iml" filepath="$PROJECT_DIR$/.idea/modules/server2/jacoco-multi-module.server2.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.iml" filepath="$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.iml" filepath="$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.main.iml" filepath="$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.test.iml" filepath="$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jacoco-multi-module.test.iml" filepath="$PROJECT_DIR$/.idea/modules/jacoco-multi-module.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/shop/product/product.iml" filepath="$PROJECT_DIR$/shop/product/product.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" />
