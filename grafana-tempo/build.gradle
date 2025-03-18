@@ -22,11 +22,20 @@ subprojects {
 		}
 	}
 
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+		agent
+	}
+
 	repositories {
 		mavenCentral()
 	}
 
 	dependencies {
+		agent "io.opentelemetry.javaagent:opentelemetry-javaagent:1.32.0"
+
 		implementation 'org.springframework.boot:spring-boot-starter'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
