@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/grafana-tempo" />
     <file type="web" url="file://$PROJECT_DIR$/jacoco-multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-poc" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-test" />

@@ -1,0 +1,3 @@
+rootProject.name = 'grafana-tempo'
+include 'server1'
+include 'server2'
