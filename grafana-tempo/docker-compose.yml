@@ -1,8 +1,9 @@
 version: "3.8"
 
 networks:
-  monitoring:  # 새로운 네트워크 추가
-# todo: localhost로 해보기
+  monitoring:
+    external: true  # 이미 생성된 네트워크를 사용하도록 설정
+
 services:
   server1:
     build: ./server1
