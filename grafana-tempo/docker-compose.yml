@@ -1,46 +1,53 @@
-#version: '3'
+version: "3.8"
+
+networks:
+  monitoring:  # 새로운 네트워크 추가
+# todo: localhost로 해보기
 services:
   server1:
     build: ./server1
+    container_name: server1
     environment:
-#      OTEL_TRACES_EXPORTER: "logging"
-#      OTEL_METRICS_EXPORTER: "logging"
-#      OTEL_LOGS_EXPORTER: "logging"
-      OTEL_SERVICE_NAME: "order-service"
-      OTEL_RESOURCE_ATTRIBUTES: "service=order-service,env=dev"
-      OTEL_EXPORTER_OTLP_ENDPOINT: "http://collector:4317"
-      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_SERVICE_NAME: "server1"
+      OTEL_TRACES_EXPORTER: "jaeger, zipkin, otlp"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_EXPORTER_ZIPKIN_ENDPOINT: "http://zipkin:9411/api/v2/spans"
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://tempo:4317"
+      OTEL_METRICS_EXPORTER: "prometheus"
       OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
-      OTEL_EXPORTER_PROMETHEUS_PORT: "9466"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     ports:
       - "8080:8080"
     depends_on:
+      - jaeger-all-in-one
+      - zipkin-all-in-one
       - collector
-
-  collector:
-    container_name: collector
-    image: otel/opentelemetry-collector-contrib:0.91.0
-    command:
-      - --config=/etc/otelcol-contrib/otel-collector.yml
-    volumes:
-      - ./docker/collector/otel-collector.yml:/etc/otelcol-contrib/otel-collector.yml
-    restart: always
-    ports:
-      - "4317" # OTLP gRPC receiver
-      - "8889:8889" # Prometheus exporter metrics
-    depends_on:
       - tempo
+    networks:
+      - monitoring  # 네트워크 추가
 
-  tempo:
-    container_name: tempo
-    image: grafana/tempo:latest
-    command: [ "-config.file=/etc/tempo.yml" ]
-    volumes:
-      - ./docker/tempo/tempo.yml:/etc/tempo.yml
+  jaeger-all-in-one:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     restart: always
     ports:
-      - "14317:4317"  # otlp grpc
-      - "3200"  # tempo as grafana datasource
+      - "16686:16686"
+      - "14250"
+    networks:
+      - monitoring
+
+  zipkin-all-in-one:
+    container_name: zipkin
+    image: openzipkin/zipkin:latest
+    restart: always
+    ports:
+      - "9411:9411"
+    networks:
+      - monitoring
 
   prometheus:
     container_name: prometheus
@@ -49,13 +56,13 @@ services:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - --config.file=/etc/prometheus/prometheus.yml
-      - --enable-feature=exemplar-storage
-      - --web.enable-remote-write-receiver
     restart: always
     ports:
-      - '9090:9090'
+      - "9090:9090"
     depends_on:
-      - collector
+      - server1
+    networks:
+      - monitoring
 
   grafana:
     container_name: grafana
@@ -67,4 +74,43 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
-      - tempo
+    networks:
+      - monitoring
+
+  collector:
+    container_name: collector
+    image: otel/opentelemetry-collector-contrib:0.91.0
+    command:
+      - --config=/etc/otelcol-contrib/otel-collector.yml
+    volumes:
+      - ./docker/collector/otel-collector.yml:/etc/otelcol-contrib/otel-collector.yml
+    restart: always
+    ports:
+      - "4317"
+    depends_on:
+      - loki
+    networks:
+      - monitoring
+
+  loki:
+    container_name: loki
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: always
+    ports:
+      - "3100"
+    networks:
+      - monitoring
+
+  tempo:
+    container_name: tempo
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yml" ]
+    volumes:
+      - ./docker/tempo/tempo.yml:/etc/tempo.yml
+    restart: always
+    ports:
+      - "4317"
+      - "3200"
+    networks:
+      - monitoring
