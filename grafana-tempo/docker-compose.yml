@@ -84,6 +84,7 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --enable-feature=exemplar-storage # exemplar 활성화
+      - --web.enable-remote-write-receiver  # Remote Write 활성화 (추가) | tempo 에서 graph 그리기 위함
     restart: always
     ports:
       - "9090:9090"
