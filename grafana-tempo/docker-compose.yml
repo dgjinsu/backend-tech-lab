@@ -53,7 +53,7 @@ services:
       - tempo
       - rabbitmq
     networks:
-      - monitoring  # 네트워크 추가
+      - monitoring
 
   jaeger-all-in-one:
     container_name: jaeger

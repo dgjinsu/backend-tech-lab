@@ -10,7 +10,7 @@ distributor:
         thrift_binary:
         thrift_compact:
     zipkin:
-    otlp:
+    otlp: # 2025-03-21 최신 tempo는 아래와 같이 명시적으로 엔드포인트 설정 필요
       protocols:
         grpc:
           endpoint: 0.0.0.0:4317
@@ -50,3 +50,6 @@ storage:
 
 overrides:
   metrics_generator_processors: [service-graphs, span-metrics] # enables metrics generator
+  # local-blocks: 생성된 데이터를 Tempo 내부에 저장 (Prometheus로 전송하지 않음)
+  # prometheus 가 없어도 트레이스 조회 같은 기본 기능은 됨.
+  # service graph를 사용하기 위해선 prometheus가 함께 띄워져 있어야 함
