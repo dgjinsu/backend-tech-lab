@@ -6,6 +6,5 @@ COPY build/libs/app.jar app.jar
 ADD build/agent/opentelemetry-javaagent.jar /opentelemetry-javaagent.jar
 
 # 컨테이너 실행 시 JAR 파일 실행
-ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar \
-           -jar /app.jar
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -jar /app.jar
 
