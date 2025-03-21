@@ -1,5 +1,13 @@
 spring:
   application:
     name: server2
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
 server:
   port: 8081
+

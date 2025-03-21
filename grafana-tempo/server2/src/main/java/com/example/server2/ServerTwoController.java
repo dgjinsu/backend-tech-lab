@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServerTwoController {
 
     @GetMapping("/server2")
-    public String server1() {
+    public String server2() {
       log.info("Server 2");
       return "Server 2";
     }
