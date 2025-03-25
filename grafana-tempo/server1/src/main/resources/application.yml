@@ -19,3 +19,12 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info
+  metrics:
+    tags:
+      application: ${spring.application.name}
