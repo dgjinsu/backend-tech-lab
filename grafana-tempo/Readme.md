@@ -19,5 +19,8 @@ storage:
       insecure: false
 ```
 ### 메모리 사용
-- indexless 설계
+- tempo는 아래와 같은 이유들로 메모리를 적게 쓴다.
+  - indexless 설계
+  - trace 데이터를 압축된 블록으로 저장
+  - 대부분은 disk I/O 이다. 메모리 상주가 적음.
 
