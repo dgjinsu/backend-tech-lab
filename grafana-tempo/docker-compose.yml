@@ -95,7 +95,7 @@ services:
 
   grafana:
     container_name: grafana
-    image: grafana/grafana
+    image: grafana/grafana:11.5.2 # 최신 버전은 grafana explore 메뉴가 변경되서 안 됨
     volumes:
       - ./docker/grafana/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
     restart: always
