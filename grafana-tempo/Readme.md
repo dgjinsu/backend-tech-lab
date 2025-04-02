@@ -18,5 +18,6 @@ storage:
       secret_key: your-secret-key
       insecure: false
 ```
-
+### 메모리 사용
+- indexless 설계
 

@@ -38,3 +38,4 @@ out/
 
 # jar
 *.jar
+!*/opentelemetry-javaagent.jar
