@@ -4,13 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/grafana-tempo" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/feature-flag" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/grafana-tempo" />
-            <option value="$PROJECT_DIR$/grafana-tempo/server1" />
-            <option value="$PROJECT_DIR$/grafana-tempo/server2" />
+            <option value="$PROJECT_DIR$/feature-flag" />
           </set>
         </option>
       </GradleProjectSettings>

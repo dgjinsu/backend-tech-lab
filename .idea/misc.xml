@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/feature-flag" />
     <file type="web" url="file://$PROJECT_DIR$/grafana-tempo" />
     <file type="web" url="file://$PROJECT_DIR$/jacoco-multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-poc" />
@@ -20,7 +21,7 @@
     <file type="web" url="file://$PROJECT_DIR$/sse" />
     <file type="web" url="file://$PROJECT_DIR$/transaction" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -6,10 +6,9 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="grafana-tempo.server2.main" />
-        <module name="grafana-tempo.server1.main" />
+        <module name="feature-flag.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -64,6 +63,15 @@
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />
+      <module name="grafana-tempo" target="21" />
+      <module name="grafana-tempo.main" target="21" />
+      <module name="grafana-tempo.server1" target="21" />
+      <module name="grafana-tempo.server1.main" target="21" />
+      <module name="grafana-tempo.server1.test" target="21" />
+      <module name="grafana-tempo.server2" target="21" />
+      <module name="grafana-tempo.server2.main" target="21" />
+      <module name="grafana-tempo.server2.test" target="21" />
+      <module name="grafana-tempo.test" target="21" />
       <module name="infrastructure" target="21" />
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
