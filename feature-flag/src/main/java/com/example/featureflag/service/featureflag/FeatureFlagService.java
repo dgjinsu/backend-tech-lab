@@ -1,4 +1,4 @@
-package com.example.featureflag.service;
+package com.example.featureflag.service.featureflag;
 
 import com.example.featureflag.entity.FeatureFlagEntity;
 import com.example.featureflag.repository.FeatureFlagRepository;

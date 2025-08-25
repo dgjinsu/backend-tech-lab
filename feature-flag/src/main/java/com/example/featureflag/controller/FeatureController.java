@@ -1,11 +1,10 @@
 package com.example.featureflag.controller;
 
-import com.example.featureflag.config.annotation.FeatureFlag;
 import com.example.featureflag.dto.ApiResponse;
 import com.example.featureflag.dto.FeatureFlagResponse;
-import com.example.featureflag.dto.FeatureTestResponse;
 import com.example.featureflag.dto.FeatureToggleResponse;
-import com.example.featureflag.service.FeatureFlagService;
+import com.example.featureflag.service.featureflag.FeatureFlagService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,44 +64,5 @@ public class FeatureController {
         } catch (IllegalArgumentException e) {
             return ApiResponse.error(e.getMessage());
         }
-    }
-
-    // 3. test1 피쳐 테스트 (피쳐가 꺼져있으면 예외 발생)
-    @FeatureFlag(value = "test1")
-    @GetMapping("/test1")
-    @ResponseBody
-    public ApiResponse<FeatureTestResponse> test1() {
-        FeatureTestResponse response = FeatureTestResponse.builder()
-                .message("🎉 test1 기능이 활성화되었습니다!")
-                .status("enabled")
-                .feature("test1")
-                .build();
-        return ApiResponse.success(response);
-    }
-
-    // 4. test2 피쳐 테스트 (피쳐가 켜져있으면 정상 동작)
-    @FeatureFlag(value = "test2")
-    @GetMapping("/test2")
-    @ResponseBody
-    public ApiResponse<FeatureTestResponse> test2() {
-        FeatureTestResponse response = FeatureTestResponse.builder()
-                .message("🚀 test2 기능이 활성화되었습니다!")
-                .status("enabled")
-                .feature("test2")
-                .build();
-        return ApiResponse.success(response);
-    }
-
-    // 5. test3 피쳐 테스트 (피쳐가 꺼져있으면 예외 발생)
-    @FeatureFlag(value = "test3")
-    @GetMapping("/test3")
-    @ResponseBody
-    public ApiResponse<FeatureTestResponse> test3() {
-        FeatureTestResponse response = FeatureTestResponse.builder()
-                .message("🔬 test3 기능이 활성화되었습니다!")
-                .status("enabled")
-                .feature("test3")
-                .build();
-        return ApiResponse.success(response);
     }
 }
