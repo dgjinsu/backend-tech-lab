@@ -8,7 +8,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="feature-flag.main" />
+        <module name="compositekey.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -60,6 +60,9 @@
       <module name="eureka" target="21" />
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
+      <module name="feature-flag" target="21" />
+      <module name="feature-flag.main" target="21" />
+      <module name="feature-flag.test" target="21" />
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />

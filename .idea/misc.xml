@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
+    <file type="web" url="file://$PROJECT_DIR$/compositekey" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
     <file type="web" url="file://$PROJECT_DIR$/feature-flag" />
     <file type="web" url="file://$PROJECT_DIR$/grafana-tempo" />
