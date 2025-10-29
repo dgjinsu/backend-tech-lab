@@ -218,4 +218,11 @@
       <module name="transaction.test" target="21" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="compositekey" options="-parameters" />
+      <module name="compositekey.main" options="-parameters" />
+      <module name="compositekey.test" options="-parameters" />
+    </option>
+  </component>
 </project>

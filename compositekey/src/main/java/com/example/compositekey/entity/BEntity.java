@@ -1,16 +1,13 @@
 package com.example.compositekey.entity;
 
-import java.util.List;
-
 import com.example.compositekey.entity.compositekey.BEntityId;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -28,10 +25,14 @@ public class BEntity {
 
     @EmbeddedId
     private BEntityId id;
+
     private String bField;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("aId")
-    @JoinColumn(name = "a_id")
+    @JoinColumns({
+        @JoinColumn(name = "a_id", referencedColumnName = "a_id", insertable = false, updatable = false),
+        @JoinColumn(name = "aa_id", referencedColumnName = "aa_id", insertable = false, updatable = false)
+    })
     private AEntity aEntity;
 }
+

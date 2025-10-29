@@ -2,6 +2,7 @@ package com.example.compositekey.entity.compositekey;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,10 +16,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class BEntityId implements Serializable {
 
+    @Column(name = "a_id")
     private String aId;
-    private String bId;
 
-    public BEntityId(String bId) {
-        this.bId = bId;
-    }
+    @Column(name = "aa_id")
+    private String aaId;
+
+    @Column(name = "b_id")
+    private String bId;
 }
+

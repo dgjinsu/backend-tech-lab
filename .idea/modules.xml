@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/backend-tech-lab.iml" filepath="$PROJECT_DIR$/.idea/backend-tech-lab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/compositekey.main.iml" filepath="$PROJECT_DIR$/.idea/modules/compositekey.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/grafana-tempo.iml" filepath="$PROJECT_DIR$/.idea/modules/grafana-tempo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/grafana-tempo.main.iml" filepath="$PROJECT_DIR$/.idea/modules/grafana-tempo.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/server1/grafana-tempo.server1.iml" filepath="$PROJECT_DIR$/.idea/modules/server1/grafana-tempo.server1.iml" />

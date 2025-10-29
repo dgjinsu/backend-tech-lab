@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.compositekey.entity.AEntity;
 import com.example.compositekey.entity.BEntity;
 import com.example.compositekey.entity.CEntity;
-import com.example.compositekey.entity.compositekey.BEntityId;
 import com.example.compositekey.repository.ARepository;
 import com.example.compositekey.repository.BRepository;
 import com.example.compositekey.repository.CRepository;
@@ -23,25 +22,23 @@ public class TestController {
 
     @GetMapping("/test")
     public String test() {
-        AEntity aEntity = aRepository.save(AEntity.builder().aId("1").aField("aField").build());
+        // A 엔티티 저장
+        AEntity aEntity = aRepository.save(AEntity.builder()
+            .aId("1")
+            .aaId("2")
+            .aField("aField")
+            .build());
 
-//        BEntity bEntity = bRepository.save(
-//            BEntity.builder()
-//                .id(new BEntityId(aEntity.getAId(), "1"))
-//                .bField("bField")
-////            .aEntity(aEntity)
-//                .build()
-//        );
-
-        // C 엔티티 생성 - A와 연관관계를 맺으면서
+        // C 엔티티 생성 - cId만 지정하고 aEntity 연관관계만 설정
+        // @PrePersist에서 자동으로 aId, aaId가 설정됨
         CEntity cEntity = cRepository.save(CEntity.builder()
-            .aId(aEntity.getAId())
             .cId("C1")
             .cField("cField")
-//            .aEntity(aEntity) // MapsId 때문에 연관관계만 설정해도 FK 값 들어감
-            .build()
-        );
+            .aEntity(aEntity)
+            .build());
 
-        return "success";
+        return "C Entity saved: aId=" + cEntity.getAId() + 
+               ", aaId=" + cEntity.getAaId() + 
+               ", cId=" + cEntity.getCId();
     }
 }
