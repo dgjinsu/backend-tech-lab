@@ -21,7 +21,6 @@ public class MarkNotificationAsReadService implements MarkNotificationAsRead {
         notificationIds.forEach(id -> {
             notificationRepository.findById(id).ifPresent(notification -> {
                 notification.markAsRead();
-                log.info("알림 읽음 처리: notificationId={}", id);
             });
         });
     }

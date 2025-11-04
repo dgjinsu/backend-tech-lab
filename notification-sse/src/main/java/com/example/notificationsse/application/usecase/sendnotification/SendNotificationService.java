@@ -2,9 +2,9 @@ package com.example.notificationsse.application.usecase.sendnotification;
 
 import com.example.notificationsse.entity.Notification;
 import com.example.notificationsse.entity.User;
+import com.example.notificationsse.redis.RedisNotificationPublisher;
 import com.example.notificationsse.repository.NotificationRepository;
 import com.example.notificationsse.repository.UserRepository;
-import com.example.notificationsse.service.SseEmitterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class SendNotificationService implements SendNotification {
     
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
-    private final SseEmitterService sseEmitterService;
+    private final RedisNotificationPublisher redisNotificationPublisher;
     
     @Override
     public NotificationRes sendNotification(SendNotificationReq req) {
@@ -31,17 +31,9 @@ public class SendNotificationService implements SendNotification {
         Notification notification = new Notification(sender, receiver, req.message());
         notificationRepository.save(notification);
         
-        // SSE를 통해 실시간으로 알림 전송 시도
+        // Redis Pub/Sub을 통해 모든 WAS 서버에 알림 발행
         NotificationRes notificationRes = NotificationRes.from(notification);
-        boolean sent = sseEmitterService.sendToUser(receiver.getUserId(), notificationRes);
-        
-        // 실시간 전송 성공 시 즉시 읽음 처리
-        if (sent) {
-            notification.markAsRead();
-            log.info("실시간 알림 전송 성공 및 읽음 처리: notificationId={}", notification.getId());
-        } else {
-            log.info("수신자 미연결. 나중에 전송될 예정: notificationId={}", notification.getId());
-        }
+        redisNotificationPublisher.publish(notificationRes);
         
         return notificationRes;
     }

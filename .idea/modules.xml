@@ -28,6 +28,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.test.iml" filepath="$PROJECT_DIR$/.idea/modules/service/server3/jacoco-multi-module.service.server3.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/service/jacoco-multi-module.service.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/jacoco-multi-module.test.iml" filepath="$PROJECT_DIR$/.idea/modules/jacoco-multi-module.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/notification-sse.main.iml" filepath="$PROJECT_DIR$/.idea/modules/notification-sse.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/shop/product/product.iml" filepath="$PROJECT_DIR$/shop/product/product.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" filepath="$PROJECT_DIR$/.idea/modules/security-jwt.test.iml" />
