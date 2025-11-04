@@ -15,6 +15,7 @@
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module/listener" />
     <file type="web" url="file://$PROJECT_DIR$/mybatis" />
+    <file type="web" url="file://$PROJECT_DIR$/notification-sse" />
     <file type="web" url="file://$PROJECT_DIR$/pwm-sample" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
