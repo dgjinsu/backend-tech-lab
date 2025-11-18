@@ -4,10 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/notification-sse" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/spring-fqcn" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/notification-sse" />
+            <option value="$PROJECT_DIR$/spring-fqcn" />
           </set>
         </option>
       </GradleProjectSettings>
