@@ -8,7 +8,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="spring-fqcn.main" />
+        <module name="java-tls-version-test.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -210,6 +210,9 @@
       <module name="shop" target="21" />
       <module name="shop.main" target="21" />
       <module name="shop.test" target="21" />
+      <module name="spring-fqcn" target="21" />
+      <module name="spring-fqcn.main" target="21" />
+      <module name="spring-fqcn.test" target="21" />
       <module name="spring-integration-ftp" target="21" />
       <module name="spring-integration-ftp.main" target="21" />
       <module name="spring-integration-ftp.test" target="21" />
@@ -230,6 +233,9 @@
       <module name="compositekey" options="-parameters" />
       <module name="compositekey.main" options="-parameters" />
       <module name="compositekey.test" options="-parameters" />
+      <module name="java-tls-version-test" options="-parameters" />
+      <module name="java-tls-version-test.main" options="-parameters" />
+      <module name="java-tls-version-test.test" options="-parameters" />
       <module name="notification-sse" options="-parameters" />
       <module name="notification-sse.main" options="-parameters" />
       <module name="notification-sse.test" options="-parameters" />

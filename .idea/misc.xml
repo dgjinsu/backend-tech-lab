@@ -10,6 +10,7 @@
     <file type="web" url="file://$PROJECT_DIR$/jacoco-multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-poc" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-test" />
+    <file type="web" url="file://$PROJECT_DIR$/java-tls-version-test" />
     <file type="web" url="file://$PROJECT_DIR$/java17-pinpoint" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />

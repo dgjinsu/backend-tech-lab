@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # MSSQL Server 2017 (TLS 1.0 지원)
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: mssql-2017
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=rlawlstn1!
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'rlawlstn1!' -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+    networks:
+      - app-network
+
+  # Spring Boot 애플리케이션
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: java-tls-test-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      mssql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+volumes:
+  mssql-data:
+
+networks:
+  app-network:
+    driver: bridge
+
+
