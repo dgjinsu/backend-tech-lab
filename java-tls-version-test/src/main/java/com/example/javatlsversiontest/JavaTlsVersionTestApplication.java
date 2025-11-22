@@ -17,14 +17,13 @@ public class JavaTlsVersionTestApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // 도커 컨테이너 내부의 MSSQL에 연결
-        String ip = "mssql";  // 도커 서비스 이름
+        String ip = "mssql";  
         int port = 1433;
         String username = "sa";
         String password = "rlawlstn1!";
         
         System.out.println("MSSQL 연결 테스트 시작...");
         
-        // master 데이터베이스 연결 테스트 (항상 존재하는 기본 DB)
         String url = String.format("jdbc:sqlserver://%s:%d;databaseName=master;encrypt=true;trustServerCertificate=true",
                 ip, port);
         
