@@ -6,10 +6,9 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="grafana-tempo.server2.main" />
-        <module name="grafana-tempo.server1.main" />
+        <module name="java-tls-version-test.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -25,6 +24,7 @@
       <module name="cleanArchitecture" target="21" />
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
+      <module name="com.example.compositekey.main" target="21" />
       <module name="com.example.jaeger-poc.server1.main" target="21" />
       <module name="com.example.jaeger-poc.server2.main" target="21" />
       <module name="com.mirero.pwm.pwm-sample.common.main" target="21" />
@@ -34,6 +34,8 @@
       <module name="common" target="21" />
       <module name="common.main" target="21" />
       <module name="common.test" target="21" />
+      <module name="compositekey" target="21" />
+      <module name="compositekey.test" target="21" />
       <module name="cqrs-project" target="21" />
       <module name="cqrs-project.apigateway" target="21" />
       <module name="cqrs-project.apigateway.main" target="21" />
@@ -61,9 +63,21 @@
       <module name="eureka" target="21" />
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
+      <module name="feature-flag" target="21" />
+      <module name="feature-flag.main" target="21" />
+      <module name="feature-flag.test" target="21" />
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />
+      <module name="grafana-tempo" target="21" />
+      <module name="grafana-tempo.main" target="21" />
+      <module name="grafana-tempo.server1" target="21" />
+      <module name="grafana-tempo.server1.main" target="21" />
+      <module name="grafana-tempo.server1.test" target="21" />
+      <module name="grafana-tempo.server2" target="21" />
+      <module name="grafana-tempo.server2.main" target="21" />
+      <module name="grafana-tempo.server2.test" target="21" />
+      <module name="grafana-tempo.test" target="21" />
       <module name="infrastructure" target="21" />
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
@@ -154,6 +168,9 @@
       <module name="mybatis" target="21" />
       <module name="mybatis.main" target="21" />
       <module name="mybatis.test" target="21" />
+      <module name="notification-sse" target="21" />
+      <module name="notification-sse.main" target="21" />
+      <module name="notification-sse.test" target="21" />
       <module name="persistence" target="21" />
       <module name="persistence.main" target="21" />
       <module name="persistence.test" target="21" />
@@ -193,6 +210,9 @@
       <module name="shop" target="21" />
       <module name="shop.main" target="21" />
       <module name="shop.test" target="21" />
+      <module name="spring-fqcn" target="21" />
+      <module name="spring-fqcn.main" target="21" />
+      <module name="spring-fqcn.test" target="21" />
       <module name="spring-integration-ftp" target="21" />
       <module name="spring-integration-ftp.main" target="21" />
       <module name="spring-integration-ftp.test" target="21" />
@@ -206,5 +226,22 @@
       <module name="transaction.main" target="21" />
       <module name="transaction.test" target="21" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="com.example.compositekey.main" options="-parameters" />
+      <module name="compositekey" options="-parameters" />
+      <module name="compositekey.main" options="-parameters" />
+      <module name="compositekey.test" options="-parameters" />
+      <module name="java-tls-version-test" options="-parameters" />
+      <module name="java-tls-version-test.main" options="-parameters" />
+      <module name="java-tls-version-test.test" options="-parameters" />
+      <module name="notification-sse" options="-parameters" />
+      <module name="notification-sse.main" options="-parameters" />
+      <module name="notification-sse.test" options="-parameters" />
+      <module name="spring-fqcn" options="-parameters" />
+      <module name="spring-fqcn.main" options="-parameters" />
+      <module name="spring-fqcn.test" options="-parameters" />
+    </option>
   </component>
 </project>

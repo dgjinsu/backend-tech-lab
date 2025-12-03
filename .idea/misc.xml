@@ -3,16 +3,20 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/arch-unit-test" />
+    <file type="web" url="file://$PROJECT_DIR$/compositekey" />
     <file type="web" url="file://$PROJECT_DIR$/CQRS" />
+    <file type="web" url="file://$PROJECT_DIR$/feature-flag" />
     <file type="web" url="file://$PROJECT_DIR$/grafana-tempo" />
     <file type="web" url="file://$PROJECT_DIR$/jacoco-multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-poc" />
     <file type="web" url="file://$PROJECT_DIR$/jaeger-test" />
+    <file type="web" url="file://$PROJECT_DIR$/java-tls-version-test" />
     <file type="web" url="file://$PROJECT_DIR$/java17-pinpoint" />
     <file type="web" url="file://$PROJECT_DIR$/JpaTableMapping" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module" />
     <file type="web" url="file://$PROJECT_DIR$/multi-module/listener" />
     <file type="web" url="file://$PROJECT_DIR$/mybatis" />
+    <file type="web" url="file://$PROJECT_DIR$/notification-sse" />
     <file type="web" url="file://$PROJECT_DIR$/pwm-sample" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
@@ -20,7 +24,7 @@
     <file type="web" url="file://$PROJECT_DIR$/sse" />
     <file type="web" url="file://$PROJECT_DIR$/transaction" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
