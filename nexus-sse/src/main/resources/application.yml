@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: nexus-sse
+
+sse:
+  timeout: 60000
+  reconnect-time: 3000
