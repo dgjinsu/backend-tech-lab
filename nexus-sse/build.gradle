@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.example'
-version = '1.0.0'
+version = '1.0.1'
 description = 'nexus-sse'
 
 java {
@@ -55,7 +55,7 @@ publishing {
 
             groupId = 'com.example'
             artifactId = 'nexus-sse'
-            version = '1.0.0'
+            version = '1.0.1'
 
             // 빌드 시점에 결정된 버전을 배포 메타데이터에도 사용
             versionMapping {
