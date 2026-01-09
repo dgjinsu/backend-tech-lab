@@ -20,7 +20,6 @@ interface StoreState {
   user: User;
   toggleRole: () => void;
 }
-
 export const useStore = create<StoreState>((set) => ({
   // 카운터 초기 상태 및 액션
   count: 0,
