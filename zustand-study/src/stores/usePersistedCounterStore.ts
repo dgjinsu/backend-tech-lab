@@ -1,6 +1,4 @@
 /**
- * Persisted Counter Store
- *
  * localStorage와 연동되는 카운터 상태 관리
  */
 

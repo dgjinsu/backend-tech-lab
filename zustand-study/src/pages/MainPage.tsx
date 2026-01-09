@@ -12,7 +12,7 @@ export function MainPage() {
       <header className="mb-8 text-center">
         <h1 className="text-4xl font-bold">🎓 React 전역 상태 관리 학습</h1>
         <p className="text-gray-600 mt-2 text-lg">
-          Props Drilling부터 Zustand까지, 단계별로 알아보는 전역 상태 관리
+          Props Drilling부터 Jotai까지, 단계별로 알아보는 전역 상태 관리
         </p>
       </header>
 
@@ -58,6 +58,20 @@ export function MainPage() {
             완벽한 TypeScript 지원!
           </p>
         </div>
+
+        {/* Jotai 카드 */}
+        <div
+          onClick={() => navigate('/jotai')}
+          className="p-8 border-[3px] border-purple-500 rounded-xl cursor-pointer transition-all duration-300 bg-purple-50 shadow-md hover:-translate-y-1 hover:shadow-[0_4px_12px_rgba(155,89,182,0.4)]"
+        >
+          <h2 className="text-purple-600 mb-4 text-xl font-semibold">🟣 5. Jotai ⭐</h2>
+          <p className="text-gray-600 leading-relaxed">
+            Atom 기반의 가볍고 현대적인 상태 관리 라이브러리입니다.
+            <br /><br />
+            <strong>장점:</strong> Atom 단위 관리, Bottom-up 접근, 자동 최적화,
+            완벽한 TypeScript 지원!
+          </p>
+        </div>
       </div>
 
       <footer className="mt-16 p-8 bg-gray-50 rounded-xl text-center">
@@ -67,7 +81,7 @@ export function MainPage() {
           <br />
           순서대로 학습하면 전역 상태 관리의 발전 과정을 이해할 수 있습니다.
           <br /><br />
-          <strong>추천 순서:</strong> Props Drilling → LocalStorage → Context API → Zustand
+          <strong>추천 순서:</strong> Props Drilling → LocalStorage → Context API → Zustand → Jotai
         </p>
       </footer>
     </div>

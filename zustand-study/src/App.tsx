@@ -3,6 +3,7 @@ import { MainPage } from './pages/MainPage';
 import { PropDrillingMain } from './components/propDrilling/PropDrillingMain';
 import { LocalStorageMain } from './components/localStorage/LocalStorageMain';
 import { ZustandMain } from './components/zustand/ZustandMain';
+import { JotaiMain } from './components/jotai/JotaiMain';
 import './App.css';
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
   const location = useLocation();
 
   // 예제 페이지인지 확인
-  const isExamplePage = ['/props-drilling', '/local-storage', '/context-api', '/zustand'].includes(location.pathname);
+  const isExamplePage = ['/props-drilling', '/local-storage', '/context-api', '/zustand', '/jotai'].includes(location.pathname);
 
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
@@ -59,6 +60,7 @@ function App() {
         <Route path="/props-drilling" element={<PropDrillingMain />} />
         <Route path="/local-storage" element={<LocalStorageMain />} />
         <Route path="/zustand" element={<ZustandMain />} />
+        <Route path="/jotai" element={<JotaiMain />} />
       </Routes>
 
       {/* 예제 페이지에서만 푸터 표시 */}

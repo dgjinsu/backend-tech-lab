@@ -1,0 +1,9 @@
+selenium
+beautifulsoup4
+pandas
+python-dotenv
+fake-useragent
+lxml
+webdriver-manager
+reportlab
+pillow

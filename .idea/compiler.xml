@@ -69,15 +69,8 @@
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />
-      <module name="grafana-tempo" target="21" />
-      <module name="grafana-tempo.main" target="21" />
-      <module name="grafana-tempo.server1" target="21" />
       <module name="grafana-tempo.server1.main" target="21" />
-      <module name="grafana-tempo.server1.test" target="21" />
-      <module name="grafana-tempo.server2" target="21" />
       <module name="grafana-tempo.server2.main" target="21" />
-      <module name="grafana-tempo.server2.test" target="21" />
-      <module name="grafana-tempo.test" target="21" />
       <module name="infrastructure" target="21" />
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
