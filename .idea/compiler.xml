@@ -6,9 +6,9 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="com.example.nexus-notification-service.main" />
+        <module name="feature-flag.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,6 +27,8 @@
       <module name="com.example.compositekey.main" target="21" />
       <module name="com.example.jaeger-poc.server1.main" target="21" />
       <module name="com.example.jaeger-poc.server2.main" target="21" />
+      <module name="com.example.nexus-notification-service.main" target="21" />
+      <module name="com.example.nexus-sse.main" target="21" />
       <module name="com.mirero.pwm.pwm-sample.common.main" target="21" />
       <module name="com.mirero.pwm.pwm-sample.eureka.main" target="21" />
       <module name="com.mirero.pwm.pwm-sample.gateway.main" target="21" />
@@ -63,9 +65,6 @@
       <module name="eureka" target="21" />
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
-      <module name="feature-flag" target="21" />
-      <module name="feature-flag.main" target="21" />
-      <module name="feature-flag.test" target="21" />
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />
@@ -161,6 +160,10 @@
       <module name="mybatis" target="21" />
       <module name="mybatis.main" target="21" />
       <module name="mybatis.test" target="21" />
+      <module name="nexus-notification-service" target="21" />
+      <module name="nexus-notification-service.test" target="21" />
+      <module name="nexus-sse" target="21" />
+      <module name="nexus-sse.test" target="21" />
       <module name="notification-sse" target="21" />
       <module name="notification-sse.main" target="21" />
       <module name="notification-sse.test" target="21" />
@@ -223,9 +226,14 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="com.example.compositekey.main" options="-parameters" />
+      <module name="com.example.nexus-notification-service.main" options="-parameters" />
+      <module name="com.example.nexus-sse.main" options="-parameters" />
       <module name="compositekey" options="-parameters" />
       <module name="compositekey.main" options="-parameters" />
       <module name="compositekey.test" options="-parameters" />
+      <module name="feature-flag" options="-parameters" />
+      <module name="feature-flag.main" options="-parameters" />
+      <module name="feature-flag.test" options="-parameters" />
       <module name="java-tls-version-test" options="-parameters" />
       <module name="java-tls-version-test.main" options="-parameters" />
       <module name="java-tls-version-test.test" options="-parameters" />

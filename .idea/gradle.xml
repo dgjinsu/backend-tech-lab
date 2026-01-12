@@ -4,18 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/nexus-notification-service" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/feature-flag" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/nexus-notification-service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/nexus-sse" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/nexus-sse" />
+            <option value="$PROJECT_DIR$/feature-flag" />
           </set>
         </option>
       </GradleProjectSettings>
