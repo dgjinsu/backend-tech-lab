@@ -8,7 +8,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="nexus-sse.main" />
+        <module name="com.example.nexus-notification-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -107,9 +107,6 @@
       <module name="jaeger-test" target="21" />
       <module name="jaeger-test.main" target="21" />
       <module name="jaeger-test.test" target="21" />
-      <module name="java-tls-version-test" target="21" />
-      <module name="java-tls-version-test.main" target="21" />
-      <module name="java-tls-version-test.test" target="21" />
       <module name="java17-pinpoint" target="17" />
       <module name="java17-pinpoint.main" target="17" />
       <module name="java17-pinpoint.test" target="17" />
