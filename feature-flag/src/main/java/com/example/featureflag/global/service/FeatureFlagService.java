@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,16 @@ public class FeatureFlagService {
     }
 
     /**
+     * 주어진 role이 feature flag 적용 대상인지 확인
+     * (flag 활성화 여부와 무관하게 role만 체크)
+     */
+    public boolean isTargetRole(String featureKey, String role) {
+        return featureFlagRepository.findByFeatureKey(featureKey)
+                .map(flag -> flag.isTargetRole(role))
+                .orElse(false);
+    }
+
+    /**
      * Feature flag 상태 변경
      */
     @Transactional
@@ -40,11 +52,12 @@ public class FeatureFlagService {
     }
 
     /**
-     * 새로운 Feature flag 생성
+     * 새로운 Feature flag 생성 (적용 대상 권한 포함)
      */
     @Transactional
-    public FeatureFlagEntity createFeatureFlag(String featureKey, boolean enabled, String description) {
-        FeatureFlagEntity featureFlag = new FeatureFlagEntity(featureKey, enabled, description);
+    public FeatureFlagEntity createFeatureFlag(String featureKey, boolean enabled, String description, Set<String> roles) {
+        String targetRoles = (roles != null && !roles.isEmpty()) ? String.join(",", roles) : null;
+        FeatureFlagEntity featureFlag = new FeatureFlagEntity(featureKey, enabled, description, targetRoles);
         return featureFlagRepository.save(featureFlag);
     }
 }
