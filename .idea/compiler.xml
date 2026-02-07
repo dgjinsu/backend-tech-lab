@@ -25,6 +25,7 @@
       <module name="cleanArchitecture.main" target="21" />
       <module name="cleanArchitecture.test" target="21" />
       <module name="com.example.compositekey.main" target="21" />
+      <module name="com.example.feature-flag.main" target="21" />
       <module name="com.example.jaeger-poc.server1.main" target="21" />
       <module name="com.example.jaeger-poc.server2.main" target="21" />
       <module name="com.example.nexus-notification-service.main" target="21" />
@@ -65,6 +66,8 @@
       <module name="eureka" target="21" />
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
+      <module name="feature-flag" target="21" />
+      <module name="feature-flag.test" target="21" />
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
       <module name="gateway.test" target="21" />
@@ -74,7 +77,6 @@
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
       <module name="jacoco" target="21" />
-      <module name="jacoco-multi-module" target="17" />
       <module name="jacoco-multi-module.jacoco" target="21" />
       <module name="jacoco-multi-module.jacoco.main" target="21" />
       <module name="jacoco-multi-module.jacoco.test" target="21" />
