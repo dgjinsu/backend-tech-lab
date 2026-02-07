@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: architecture-study
+
+  # database
+  datasource:
+    url: jdbc:postgresql://localhost:5432/architecture_study
+    username: mirero
+    password: rlawlstn
+    driver-class-name: org.postgresql.Driver
+
+  # jpa
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+        # batch size 설정
+        default_batch_fetch_size: 100
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+    show-sql: true
+
+# logging
+logging:
+  level:
+    root: INFO
+    com.example.architecturestudy: DEBUG
