@@ -8,7 +8,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="architecture-study.main" />
+        <module name="com.example.architecture-study.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -67,6 +67,7 @@
       <module name="eureka.main" target="21" />
       <module name="eureka.test" target="21" />
       <module name="feature-flag" target="21" />
+      <module name="feature-flag.main" target="21" />
       <module name="feature-flag.test" target="21" />
       <module name="gateway" target="21" />
       <module name="gateway.main" target="21" />
@@ -228,6 +229,9 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="architecture-study" options="-parameters" />
+      <module name="architecture-study.test" options="-parameters" />
+      <module name="com.example.architecture-study.main" options="-parameters" />
       <module name="com.example.compositekey.main" options="-parameters" />
       <module name="com.example.nexus-notification-service.main" options="-parameters" />
       <module name="com.example.nexus-sse.main" options="-parameters" />
