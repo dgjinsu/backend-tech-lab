@@ -34,4 +34,13 @@ public class TodoEntity extends BaseEntity {
         this.content = content;
         this.status = TodoStatus.PENDING;
     }
+
+    public void updateTitleAndContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void updateStatus(TodoStatus status) {
+        this.status = status;
+    }
 }

@@ -3,15 +3,13 @@ package com.example.architecturestudy.dto;
 import com.example.architecturestudy.entity.TodoEntity;
 import com.example.architecturestudy.entity.enums.TodoStatus;
 
-public record SaveTodoRes(
+public record UpdateTodoStatusRes(
         Long id,
-        String title,
         TodoStatus status
 ) {
-    public static SaveTodoRes from(TodoEntity todo) {
-        return new SaveTodoRes(
+    public static UpdateTodoStatusRes from(TodoEntity todo) {
+        return new UpdateTodoStatusRes(
                 todo.getId(),
-                todo.getTitle(),
                 todo.getStatus()
         );
     }
