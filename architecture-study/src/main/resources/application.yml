@@ -13,13 +13,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true
 
         # batch size 설정
         default_batch_fetch_size: 100
@@ -30,8 +27,16 @@ spring:
 
     show-sql: true
 
+# swagger
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
 # logging
 logging:
   level:
     root: INFO
-    com.example.architecturestudy: DEBUG

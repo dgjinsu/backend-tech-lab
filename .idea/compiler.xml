@@ -6,9 +6,9 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="feature-flag.main" />
+        <module name="architecture-study.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -77,6 +77,7 @@
       <module name="infrastructure.main" target="21" />
       <module name="infrastructure.test" target="21" />
       <module name="jacoco" target="21" />
+      <module name="jacoco-multi-module" target="21" />
       <module name="jacoco-multi-module.jacoco" target="21" />
       <module name="jacoco-multi-module.jacoco.main" target="21" />
       <module name="jacoco-multi-module.jacoco.test" target="21" />
