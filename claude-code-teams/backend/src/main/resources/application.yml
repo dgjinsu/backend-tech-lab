@@ -3,7 +3,7 @@ spring:
     default: local
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/budget_db
+    url: jdbc:postgresql://localhost:5433/budget_db
     username: budget
     password: budget1234
     driver-class-name: org.postgresql.Driver
