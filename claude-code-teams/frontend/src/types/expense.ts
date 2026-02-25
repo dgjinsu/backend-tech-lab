@@ -1,25 +1,32 @@
-import type { Category } from './category';
-
 export interface Expense {
   id: number;
+  category: {
+    id: number;
+    name: string;
+    color: string | null;
+    icon: string | null;
+  };
   amount: number;
-  category: Category;
-  date: string;
-  memo: string;
+  description: string;
+  expenseDate: string; // yyyy-MM-dd
+  memo: string | null;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateExpenseRequest {
-  amount: number;
   categoryId: number;
-  date: string;
+  amount: number;
+  description: string;
+  expenseDate: string; // yyyy-MM-dd
   memo?: string;
 }
 
 export interface UpdateExpenseRequest {
-  amount?: number;
-  categoryId?: number;
-  date?: string;
+  categoryId: number;
+  amount: number;
+  description: string;
+  expenseDate: string;
   memo?: string;
 }
 
@@ -29,4 +36,5 @@ export interface GetExpensesParams {
   categoryId?: number;
   page?: number;
   size?: number;
+  sort?: string;
 }
