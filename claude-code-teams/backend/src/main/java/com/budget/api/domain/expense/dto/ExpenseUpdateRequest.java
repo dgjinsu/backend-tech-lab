@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record ExpenseCreateRequest(
+public record ExpenseUpdateRequest(
         @NotNull(message = "카테고리 ID는 필수입니다.")
         Long categoryId,
 

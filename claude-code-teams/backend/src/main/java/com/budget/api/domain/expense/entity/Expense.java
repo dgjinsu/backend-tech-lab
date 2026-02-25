@@ -33,34 +33,40 @@ public class Expense extends BaseEntity {
     @Column(nullable = false)
     private Long amount;
 
-    @Column(nullable = false)
-    private LocalDate date;
+    @Column(nullable = false, length = 100)
+    private String description;
+
+    @Column(name = "expense_date", nullable = false)
+    private LocalDate expenseDate;
 
     private String memo;
 
     @Builder
-    private Expense(User user, Category category, Long amount, LocalDate date, String memo) {
+    private Expense(User user, Category category, Long amount, String description, LocalDate expenseDate, String memo) {
         this.user = user;
         this.category = category;
         this.amount = amount;
-        this.date = date;
+        this.description = description;
+        this.expenseDate = expenseDate;
         this.memo = memo;
     }
 
-    public static Expense create(User user, Category category, Long amount, LocalDate date, String memo) {
+    public static Expense create(User user, Category category, Long amount, String description, LocalDate expenseDate, String memo) {
         return Expense.builder()
                 .user(user)
                 .category(category)
                 .amount(amount)
-                .date(date)
+                .description(description)
+                .expenseDate(expenseDate)
                 .memo(memo)
                 .build();
     }
 
-    public void update(Category category, Long amount, LocalDate date, String memo) {
+    public void update(Category category, Long amount, String description, LocalDate expenseDate, String memo) {
         this.category = category;
         this.amount = amount;
-        this.date = date;
+        this.description = description;
+        this.expenseDate = expenseDate;
         this.memo = memo;
     }
 }
