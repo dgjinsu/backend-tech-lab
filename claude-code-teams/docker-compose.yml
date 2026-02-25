@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: budget-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: budget_db
+      POSTGRES_USER: budget
+      POSTGRES_PASSWORD: budget1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - budget-network
+
+  redis:
+    image: redis:7
+    container_name: budget-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - budget-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  budget-network:
+    driver: bridge
