@@ -12,7 +12,7 @@ export const createSalary = (data: CreateSalaryRequest) =>
   client.post<ApiResponse<Salary>>('/salaries', data);
 
 export const updateSalary = (id: number, data: UpdateSalaryRequest) =>
-  client.patch<ApiResponse<Salary>>(`/salaries/${id}`, data);
+  client.put<ApiResponse<Salary>>(`/salaries/${id}`, data);
 
 export const deleteSalary = (id: number) =>
   client.delete<ApiResponse<void>>(`/salaries/${id}`);
