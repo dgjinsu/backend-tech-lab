@@ -1,28 +1,38 @@
 package com.budget.api.domain.salary.dto;
 
 import com.budget.api.domain.salary.entity.Salary;
-import lombok.Builder;
-import lombok.Getter;
 
-@Getter
-@Builder
-public class SalaryResponse {
+import java.time.LocalDateTime;
+import java.util.List;
 
-    private Long id;
-    private Long amount;
-    private Integer year;
-    private Integer month;
-    private Long fixedExpense;
-    private String memo;
-
+public record SalaryResponse(
+        Long id,
+        Integer year,
+        Integer month,
+        Long totalAmount,
+        Long fixedExpenseTotal,
+        Long availableAmount,
+        List<FixedExpenseResponse> fixedExpenses,
+        String memo,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
+) {
     public static SalaryResponse from(Salary salary) {
-        return SalaryResponse.builder()
-                .id(salary.getId())
-                .amount(salary.getAmount())
-                .year(salary.getYear())
-                .month(salary.getMonth())
-                .fixedExpense(salary.getFixedExpense())
-                .memo(salary.getMemo())
-                .build();
+        List<FixedExpenseResponse> fixedExpenseResponses = salary.getFixedExpenses().stream()
+                .map(FixedExpenseResponse::from)
+                .toList();
+
+        return new SalaryResponse(
+                salary.getId(),
+                salary.getYear(),
+                salary.getMonth(),
+                salary.getTotalAmount(),
+                salary.getFixedExpenseTotal(),
+                salary.getAvailableAmount(),
+                fixedExpenseResponses,
+                salary.getMemo(),
+                salary.getCreatedAt(),
+                salary.getUpdatedAt()
+        );
     }
 }
