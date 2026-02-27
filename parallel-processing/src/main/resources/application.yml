@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: parallel-processing
+
+poc:
+  storage:
+    path: ./storage/poc

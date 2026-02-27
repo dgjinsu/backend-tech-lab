@@ -4,10 +4,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/architecture-study" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/parallel-processing" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/architecture-study" />
+            <option value="$PROJECT_DIR$/parallel-processing" />
           </set>
         </option>
       </GradleProjectSettings>

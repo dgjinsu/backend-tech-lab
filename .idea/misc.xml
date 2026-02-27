@@ -20,6 +20,7 @@
     <file type="web" url="file://$PROJECT_DIR$/nexus-notification-service" />
     <file type="web" url="file://$PROJECT_DIR$/nexus-sse" />
     <file type="web" url="file://$PROJECT_DIR$/notification-sse" />
+    <file type="web" url="file://$PROJECT_DIR$/parallel-processing" />
     <file type="web" url="file://$PROJECT_DIR$/pwm-sample" />
     <file type="web" url="file://$PROJECT_DIR$/security-jwt" />
     <file type="web" url="file://$PROJECT_DIR$/shop" />
