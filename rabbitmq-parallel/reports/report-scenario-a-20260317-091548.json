@@ -1,0 +1,18 @@
+{
+  "scenarioName" : "scenario-a",
+  "concurrency" : 5,
+  "totalMessages" : 10,
+  "successCount" : 8,
+  "failCount" : 2,
+  "totalElapsedMs" : 58848,
+  "throughputPerMinute" : 8.16,
+  "avgProcessingTimeMs" : 21619.0,
+  "p50ProcessingTimeMs" : 25725.0,
+  "p95ProcessingTimeMs" : 29875.0,
+  "p99ProcessingTimeMs" : 29875.0,
+  "avgQueueLatencyMs" : 13283.0,
+  "peakConcurrentProcessing" : 5,
+  "peakMemoryMb" : 55.2,
+  "peakThreadCount" : 40,
+  "reportGeneratedAt" : "2026-03-17T09:15:48.0369361"
+}

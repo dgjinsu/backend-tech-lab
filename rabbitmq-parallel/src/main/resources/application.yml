@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: rabbitmq-parallel
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+consumer:
+  concurrency: 1
+  max-concurrency: 1
+
+simulation:
+  parallel-calls-min: 5
+  parallel-calls-max: 10
+  call-latency-min-ms: 10000
+  call-latency-max-ms: 30000
+  failure-rate: 0.02
+
+queue:
+  name: parallel-test-queue
+  dlq-name: parallel-test-queue.dlq
+  exchange-name: parallel-test-exchange
+  routing-key: parallel-test-key
+  dlq-exchange-name: parallel-test-dlx
+  dlq-routing-key: parallel-test-dlq-key
+
+server:
+  port: 8080
