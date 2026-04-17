@@ -8,7 +8,12 @@
       "mcp__claude_ai_monday_com__change_item_column_values",
       "mcp__claude_ai_monday_com__create_item",
       "mcp__claude_ai_Notion__notion-search",
-      "mcp__claude_ai_Notion__notion-create-pages"
+      "mcp__claude_ai_Notion__notion-create-pages",
+      "mcp__13382545-bf19-45e3-bc51-ef3fe92e407f__notion-search",
+      "mcp__13382545-bf19-45e3-bc51-ef3fe92e407f__notion-fetch",
+      "mcp__13382545-bf19-45e3-bc51-ef3fe92e407f__notion-update-page",
+      "mcp__13382545-bf19-45e3-bc51-ef3fe92e407f__notion-create-pages",
+      "mcp__13382545-bf19-45e3-bc51-ef3fe92e407f__notion-get-users"
     ]
   },
   "enableAllProjectMcpServers": true

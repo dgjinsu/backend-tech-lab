@@ -4,6 +4,10 @@
 
 RBAC(역할 기반)과 ABAC(속성·데이터 스코프 기반) 권한 체계를 **결합**해보는 학습용 Spring Boot 프로젝트. 경비/지출 승인 워크플로우라는 교과서적 도메인에서 두 모델이 어떻게 겹쳐 동작하는지 손으로 쌓아가며 감을 잡는 것이 목표.
 
+## 연관 프로젝트
+
+- **프론트엔드**: [`../abac-frontend`](../abac-frontend) — React/Vite/TS/Tailwind 기반 학습 콘솔. 이 백엔드의 권한 규칙이 UI에서 어떻게 드러나는지 눈으로 검증하는 용도. 포트 5173(폴백 5174)에서 돌며 [`SecurityConfig`](src/main/java/com/example/abac/config/SecurityConfig.java)의 CORS에 해당 origin이 화이트리스트돼 있다. 프론트엔드 쪽 구조·실행법은 `../abac-frontend/README.md`.
+
 ## 도메인 개요
 
 - **User**: id, username, password, role, departmentId
