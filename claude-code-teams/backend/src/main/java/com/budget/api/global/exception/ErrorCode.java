@@ -36,7 +36,10 @@ public enum ErrorCode {
 
     // Budget
     BUDGET_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "예산 정보를 찾을 수 없습니다."),
-    DUPLICATE_BUDGET(HttpStatus.CONFLICT, "B002", "해당 카테고리의 월별 예산이 이미 설정되어 있습니다.");
+    DUPLICATE_BUDGET(HttpStatus.CONFLICT, "B002", "해당 카테고리의 월별 예산이 이미 설정되어 있습니다."),
+
+    // Department
+    DEPARTMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "D001", "부서를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

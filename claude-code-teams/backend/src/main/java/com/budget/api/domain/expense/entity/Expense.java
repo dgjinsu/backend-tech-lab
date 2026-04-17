@@ -1,6 +1,7 @@
 package com.budget.api.domain.expense.entity;
 
 import com.budget.api.domain.category.entity.Category;
+import com.budget.api.domain.department.entity.Department;
 import com.budget.api.domain.user.entity.User;
 import com.budget.api.global.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -30,6 +31,10 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     @Column(nullable = false)
     private Long amount;
 
@@ -42,19 +47,23 @@ public class Expense extends BaseEntity {
     private String memo;
 
     @Builder
-    private Expense(User user, Category category, Long amount, String description, LocalDate expenseDate, String memo) {
+    private Expense(User user, Category category, Department department, Long amount,
+                    String description, LocalDate expenseDate, String memo) {
         this.user = user;
         this.category = category;
+        this.department = department;
         this.amount = amount;
         this.description = description;
         this.expenseDate = expenseDate;
         this.memo = memo;
     }
 
-    public static Expense create(User user, Category category, Long amount, String description, LocalDate expenseDate, String memo) {
+    public static Expense create(User user, Category category, Department department, Long amount,
+                                 String description, LocalDate expenseDate, String memo) {
         return Expense.builder()
                 .user(user)
                 .category(category)
+                .department(department)
                 .amount(amount)
                 .description(description)
                 .expenseDate(expenseDate)

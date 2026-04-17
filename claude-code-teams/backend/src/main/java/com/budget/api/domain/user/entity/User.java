@@ -1,11 +1,17 @@
 package com.budget.api.domain.user.entity;
 
 import com.budget.api.domain.budget.entity.Budget;
+import com.budget.api.domain.department.entity.Department;
 import com.budget.api.domain.expense.entity.Expense;
 import com.budget.api.domain.salary.entity.Salary;
 import com.budget.api.global.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -31,6 +37,14 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     @OneToMany(mappedBy = "user")
     private List<Salary> salaries = new ArrayList<>();
 
@@ -41,17 +55,21 @@ public class User extends BaseEntity {
     private List<Budget> budgets = new ArrayList<>();
 
     @Builder
-    private User(String email, String password, String nickname) {
+    private User(String email, String password, String nickname, Role role, Department department) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.role = role;
+        this.department = department;
     }
 
-    public static User create(String email, String password, String nickname) {
+    public static User create(String email, String password, String nickname, Role role, Department department) {
         return User.builder()
                 .email(email)
                 .password(password)
                 .nickname(nickname)
+                .role(role != null ? role : Role.EMPLOYEE)
+                .department(department)
                 .build();
     }
 }

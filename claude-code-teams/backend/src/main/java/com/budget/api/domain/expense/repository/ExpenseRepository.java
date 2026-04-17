@@ -22,4 +22,14 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     Page<Expense> findByUserIdAndExpenseDateBetweenAndCategoryId(Long userId, LocalDate startDate, LocalDate endDate, Long categoryId, Pageable pageable);
 
     List<Expense> findByUserIdAndCategoryId(Long userId, Long categoryId);
+
+    // 부서 스코프 (EMPLOYEE / MANAGER 용)
+    Page<Expense> findByDepartmentIdAndExpenseDateBetween(Long departmentId, LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    Page<Expense> findByDepartmentIdAndExpenseDateBetweenAndCategoryId(Long departmentId, LocalDate startDate, LocalDate endDate, Long categoryId, Pageable pageable);
+
+    // 전체 (ADMIN 용)
+    Page<Expense> findByExpenseDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    Page<Expense> findByExpenseDateBetweenAndCategoryId(LocalDate startDate, LocalDate endDate, Long categoryId, Pageable pageable);
 }
