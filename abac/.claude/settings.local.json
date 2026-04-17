@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Notion__notion-fetch",
+      "mcp__claude_ai_Notion__notion-update-page",
+      "mcp__claude_ai_monday_com__get_board_info",
+      "mcp__claude_ai_monday_com__get_board_items_page",
+      "mcp__claude_ai_monday_com__change_item_column_values",
+      "mcp__claude_ai_monday_com__create_item",
+      "mcp__claude_ai_Notion__notion-search",
+      "mcp__claude_ai_Notion__notion-create-pages"
+    ]
+  },
+  "enableAllProjectMcpServers": true
+}
