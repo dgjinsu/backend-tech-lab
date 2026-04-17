@@ -7,7 +7,9 @@ import com.budget.api.domain.salary.dto.SalaryResponse;
 import com.budget.api.domain.salary.dto.SalaryUpdateRequest;
 import com.budget.api.domain.salary.entity.FixedExpense;
 import com.budget.api.domain.salary.entity.Salary;
+import com.budget.api.domain.department.entity.Department;
 import com.budget.api.domain.salary.repository.SalaryRepository;
+import com.budget.api.domain.user.entity.Role;
 import com.budget.api.domain.user.entity.User;
 import com.budget.api.domain.user.repository.UserRepository;
 import com.budget.api.global.exception.CustomException;
@@ -42,14 +44,20 @@ class SalaryServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    private Department createTestDepartment() {
+        Department department = Department.create("ENGINEERING");
+        ReflectionTestUtils.setField(department, "id", 1L);
+        return department;
+    }
+
     private User createTestUser() {
-        User user = User.create("test@example.com", "encodedPassword", "테스터");
+        User user = User.create("test@example.com", "encodedPassword", "테스터", Role.EMPLOYEE, createTestDepartment());
         ReflectionTestUtils.setField(user, "id", 1L);
         return user;
     }
 
     private User createOtherUser() {
-        User user = User.create("other@example.com", "encodedPassword", "다른사용자");
+        User user = User.create("other@example.com", "encodedPassword", "다른사용자", Role.EMPLOYEE, createTestDepartment());
         ReflectionTestUtils.setField(user, "id", 2L);
         return user;
     }

@@ -1,5 +1,7 @@
 package com.budget.api.global.jwt;
 
+import com.budget.api.domain.user.entity.Role;
+import com.budget.api.global.security.CustomUserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -15,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -44,8 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Long userId = jwtTokenProvider.getUserIdFromToken(token);
+            Role role = jwtTokenProvider.getRoleFromToken(token);
+            Long departmentId = jwtTokenProvider.getDepartmentIdFromToken(token);
+
+            CustomUserPrincipal principal = new CustomUserPrincipal(userId, role, departmentId);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userId, null, Collections.emptyList()
+                    principal,
+                    null,
+                    List.of(new SimpleGrantedAuthority(role.asAuthority()))
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

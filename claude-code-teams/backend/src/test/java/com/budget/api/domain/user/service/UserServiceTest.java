@@ -1,7 +1,10 @@
 package com.budget.api.domain.user.service;
 
+import com.budget.api.domain.department.entity.Department;
+import com.budget.api.domain.department.repository.DepartmentRepository;
 import com.budget.api.domain.user.dto.UserResponse;
 import com.budget.api.domain.user.dto.UserSignupRequest;
+import com.budget.api.domain.user.entity.Role;
 import com.budget.api.domain.user.entity.User;
 import com.budget.api.domain.user.repository.UserRepository;
 import com.budget.api.global.exception.CustomException;
@@ -20,7 +23,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -34,19 +36,30 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private DepartmentRepository departmentRepository;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
 
+    private Department createTestDepartment() {
+        Department department = Department.create("ENGINEERING");
+        ReflectionTestUtils.setField(department, "id", 1L);
+        return department;
+    }
+
     private User createTestUser() {
-        User user = User.create("test@example.com", "encodedPassword", "테스터");
+        User user = User.create("test@example.com", "encodedPassword", "테스터", Role.EMPLOYEE, createTestDepartment());
         ReflectionTestUtils.setField(user, "id", 1L);
         return user;
     }
 
-    private UserSignupRequest createSignupRequest(String email, String password, String nickname) {
+    private UserSignupRequest createSignupRequest(String email, String password, String nickname, Long departmentId, Role role) {
         UserSignupRequest request = new UserSignupRequest();
         ReflectionTestUtils.setField(request, "email", email);
         ReflectionTestUtils.setField(request, "password", password);
         ReflectionTestUtils.setField(request, "nickname", nickname);
+        ReflectionTestUtils.setField(request, "departmentId", departmentId);
+        ReflectionTestUtils.setField(request, "role", role);
         return request;
     }
 
@@ -54,9 +67,11 @@ class UserServiceTest {
     @DisplayName("signup_성공_유저생성")
     void signup_성공_유저생성() {
         // given
-        UserSignupRequest request = createSignupRequest("test@example.com", "Password1!", "테스터");
+        UserSignupRequest request = createSignupRequest("test@example.com", "Password1!", "테스터", 1L, Role.EMPLOYEE);
+        Department department = createTestDepartment();
 
         given(userRepository.existsByEmail("test@example.com")).willReturn(false);
+        given(departmentRepository.findById(1L)).willReturn(Optional.of(department));
         given(passwordEncoder.encode("Password1!")).willReturn("encodedPassword");
         given(userRepository.save(any(User.class))).willAnswer(invocation -> {
             User savedUser = invocation.getArgument(0);
@@ -72,17 +87,43 @@ class UserServiceTest {
         assertThat(response.getId()).isEqualTo(1L);
         assertThat(response.getEmail()).isEqualTo("test@example.com");
         assertThat(response.getNickname()).isEqualTo("테스터");
+        assertThat(response.getRole()).isEqualTo(Role.EMPLOYEE);
+        assertThat(response.getDepartmentId()).isEqualTo(1L);
 
         verify(userRepository).existsByEmail("test@example.com");
+        verify(departmentRepository).findById(1L);
         verify(passwordEncoder).encode("Password1!");
         verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("signup_role없으면_기본EMPLOYEE")
+    void signup_role없으면_기본EMPLOYEE() {
+        // given
+        UserSignupRequest request = createSignupRequest("test@example.com", "Password1!", "테스터", 1L, null);
+        Department department = createTestDepartment();
+
+        given(userRepository.existsByEmail("test@example.com")).willReturn(false);
+        given(departmentRepository.findById(1L)).willReturn(Optional.of(department));
+        given(passwordEncoder.encode("Password1!")).willReturn("encodedPassword");
+        given(userRepository.save(any(User.class))).willAnswer(invocation -> {
+            User savedUser = invocation.getArgument(0);
+            ReflectionTestUtils.setField(savedUser, "id", 1L);
+            return savedUser;
+        });
+
+        // when
+        UserResponse response = userService.signup(request);
+
+        // then
+        assertThat(response.getRole()).isEqualTo(Role.EMPLOYEE);
     }
 
     @Test
     @DisplayName("signup_중복이메일_예외발생")
     void signup_중복이메일_예외발생() {
         // given
-        UserSignupRequest request = createSignupRequest("duplicate@example.com", "Password1!", "테스터");
+        UserSignupRequest request = createSignupRequest("duplicate@example.com", "Password1!", "테스터", 1L, Role.EMPLOYEE);
 
         given(userRepository.existsByEmail("duplicate@example.com")).willReturn(true);
 
@@ -92,6 +133,24 @@ class UserServiceTest {
                 .satisfies(exception -> {
                     CustomException customException = (CustomException) exception;
                     assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.DUPLICATE_EMAIL);
+                });
+    }
+
+    @Test
+    @DisplayName("signup_존재하지않는부서_예외발생")
+    void signup_존재하지않는부서_예외발생() {
+        // given
+        UserSignupRequest request = createSignupRequest("test@example.com", "Password1!", "테스터", 999L, Role.EMPLOYEE);
+
+        given(userRepository.existsByEmail("test@example.com")).willReturn(false);
+        given(departmentRepository.findById(999L)).willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> userService.signup(request))
+                .isInstanceOf(CustomException.class)
+                .satisfies(exception -> {
+                    CustomException customException = (CustomException) exception;
+                    assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.DEPARTMENT_NOT_FOUND);
                 });
     }
 

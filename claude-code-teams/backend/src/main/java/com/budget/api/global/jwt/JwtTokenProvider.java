@@ -1,5 +1,6 @@
 package com.budget.api.global.jwt;
 
+import com.budget.api.domain.user.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -36,13 +37,15 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateAccessToken(Long userId, String email) {
+    public String generateAccessToken(Long userId, String email, Role role, Long departmentId) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + accessTokenExpiry);
 
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .claim("email", email)
+                .claim("role", role.name())
+                .claim("departmentId", departmentId)
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(secretKey)
@@ -64,6 +67,17 @@ public class JwtTokenProvider {
     public Long getUserIdFromToken(String token) {
         Claims claims = parseClaims(token);
         return Long.parseLong(claims.getSubject());
+    }
+
+    public Role getRoleFromToken(String token) {
+        Claims claims = parseClaims(token);
+        return Role.valueOf(claims.get("role", String.class));
+    }
+
+    public Long getDepartmentIdFromToken(String token) {
+        Claims claims = parseClaims(token);
+        Number departmentId = claims.get("departmentId", Number.class);
+        return departmentId != null ? departmentId.longValue() : null;
     }
 
     public boolean validateToken(String token) {

@@ -1,5 +1,6 @@
 package com.budget.api.global.jwt;
 
+import com.budget.api.domain.user.entity.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ class JwtTokenProviderTest {
         String email = "test@example.com";
 
         // when
-        String token = jwtTokenProvider.generateAccessToken(userId, email);
+        String token = jwtTokenProvider.generateAccessToken(userId, email, Role.EMPLOYEE, 1L);
 
         // then
         assertThat(token).isNotNull().isNotBlank();
@@ -54,7 +55,7 @@ class JwtTokenProviderTest {
         String email = "test@example.com";
 
         // when
-        String token = jwtTokenProvider.generateAccessToken(userId, email);
+        String token = jwtTokenProvider.generateAccessToken(userId, email, Role.EMPLOYEE, 1L);
 
         // then
         SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
@@ -66,6 +67,21 @@ class JwtTokenProviderTest {
                 .get("email", String.class);
 
         assertThat(extractedEmail).isEqualTo(email);
+    }
+
+    @Test
+    @DisplayName("generateAccessToken_role과departmentId클레임포함")
+    void generateAccessToken_role과departmentId클레임포함() {
+        // given
+        String token = jwtTokenProvider.generateAccessToken(1L, "test@example.com", Role.MANAGER, 42L);
+
+        // when
+        Role extractedRole = jwtTokenProvider.getRoleFromToken(token);
+        Long extractedDeptId = jwtTokenProvider.getDepartmentIdFromToken(token);
+
+        // then
+        assertThat(extractedRole).isEqualTo(Role.MANAGER);
+        assertThat(extractedDeptId).isEqualTo(42L);
     }
 
     @Test
@@ -88,7 +104,7 @@ class JwtTokenProviderTest {
     void getUserIdFromToken_유효한토큰_올바른UserId반환() {
         // given
         Long userId = 42L;
-        String token = jwtTokenProvider.generateAccessToken(userId, "test@example.com");
+        String token = jwtTokenProvider.generateAccessToken(userId, "test@example.com", Role.EMPLOYEE, 1L);
 
         // when
         Long extractedUserId = jwtTokenProvider.getUserIdFromToken(token);
@@ -101,7 +117,7 @@ class JwtTokenProviderTest {
     @DisplayName("validateToken_유효한토큰_true반환")
     void validateToken_유효한토큰_true반환() {
         // given
-        String token = jwtTokenProvider.generateAccessToken(1L, "test@example.com");
+        String token = jwtTokenProvider.generateAccessToken(1L, "test@example.com", Role.EMPLOYEE, 1L);
 
         // when
         boolean result = jwtTokenProvider.validateToken(token);

@@ -1,5 +1,7 @@
 package com.budget.api.domain.user.service;
 
+import com.budget.api.domain.department.entity.Department;
+import com.budget.api.domain.department.repository.DepartmentRepository;
 import com.budget.api.domain.user.dto.UserResponse;
 import com.budget.api.domain.user.dto.UserSignupRequest;
 import com.budget.api.domain.user.entity.User;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -25,10 +28,15 @@ public class UserService {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
+        Department department = departmentRepository.findById(request.getDepartmentId())
+                .orElseThrow(() -> new CustomException(ErrorCode.DEPARTMENT_NOT_FOUND));
+
         User user = User.create(
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
-                request.getNickname()
+                request.getNickname(),
+                request.getRole(),
+                department
         );
 
         User savedUser = userRepository.save(user);

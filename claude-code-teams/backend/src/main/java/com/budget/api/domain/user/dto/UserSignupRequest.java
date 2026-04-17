@@ -1,7 +1,9 @@
 package com.budget.api.domain.user.dto;
 
+import com.budget.api.domain.user.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -24,4 +26,9 @@ public class UserSignupRequest {
     @NotBlank(message = "닉네임은 필수입니다.")
     @Size(min = 2, max = 10, message = "닉네임은 2자 이상 10자 이하여야 합니다.")
     private String nickname;
+
+    @NotNull(message = "부서 ID는 필수입니다.")
+    private Long departmentId;
+
+    private Role role;
 }

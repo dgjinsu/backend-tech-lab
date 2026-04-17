@@ -1,8 +1,10 @@
 package com.budget.api.domain.user.service;
 
+import com.budget.api.domain.department.entity.Department;
 import com.budget.api.domain.user.dto.LoginRequest;
 import com.budget.api.domain.user.dto.RefreshRequest;
 import com.budget.api.domain.user.dto.TokenResponse;
+import com.budget.api.domain.user.entity.Role;
 import com.budget.api.domain.user.entity.User;
 import com.budget.api.domain.user.repository.UserRepository;
 import com.budget.api.global.exception.CustomException;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -45,8 +47,14 @@ class AuthServiceTest {
     @Mock
     private RedisService redisService;
 
+    private Department createTestDepartment() {
+        Department department = Department.create("ENGINEERING");
+        ReflectionTestUtils.setField(department, "id", 1L);
+        return department;
+    }
+
     private User createTestUser() {
-        User user = User.create("test@example.com", "encodedPassword", "테스터");
+        User user = User.create("test@example.com", "encodedPassword", "테스터", Role.EMPLOYEE, createTestDepartment());
         ReflectionTestUtils.setField(user, "id", 1L);
         return user;
     }
@@ -73,7 +81,7 @@ class AuthServiceTest {
 
         given(userRepository.findByEmail("test@example.com")).willReturn(Optional.of(user));
         given(passwordEncoder.matches("rawPassword", "encodedPassword")).willReturn(true);
-        given(jwtTokenProvider.generateAccessToken(1L, "test@example.com")).willReturn("access-token");
+        given(jwtTokenProvider.generateAccessToken(1L, "test@example.com", Role.EMPLOYEE, 1L)).willReturn("access-token");
         given(jwtTokenProvider.generateRefreshToken(1L)).willReturn("refresh-token");
         given(jwtTokenProvider.getRefreshTokenExpiry()).willReturn(604800000L);
         given(jwtTokenProvider.getAccessTokenExpiry()).willReturn(1800000L);
@@ -87,6 +95,8 @@ class AuthServiceTest {
         assertThat(response.getExpiresIn()).isEqualTo(1800L);
         assertThat(response.getUser()).isNotNull();
         assertThat(response.getUser().getEmail()).isEqualTo("test@example.com");
+        assertThat(response.getUser().getRole()).isEqualTo(Role.EMPLOYEE);
+        assertThat(response.getUser().getDepartmentId()).isEqualTo(1L);
 
         verify(redisService).set(
                 eq("RT:1"),
@@ -143,7 +153,7 @@ class AuthServiceTest {
         given(jwtTokenProvider.getUserIdFromToken("valid-refresh-token")).willReturn(1L);
         given(redisService.get("RT:1")).willReturn("valid-refresh-token");
         given(userRepository.findById(1L)).willReturn(Optional.of(user));
-        given(jwtTokenProvider.generateAccessToken(1L, "test@example.com")).willReturn("new-access-token");
+        given(jwtTokenProvider.generateAccessToken(1L, "test@example.com", Role.EMPLOYEE, 1L)).willReturn("new-access-token");
         given(jwtTokenProvider.generateRefreshToken(1L)).willReturn("new-refresh-token");
         given(jwtTokenProvider.getRefreshTokenExpiry()).willReturn(604800000L);
         given(jwtTokenProvider.getAccessTokenExpiry()).willReturn(1800000L);
