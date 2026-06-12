@@ -1,0 +1,105 @@
+# =============================================================================
+# SeaweedFS POC - 멀티 컴포넌트 구성
+# -----------------------------------------------------------------------------
+# SeaweedFS는 역할이 분리된 여러 프로세스로 동작한다. 학습을 위해 각 역할을
+# 별도 컨테이너로 띄워 아키텍처를 눈으로 본다.
+#
+#   master  : 클러스터의 두뇌. 어떤 volume이 어디 있는지 관리하고, 파일을 쓸 때
+#             "이 volume에 fid(파일 ID)로 저장해라"를 할당(assign)해 준다.
+#             실제 파일 데이터는 들고 있지 않다. (메타데이터/토폴로지 담당)
+#   volume  : 실제 파일 바이트가 저장되는 곳. Facebook Haystack 논문 기반으로
+#             여러 작은 파일을 큰 볼륨 파일 하나에 append 하여 저장한다.
+#   filer   : volume 위에 "디렉터리/파일 경로" 추상화를 얹는다. /img/a.png 같은
+#             경로 기반 접근, 메타데이터 DB 보관. S3/WebDAV/FUSE의 토대가 된다.
+#   s3      : filer 앞에 붙는 S3 호환(AWS S3 API) 게이트웨이. SDK로 접근 가능.
+# =============================================================================
+name: seaweedfs-poc
+
+services:
+  master:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-master
+    ports:
+      - "9333:9333"     # Master HTTP API + 클러스터 상태 UI
+      - "19333:19333"   # Master gRPC (내부 통신용)
+    # -mdir       : 메타데이터 저장 경로
+    # -volumeSizeLimitMB : volume 파일 하나가 이 크기를 넘으면 새 volume 생성 (POC라 작게)
+    command: 'master -ip=master -ip.bind=0.0.0.0 -mdir=/data -volumeSizeLimitMB=128'
+    volumes:
+      - master-data:/data
+    networks: [seaweed]
+
+  volume:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-volume
+    ports:
+      - "8085:8080"     # Volume HTTP API (파일 직접 업/다운로드). 호스트 8080이 이미
+                        # 사용 중이라 8085로 매핑. 컨테이너 내부는 그대로 8080.
+      - "18080:18080"   # Volume gRPC
+    # -ip=volume        : 다른 컨테이너(filer/s3)가 도커 네트워크 안에서 찾는 주소
+    # -publicUrl        : master가 클라이언트(우리 호스트)에게 알려줄 외부 접근 주소.
+    #                     이게 핵심 트릭. 도커 밖(Windows 호스트)에서 assign 결과로
+    #                     volume에 직접 업로드하려면 localhost:8080 이어야 한다.
+    # -max=10           : 이 서버가 만들 수 있는 volume 최대 개수
+    command: 'volume -mserver=master:9333 -ip=volume -ip.bind=0.0.0.0 -publicUrl=localhost:8085 -port=8080 -dir=/data -max=10'
+    volumes:
+      - volume-data:/data
+    depends_on:
+      - master
+    networks: [seaweed]
+
+  filer:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-filer
+    ports:
+      - "8888:8888"     # Filer HTTP API (경로 기반 업/다운로드)
+      - "18888:18888"   # Filer gRPC
+    command: 'filer -master=master:9333 -ip=filer -ip.bind=0.0.0.0'
+    volumes:
+      - filer-data:/data
+    depends_on:
+      - master
+      - volume
+    networks: [seaweed]
+
+  s3:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-s3
+    ports:
+      - "8333:8333"     # S3 호환 API 엔드포인트
+    # -config : accessKey/secretKey 등 S3 인증 정보 (아래 config/s3.json)
+    command: 's3 -filer=filer:8888 -ip.bind=0.0.0.0 -config=/etc/seaweedfs/s3.json'
+    volumes:
+      - ./config/s3.json:/etc/seaweedfs/s3.json:ro
+    depends_on:
+      - master
+      - volume
+      - filer
+    networks: [seaweed]
+
+  # 본격 관리 UI(대시보드). 클러스터 상태/볼륨/파일브라우저/유지보수/S3 사용자 관리 등.
+  # 내장 UI(master/filer)보다 훨씬 풍부하다. adminPassword를 비워두면 인증 비활성(로컬 POC용).
+  admin:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-admin
+    ports:
+      - "23646:23646"   # Admin 대시보드
+    command: 'admin -port=23646 -master=master:9333 -dataDir=/data'
+    volumes:
+      - admin-data:/data
+    depends_on:
+      - master
+      - filer
+    networks: [seaweed]
+
+# 데이터는 named volume에 보관 → 컨테이너를 내렸다 올려도 파일이 유지된다.
+# 완전 초기화하려면: docker compose down -v
+volumes:
+  master-data:
+  volume-data:
+  filer-data:
+  admin-data:
+
+networks:
+  seaweed:
+    driver: bridge

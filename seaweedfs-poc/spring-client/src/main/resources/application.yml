@@ -1,0 +1,19 @@
+server:
+  # 8080은 다른 앱이 사용 중이라 8091 사용
+  port: 8091
+
+seaweedfs:
+  s3:
+    # SeaweedFS의 S3 게이트웨이 (docker-compose의 s3 서비스, 호스트 8333 매핑)
+    endpoint: http://localhost:8333
+    region: us-east-1          # SeaweedFS는 region을 검증하지 않지만 SDK가 요구함
+    access-key: pocAccessKey   # config/s3.json 과 일치해야 함
+    secret-key: pocSecretKey123
+    bucket: poc-bucket         # 앱 시작 시 없으면 자동 생성
+
+# 멀티파트 업로드 허용 크기
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB

@@ -1,0 +1,60 @@
+# =============================================================================
+# SeaweedFS 올인원 구성 (실사용 추천)
+# -----------------------------------------------------------------------------
+# 작은 파일(.dat, 결과 JSON) + 한 대 + 낮은 트래픽 → 컨테이너를 쪼갤 이유가 없다.
+# `weed server` 한 프로세스가 master + volume + filer 를 다 띄우고, `-s3`로 S3까지 켠다.
+#
+# 분리 버전(docker-compose.yml) 대비 장점:
+#   * 프로세스/설정/로그 단일화, 메모리 절약
+#   * -ip / -publicUrl 네트워킹 트릭이 사라짐 (전부 localhost + 1:1 포트 매핑)
+#   * 포트는 그대로 다 열림: master 9333 / volume 8080 / filer 8888 / s3 8333
+#
+# 단점(알고 쓸 것): 한 대라 HA 없음 → 결과 데이터는 별도 위치/클라우드로 주기적 백업.
+#
+# 사용:
+#   기동 :  docker compose -f docker-compose.allinone.yml up -d
+#   종료 :  docker compose -f docker-compose.allinone.yml down
+#   초기화: docker compose -f docker-compose.allinone.yml down -v
+#
+# 주의: 분리 버전(docker-compose.yml)과 포트가 겹치므로 둘을 동시에 띄울 수 없다.
+#       하나를 down 한 뒤 다른 하나를 up 할 것.
+# =============================================================================
+name: seaweedfs-allinone
+
+services:
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs
+    ports:
+      - "9333:9333"   # master  (HTTP API + 웹 UI)
+      - "8080:8080"   # volume  (파일 직접 업/다운로드)
+      - "8888:8888"   # filer   (경로 기반 API + 웹 UI)
+      - "8333:8333"   # s3      (S3 호환 API)
+    # -ip=localhost     : 한 컨테이너 안이라 모든 컴포넌트가 localhost로 서로를 찾고,
+    #                     호스트도 1:1 매핑된 localhost 포트로 접근 → 트릭 불필요.
+    # -ip.bind=0.0.0.0  : 컨테이너 안에서 모든 인터페이스에 바인딩(도커 포트포워딩이 닿게).
+    # -s3.config        : 분리 버전과 동일한 자격증명 재사용 (Spring 클라이언트 그대로 동작).
+    command: >
+      server -dir=/data -ip=localhost -ip.bind=0.0.0.0
+      -s3 -s3.config=/etc/seaweedfs/s3.json
+      -volume.max=10 -master.volumeSizeLimitMB=128
+    volumes:
+      - data:/data
+      - ./config/s3.json:/etc/seaweedfs/s3.json:ro
+
+  # (선택) 관리 대시보드. 올인원 "스토리지"는 위 컨테이너 하나면 충분하고,
+  # admin은 읽기 위주 UI라 필요할 때만 켜면 된다. 쓰려면 아래 주석을 해제.
+  # admin:
+  #   image: chrislusf/seaweedfs:latest
+  #   container_name: seaweedfs-admin
+  #   ports:
+  #     - "23646:23646"
+  #   command: 'admin -port=23646 -master=seaweedfs:9333 -dataDir=/data'
+  #   volumes:
+  #     - admin-data:/data
+  #   depends_on:
+  #     - seaweedfs
+
+volumes:
+  data:
+  # admin-data:

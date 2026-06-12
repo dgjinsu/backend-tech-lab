@@ -1,0 +1,8 @@
+# 테스트 중 다운로드한 파일
+downloads/
+*.downloaded
+
+# Spring 클라이언트 빌드 산출물
+spring-client/build/
+spring-client/.gradle/
+spring-client/bin/
