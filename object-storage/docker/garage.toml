@@ -1,0 +1,28 @@
+# Garage 단일 노드 설정 (로컬 PoC 전용)
+# 공식 quickstart 기준 최소 구성. 운영에서는 replication_factor>=3, 비밀값 교체 필수.
+
+metadata_dir = "/var/lib/garage/meta"
+data_dir     = "/var/lib/garage/data"
+db_engine    = "sqlite"
+
+# 단일 노드이므로 복제본 1개
+replication_factor = 1
+
+rpc_bind_addr   = "[::]:3901"
+rpc_public_addr = "127.0.0.1:3901"
+# 노드 간 RPC 인증용 비밀키(64 hex). 로컬 전용 고정값.
+rpc_secret = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+
+[s3_api]
+s3_region     = "garage"          # 앱의 S3Client region 과 일치시켜야 함
+api_bind_addr = "[::]:3900"
+root_domain   = ".s3.garage.localhost"
+
+[s3_web]
+bind_addr   = "[::]:3902"
+root_domain = ".web.garage.localhost"
+index       = "index.html"
+
+[admin]
+api_bind_addr = "[::]:3903"
+admin_token   = "objectstorage-admin-token"   # 로컬 전용 고정값

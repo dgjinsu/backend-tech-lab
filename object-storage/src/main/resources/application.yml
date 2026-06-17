@@ -1,0 +1,29 @@
+server:
+  # 8090(abac)/8091(seaweedfs-poc)/8080(sse)/8888(notification-sse) 회피
+  port: 8092
+
+spring:
+  application:
+    name: object-storage
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+# 두 S3 호환 백엔드. endpoint/region/credentials 만 다르고 코드는 동일하게 동작한다.
+storage:
+  backends:
+    seaweedfs:
+      # docker-compose 의 seaweedfs 서비스 (mini 모드 S3 게이트웨이)
+      endpoint: http://localhost:8333
+      region: us-east-1                       # SeaweedFS는 region 검증 안 함(SDK 요구사항)
+      access-key: objectstorage               # docker-compose 의 AWS_ACCESS_KEY_ID 와 일치
+      secret-key: objectstorage-secret-123    # docker-compose 의 AWS_SECRET_ACCESS_KEY 와 일치
+      bucket: poc-bucket
+    garage:
+      # docker-compose 의 garage 서비스 (S3 API)
+      endpoint: http://localhost:3900
+      region: garage                          # garage.toml 의 s3_region 과 일치
+      access-key: GK0123456789abcdef01234567  # garage-init.ps1 에서 import 한 키와 일치
+      secret-key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      bucket: poc-bucket

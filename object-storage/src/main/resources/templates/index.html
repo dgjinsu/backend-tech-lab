@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Storage PoC — SeaweedFS vs Garage</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗄️</text></svg>">
+    <style>
+        :root {
+            --sw: #43a047;      /* SeaweedFS = 초록 */
+            --sw-dark: #2e7d32;
+            --ga: #5e35b1;      /* Garage = 보라 */
+            --ga-dark: #4527a0;
+            --ink: #2d3142;
+            --muted: #8a8fa3;
+            --line: #e7e9f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 28px 16px 60px;
+            color: var(--ink);
+        }
+        .container { max-width: 1080px; margin: 0 auto; }
+        header { text-align: center; color: #fff; margin-bottom: 26px; }
+        header h1 { font-size: 2.2em; text-shadow: 2px 2px 6px rgba(0,0,0,0.25); }
+        header .subtitle { margin-top: 6px; opacity: 0.92; font-size: 1.05em; }
+
+        .card {
+            background: #fff; border-radius: 16px; padding: 22px 24px;
+            box-shadow: 0 12px 34px rgba(0,0,0,0.18); margin-bottom: 22px;
+        }
+        .card h2 {
+            font-size: 1.25em; margin-bottom: 16px; padding-bottom: 10px;
+            border-bottom: 2px solid var(--line); display: flex; align-items: center; gap: 8px;
+        }
+
+        /* 상태 카드 2개 */
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+        .status {
+            background: #fff; border-radius: 16px; padding: 18px 20px;
+            box-shadow: 0 12px 34px rgba(0,0,0,0.18); border-left: 6px solid var(--line);
+        }
+        .status.seaweedfs { border-left-color: var(--sw); }
+        .status.garage { border-left-color: var(--ga); }
+        .status .row1 { display: flex; align-items: center; justify-content: space-between; }
+        .status .name { font-weight: 700; font-size: 1.15em; }
+        .status .ep { color: var(--muted); font-size: 0.85em; margin-top: 4px; font-family: ui-monospace, Menlo, Consolas, monospace; }
+        .status .meta { margin-top: 10px; font-size: 0.9em; color: #555; display: flex; gap: 18px; }
+        .status .meta b { color: var(--ink); }
+        .badge { padding: 4px 12px; border-radius: 999px; font-size: 0.8em; font-weight: 700; }
+        .badge.up { background: #e8f5e9; color: #2e7d32; }
+        .badge.down { background: #ffebee; color: #c62828; }
+        .badge.loading { background: #eceff1; color: #607d8b; }
+
+        /* 백엔드 토글 */
+        .toggle-bar { display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 22px; color: #fff; font-weight: 600; }
+        .segmented { display: inline-flex; background: rgba(255,255,255,0.25); border-radius: 999px; padding: 4px; }
+        .seg {
+            border: none; background: transparent; color: #fff; font-weight: 700;
+            padding: 9px 22px; border-radius: 999px; cursor: pointer; font-size: 0.95em; transition: all 0.18s;
+        }
+        .seg.active.seaweedfs-active { background: #fff; color: var(--sw-dark); }
+        .seg.active.garage-active { background: #fff; color: var(--ga-dark); }
+
+        label { display: block; font-weight: 600; color: #555; margin-bottom: 6px; font-size: 0.92em; }
+        input[type=text], input[type=number], input[type=file] {
+            width: 100%; padding: 11px 12px; border: 2px solid var(--line);
+            border-radius: 9px; font-size: 0.95em; transition: border-color 0.2s;
+        }
+        input:focus { outline: none; border-color: #667eea; }
+        .field { margin-bottom: 14px; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .row > .field { flex: 1; min-width: 120px; }
+
+        button.btn {
+            border: none; border-radius: 9px; padding: 11px 18px; font-size: 0.92em;
+            font-weight: 700; cursor: pointer; color: #fff; transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        button.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(102,126,234,0.4); }
+        button.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        button.btn.ghost { background: #f1f2f7; color: #555; }
+        button.btn.danger { background: linear-gradient(135deg, #f5576c, #f093fb); }
+        button.btn.sm { padding: 6px 12px; font-size: 0.82em; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+        th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); font-size: 0.88em; }
+        th { color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: 0.74em; letter-spacing: 0.04em; }
+        td.key { font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+        td.actions { white-space: nowrap; text-align: right; }
+        .empty { text-align: center; color: var(--muted); padding: 22px; font-size: 0.9em; }
+
+        /* 벤치마크 결과 */
+        .bench-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+        .bench-head .field { margin-bottom: 0; }
+        .winner { font-weight: 800; }
+        .winner.sw { color: var(--sw-dark); }
+        .winner.ga { color: var(--ga-dark); }
+        .bars { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .bar-group { background: #fafbff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+        .bar-group h4 { font-size: 0.86em; color: #555; margin-bottom: 12px; }
+        .bar-row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+        .bar-row .lab { width: 78px; font-size: 0.78em; font-weight: 700; }
+        .bar-row .lab.sw { color: var(--sw-dark); }
+        .bar-row .lab.ga { color: var(--ga-dark); }
+        .bar-track { flex: 1; background: #eceef6; border-radius: 6px; height: 22px; position: relative; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; transition: width 0.5s ease; }
+        .bar-fill.sw { background: linear-gradient(90deg, #66bb6a, var(--sw-dark)); }
+        .bar-fill.ga { background: linear-gradient(90deg, #7e57c2, var(--ga-dark)); }
+        .bar-val { position: absolute; right: 8px; top: 0; line-height: 22px; font-size: 0.75em; font-weight: 700; color: #333; }
+        .hint { color: var(--muted); font-size: 0.8em; margin-top: 8px; }
+        .spinner {
+            display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.5);
+            border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: -2px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toast */
+        #toast { position: fixed; top: 18px; right: 18px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .t {
+            background: #fff; border-radius: 10px; padding: 13px 16px; min-width: 260px; max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.28); border-left: 5px solid #667eea; animation: slideIn 0.25s ease;
+            font-size: 0.9em;
+        }
+        .t.ok { border-left-color: #43a047; }
+        .t.err { border-left-color: #e53935; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+
+        @media (max-width: 760px) {
+            .status-grid, .bars { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.6em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🗄️ Object Storage PoC</h1>
+        <p class="subtitle">SeaweedFS vs Garage — 같은 S3 코드, 다른 백엔드</p>
+    </header>
+
+    <!-- 백엔드 상태 -->
+    <section class="status-grid" id="statusGrid">
+        <div class="status seaweedfs"><div class="row1"><span class="name">SeaweedFS</span><span class="badge loading">확인 중…</span></div></div>
+        <div class="status garage"><div class="row1"><span class="name">Garage</span><span class="badge loading">확인 중…</span></div></div>
+    </section>
+
+    <!-- 작업 대상 토글 -->
+    <div class="toggle-bar">
+        <span>작업 대상</span>
+        <div class="segmented" id="backendToggle">
+            <button class="seg seaweedfs-active active" data-backend="seaweedfs" onclick="selectBackend('seaweedfs')">SeaweedFS</button>
+            <button class="seg" data-backend="garage" onclick="selectBackend('garage')">Garage</button>
+        </div>
+        <button class="btn ghost sm" onclick="refreshAll()">↻ 새로고침</button>
+    </div>
+
+    <!-- 업로드 & 객체 브라우저 -->
+    <div class="card">
+        <h2>📤 업로드 &amp; 객체 브라우저 <span id="opTarget" style="font-size:0.7em;color:var(--muted);font-weight:600;"></span></h2>
+        <div class="row">
+            <div class="field" style="flex:2;">
+                <label>파일</label>
+                <input type="file" id="file">
+            </div>
+            <div class="field" style="flex:2;">
+                <label>객체 키 (선택 — 비우면 파일명)</label>
+                <input type="text" id="key" placeholder="예: docs/report.txt">
+            </div>
+            <div class="field" style="flex:0 0 auto; display:flex; align-items:flex-end;">
+                <button class="btn" id="uploadBtn" onclick="uploadFile()">업로드</button>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+            <div class="row" style="gap:8px;">
+                <input type="text" id="prefix" placeholder="prefix 필터 (선택)" style="width:200px;">
+                <button class="btn ghost sm" onclick="listObjects()">목록 조회</button>
+            </div>
+            <button class="btn danger sm" onclick="deleteAll()">전체 삭제</button>
+        </div>
+
+        <table>
+            <thead><tr><th>Key</th><th>크기</th><th>수정시각</th><th></th></tr></thead>
+            <tbody id="objBody"><tr><td colspan="4" class="empty">목록 조회를 눌러 객체를 확인하세요.</td></tr></tbody>
+        </table>
+    </div>
+
+    <!-- 벤치마크 -->
+    <div class="card">
+        <h2>📊 성능 벤치마크 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(두 백엔드 동시 비교)</span></h2>
+        <div class="bench-head">
+            <div class="field">
+                <label>객체 개수</label>
+                <input type="number" id="benchCount" value="100" min="1" max="2000" style="width:120px;">
+            </div>
+            <div class="field">
+                <label>객체 크기</label>
+                <select id="benchSize" style="width:160px; padding:11px 12px; border:2px solid var(--line); border-radius:9px;">
+                    <option value="4096">4 KB</option>
+                    <option value="65536" selected>64 KB</option>
+                    <option value="262144">256 KB</option>
+                    <option value="1048576">1 MB</option>
+                    <option value="5242880">5 MB</option>
+                </select>
+            </div>
+            <button class="btn" id="benchBtn" onclick="runBenchmark()">벤치마크 실행</button>
+            <span class="hint" id="benchHint">순차 업로드 → 다운로드 → 삭제를 양쪽에 동일하게 수행합니다.</span>
+        </div>
+
+        <div id="benchResults" style="display:none;">
+            <table style="margin-top:18px;">
+                <thead><tr><th>지표</th><th>SeaweedFS</th><th>Garage</th><th>우위</th></tr></thead>
+                <tbody id="benchBody"></tbody>
+            </table>
+            <div class="bars" id="benchBars"></div>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+    let backend = 'seaweedfs';
+    const labels = { seaweedfs: 'SeaweedFS', garage: 'Garage' };
+
+    // ---------- 공통 ----------
+    function toast(msg, type) {
+        const box = document.getElementById('toast');
+        const el = document.createElement('div');
+        el.className = 't ' + (type || '');
+        el.textContent = msg;
+        box.appendChild(el);
+        setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3500);
+    }
+    function fmtBytes(n) {
+        if (n == null) return '-';
+        if (n < 1024) return n + ' B';
+        if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+        if (n < 1073741824) return (n / 1048576).toFixed(1) + ' MB';
+        return (n / 1073741824).toFixed(2) + ' GB';
+    }
+    function fmtTime(s) {
+        if (!s) return '-';
+        try { return new Date(s).toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }); }
+        catch (e) { return s; }
+    }
+
+    // ---------- 백엔드 토글 ----------
+    function selectBackend(b) {
+        backend = b;
+        document.querySelectorAll('#backendToggle .seg').forEach(s => {
+            const on = s.dataset.backend === b;
+            s.classList.toggle('active', on);
+            s.classList.toggle('seaweedfs-active', on && b === 'seaweedfs');
+            s.classList.toggle('garage-active', on && b === 'garage');
+        });
+        document.getElementById('opTarget').textContent = '→ ' + labels[b];
+        document.getElementById('objBody').innerHTML = '<tr><td colspan="4" class="empty">목록 조회를 눌러 ' + labels[b] + ' 객체를 확인하세요.</td></tr>';
+    }
+
+    // ---------- 상태 ----------
+    async function loadStatus() {
+        try {
+            const res = await fetch('/api/backends');
+            const list = await res.json();
+            const grid = document.getElementById('statusGrid');
+            grid.innerHTML = list.map(s => `
+                <div class="status ${s.backend}">
+                    <div class="row1">
+                        <span class="name">${s.label}</span>
+                        <span class="badge ${s.healthy ? 'up' : 'down'}">${s.healthy ? '● 정상' : '● 오류'}</span>
+                    </div>
+                    <div class="ep">${s.endpoint}</div>
+                    <div class="meta">
+                        <span>버킷 <b>${s.bucket}</b></span>
+                        <span>객체 <b>${s.objectCount != null ? s.objectCount : '-'}</b></span>
+                    </div>
+                </div>`).join('');
+        } catch (e) {
+            toast('상태 조회 실패: ' + e.message, 'err');
+        }
+    }
+
+    // ---------- CRUD ----------
+    async function uploadFile() {
+        const f = document.getElementById('file').files[0];
+        if (!f) { toast('파일을 선택하세요.', 'err'); return; }
+        const fd = new FormData();
+        fd.append('file', f);
+        const key = document.getElementById('key').value.trim();
+        if (key) fd.append('key', key);
+        const btn = document.getElementById('uploadBtn');
+        btn.disabled = true;
+        try {
+            const res = await fetch(`/api/${backend}/files`, { method: 'POST', body: fd });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || '업로드 실패');
+            toast(`업로드 완료 (${labels[backend]}): ${data.key}`, 'ok');
+            document.getElementById('key').value = '';
+            document.getElementById('file').value = '';
+            listObjects();
+            loadStatus();
+        } catch (e) {
+            toast('업로드 실패: ' + e.message, 'err');
+        } finally { btn.disabled = false; }
+    }
+
+    async function listObjects() {
+        const prefix = document.getElementById('prefix').value.trim();
+        try {
+            const res = await fetch(`/api/${backend}/files?prefix=${encodeURIComponent(prefix)}`);
+            const objs = await res.json();
+            const body = document.getElementById('objBody');
+            if (!objs.length) {
+                body.innerHTML = '<tr><td colspan="4" class="empty">객체가 없습니다.</td></tr>';
+                return;
+            }
+            body.innerHTML = objs.map(o => `
+                <tr>
+                    <td class="key">${o.key}</td>
+                    <td>${fmtBytes(o.size)}</td>
+                    <td>${fmtTime(o.lastModified)}</td>
+                    <td class="actions">
+                        <button class="btn ghost sm" onclick="download('${encodeURIComponent(o.key)}')">↓</button>
+                        <button class="btn danger sm" onclick="removeObj('${encodeURIComponent(o.key)}')">×</button>
+                    </td>
+                </tr>`).join('');
+        } catch (e) {
+            toast('목록 조회 실패: ' + e.message, 'err');
+        }
+    }
+
+    function download(encKey) {
+        window.open(`/api/${backend}/files/content?key=${encKey}`, '_blank');
+    }
+
+    async function removeObj(encKey) {
+        try {
+            const res = await fetch(`/api/${backend}/files?key=${encKey}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error('삭제 실패');
+            toast('삭제 완료: ' + decodeURIComponent(encKey), 'ok');
+            listObjects();
+            loadStatus();
+        } catch (e) { toast('삭제 실패: ' + e.message, 'err'); }
+    }
+
+    async function deleteAll() {
+        if (!confirm(`${labels[backend]} 의 모든 객체를 삭제할까요?`)) return;
+        try {
+            const res = await fetch(`/api/${backend}/files/all`, { method: 'DELETE' });
+            const data = await res.json();
+            toast(`전체 삭제 완료: ${data.deletedCount}개`, 'ok');
+            listObjects();
+            loadStatus();
+        } catch (e) { toast('전체 삭제 실패: ' + e.message, 'err'); }
+    }
+
+    // ---------- 벤치마크 ----------
+    async function runBenchmark() {
+        const count = parseInt(document.getElementById('benchCount').value, 10);
+        const size = parseInt(document.getElementById('benchSize').value, 10);
+        const btn = document.getElementById('benchBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> 실행 중…';
+        document.getElementById('benchHint').textContent = `${count}개 × ${fmtBytes(size)} 를 양쪽에 업로드/다운로드/삭제 중…`;
+        try {
+            const res = await fetch('/api/benchmark', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ count, size })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error('벤치마크 실패');
+            renderBenchmark(data);
+            toast('벤치마크 완료', 'ok');
+        } catch (e) {
+            toast('벤치마크 실패: ' + e.message, 'err');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '벤치마크 실행';
+            document.getElementById('benchHint').textContent = '순차 업로드 → 다운로드 → 삭제를 양쪽에 동일하게 수행합니다.';
+        }
+    }
+
+    function renderBenchmark(data) {
+        const sw = data.seaweedfs, ga = data.garage;
+        // [라벨, sw값, ga값, 단위, lowerIsBetter]
+        const rows = [
+            ['업로드 총시간', sw.uploadTotalMs, ga.uploadTotalMs, 'ms', true],
+            ['업로드 평균', sw.uploadAvgMs, ga.uploadAvgMs, 'ms', true],
+            ['업로드 p95', sw.uploadP95Ms, ga.uploadP95Ms, 'ms', true],
+            ['업로드 처리량', sw.uploadThroughputMBps, ga.uploadThroughputMBps, 'MB/s', false],
+            ['다운로드 총시간', sw.downloadTotalMs, ga.downloadTotalMs, 'ms', true],
+            ['다운로드 평균', sw.downloadAvgMs, ga.downloadAvgMs, 'ms', true],
+            ['다운로드 p95', sw.downloadP95Ms, ga.downloadP95Ms, 'ms', true],
+            ['다운로드 처리량', sw.downloadThroughputMBps, ga.downloadThroughputMBps, 'MB/s', false],
+            ['삭제 총시간', sw.deleteTotalMs, ga.deleteTotalMs, 'ms', true],
+        ];
+        document.getElementById('benchBody').innerHTML = rows.map(r => {
+            const [lab, a, b, unit, low] = r;
+            const swWin = low ? a < b : a > b;
+            const tie = a === b;
+            const win = tie ? '=' : (swWin ? 'SeaweedFS' : 'Garage');
+            const wc = tie ? '' : (swWin ? 'sw' : 'ga');
+            return `<tr>
+                <td>${lab}</td>
+                <td class="${!tie && swWin ? 'winner sw' : ''}">${a} ${unit}</td>
+                <td class="${!tie && !swWin ? 'winner ga' : ''}">${b} ${unit}</td>
+                <td class="winner ${wc}">${win}</td>
+            </tr>`;
+        }).join('');
+
+        // 막대그래프: 처리량(높을수록 좋음) + p95(낮을수록 좋음)
+        const groups = [
+            ['업로드 처리량 (MB/s, 높을수록 ↑)', sw.uploadThroughputMBps, ga.uploadThroughputMBps],
+            ['다운로드 처리량 (MB/s, 높을수록 ↑)', sw.downloadThroughputMBps, ga.downloadThroughputMBps],
+            ['업로드 p95 (ms, 낮을수록 ↓)', sw.uploadP95Ms, ga.uploadP95Ms],
+            ['다운로드 p95 (ms, 낮을수록 ↓)', sw.downloadP95Ms, ga.downloadP95Ms],
+        ];
+        document.getElementById('benchBars').innerHTML = groups.map(g => {
+            const [title, a, b] = g;
+            const max = Math.max(a, b, 0.0001);
+            return `<div class="bar-group">
+                <h4>${title}</h4>
+                <div class="bar-row"><span class="lab sw">SeaweedFS</span>
+                    <div class="bar-track"><div class="bar-fill sw" style="width:${(a / max * 100).toFixed(1)}%"></div><span class="bar-val">${a}</span></div></div>
+                <div class="bar-row"><span class="lab ga">Garage</span>
+                    <div class="bar-track"><div class="bar-fill ga" style="width:${(b / max * 100).toFixed(1)}%"></div><span class="bar-val">${b}</span></div></div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('benchResults').style.display = 'block';
+    }
+
+    // ---------- init ----------
+    function refreshAll() { loadStatus(); listObjects(); }
+    window.onload = () => { selectBackend('seaweedfs'); loadStatus(); };
+</script>
+</body>
+</html>

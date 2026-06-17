@@ -1,0 +1,55 @@
+# object-storage PoC - SeaweedFS & Garage 를 나란히 띄우는 로컬 S3 스택
+#
+#   docker compose up -d              # 둘 다 기동
+#   docker compose up -d seaweedfs    # SeaweedFS 만
+#   docker compose up -d garage       # Garage 만
+#   docker compose down               # 정지(데이터 유지)
+#   docker compose down -v            # 정지 + 데이터 초기화
+#
+# Garage 는 기동 후 1회 부트스트랩(layout/bucket/key)이 필요하다 -> garage-init.ps1
+
+services:
+  # ─────────────────────────── SeaweedFS (올인원 mini 모드) ───────────────────────────
+  # 회사 PWM 인프라(.buildfile/.dockerfile/SeaweedFS/Dockerfile)와 동일한 방식:
+  #   chrislusf/seaweedfs:4.34 + `mini -dir=/data` 한 프로세스로 master+volume+filer+s3 를 모두 띄운다.
+  #   자격증명/버킷은 환경변수로 주입하므로 별도 config 파일이 필요 없다.
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.34
+    container_name: os-seaweedfs
+    command: mini -dir=/data
+    environment:
+      - AWS_ACCESS_KEY_ID=objectstorage              # S3 access key
+      - AWS_SECRET_ACCESS_KEY=objectstorage-secret-123  # S3 secret key
+      - S3_BUCKET=poc-bucket                         # 기동 시 자동 생성(멱등)
+    ports:
+      - "8333:8333"     # S3 API (앱이 붙는 곳)
+      - "9333:9333"     # Master UI/API (http://localhost:9333)
+      - "23646:23646"   # Admin UI  (http://localhost:23646)
+    volumes:
+      - seaweed-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:9333/cluster/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # ─────────────────────────── Garage (단일 노드) ───────────────────────────
+  # garage.toml 을 /etc/garage.toml 로 마운트한다.
+  # 기동만으로는 S3 사용 불가 -> layout 배정 + 버킷/키 생성을 garage-init.ps1 로 1회 수행.
+  garage:
+    image: dxflrs/garage:v2.3.0
+    container_name: os-garage
+    volumes:
+      - ./garage.toml:/etc/garage.toml:ro
+      - garage-meta:/var/lib/garage/meta
+      - garage-data:/var/lib/garage/data
+    ports:
+      - "3900:3900"     # S3 API (앱이 붙는 곳)
+      - "3902:3902"     # S3 web (정적 사이트 서빙)
+      - "3903:3903"     # Admin API (http://localhost:3903)
+
+volumes:
+  seaweed-data:
+  garage-meta:
+  garage-data:
