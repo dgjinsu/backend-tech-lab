@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILM 레이어 증분편집 — LIS Diff PoC</title>
+    <style>
+        :root {
+            --bg: #f4f6fb; --card: #fff; --line: #e3e7ef; --ink: #1f2733; --muted: #6b7686;
+            --accent: #5b6ef5; --accent-soft: #eef1ff;
+            --del: #e5484d; --ins: #17803d; --move: #b7791f; --upd: #7c3aed;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--ink);
+            font-family: "Segoe UI", "Malgun Gothic", system-ui, sans-serif; font-size: 14px; }
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 80px; }
+        h1 { font-size: 22px; margin: 0 0 4px; }
+        h2 { font-size: 15px; margin: 0 0 10px; color: var(--muted); font-weight: 600; }
+        .lead { color: var(--muted); margin: 0 0 20px; line-height: 1.6; }
+        .lead b { color: var(--ink); }
+
+        .toolbar { display: flex; flex-direction: column; gap: 10px;
+            background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 18px; }
+        .toolbar-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .toolbar-row.presets { flex-wrap: nowrap; overflow-x: auto; }
+        .toolbar label { color: var(--muted); font-size: 12px; margin: 0 4px 0 0; white-space: nowrap; }
+        button { font: inherit; cursor: pointer; border: 1px solid var(--line); background: #fff; white-space: nowrap;
+            color: var(--ink); border-radius: 8px; padding: 7px 12px; transition: .12s; }
+        button:hover { border-color: var(--accent); color: var(--accent); }
+        button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+        button.primary:hover { filter: brightness(1.06); color: #fff; }
+        button.preset { background: var(--accent-soft); border-color: transparent; color: #3b49c9; font-size: 12.5px; }
+
+        .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        @media (max-width: 820px) { .panels { grid-template-columns: 1fr; } }
+        .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+
+        table.stack { width: 100%; border-collapse: collapse; }
+        table.stack th, table.stack td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; }
+        table.stack th { font-size: 11.5px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+        table.stack td.no { width: 38px; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+        table.stack td.num, table.stack th.num { text-align: right; font-variant-numeric: tabular-nums; }
+        table.stack td.drag { width: 22px; text-align: center; color: #b7c0d0; cursor: grab; user-select: none; }
+        table.stack td.act { width: 30px; text-align: center; }
+        table.stack input { width: 100%; border: 1px solid transparent; border-radius: 6px; padding: 4px 6px; font: inherit; background: transparent; }
+        table.stack input:hover { border-color: var(--line); }
+        table.stack input:focus { border-color: var(--accent); background: #fff; outline: none; }
+        table.stack td.num input { text-align: right; }
+        table.stack .del { border: none; color: #b7c0d0; padding: 2px 6px; font-size: 15px; }
+        table.stack .del:hover { color: var(--del); }
+        table.stack tr.dragging { opacity: .4; background: var(--accent-soft); }
+        table.stack tr td.model { font-weight: 500; }
+        .tag { display: inline-block; font-size: 10.5px; background: var(--accent); color: #fff; border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+        .readonly td { color: #556; }
+        .hint { color: var(--muted); font-size: 12px; margin-top: 10px; }
+
+        .send-row { text-align: center; margin: 24px 0; }
+        button.send { font-size: 15px; padding: 11px 30px; }
+
+        /* ── 결과 ── */
+        .results { margin-top: 8px; }
+        .verify { border-radius: 12px; padding: 14px 18px; font-weight: 600; margin-bottom: 18px; border: 1px solid; }
+        .verify.ok { background: #e9f8ef; border-color: #9ad9b2; color: #14682f; }
+        .verify.fail { background: #fdecec; border-color: #f0a9ab; color: #a51f24; }
+        .summary { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .chip { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+        .chip .k { font-size: 11.5px; color: var(--muted); display: block; }
+        .chip .v { font-size: 18px; font-weight: 700; }
+        .chip.d .v { color: var(--del); } .chip.i .v { color: var(--ins); }
+        .chip.m .v { color: var(--move); } .chip.u .v { color: var(--upd); }
+        .minimality { background: var(--accent-soft); border: 1px solid #cdd5ff; border-radius: 10px; padding: 10px 14px; color: #3b49c9; }
+
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+        @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 18px; }
+        .card h3 { margin: 0 0 12px; font-size: 14px; }
+        .card h3 small { color: var(--muted); font-weight: 400; }
+
+        table.lis { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+        table.lis th, table.lis td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: center; }
+        table.lis th { font-size: 11.5px; color: var(--muted); }
+        table.lis td.name { text-align: left; font-weight: 500; }
+        table.lis tr.anchor { background: #eef7f0; }
+        table.lis tr.insert { background: #f0f6ff; color: #5a6b86; }
+        table.lis td.dash { color: #c0c6d0; }
+        .st-anchor { color: var(--ins); font-weight: 700; }
+        .st-move { color: var(--move); font-weight: 700; }
+        .st-insert { color: var(--accent); font-weight: 700; }
+        .st-delete { color: var(--del); font-weight: 700; }
+        .deleted { margin-top: 16px; }
+        .deleted-h { font-size: 12.5px; color: var(--muted); margin: 0 0 6px; }
+        table.lis.del thead th { color: var(--del); }
+        table.lis.del tbody td { background: #fdf4f4; }
+
+        ul.ops { list-style: none; margin: 0; padding: 0; }
+        ul.ops li { padding: 6px 2px; border-bottom: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
+        ul.ops li:last-child { border-bottom: none; }
+        .empty { color: var(--muted); font-style: italic; }
+        .badge { display: inline-block; min-width: 52px; text-align: center; font-size: 11px; font-weight: 700;
+            border-radius: 5px; padding: 2px 6px; margin-right: 8px; color: #fff; }
+        .badge.DELETE { background: var(--del); } .badge.INSERT { background: var(--ins); }
+        .badge.MOVE { background: var(--move); } .badge.UPDATE { background: var(--upd); }
+        pre.log { background: #0f1524; color: #cbd5f5; border-radius: 10px; padding: 14px 16px; overflow-x: auto;
+            font-family: "Cascadia Code", Consolas, monospace; font-size: 12.5px; line-height: 1.7; margin: 0; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>FILM 레이어 증분편집 — LIS Diff PoC</h1>
+    <p class="lead">
+        편집 <b>전(before)</b> / <b>후(after)</b> 스냅샷을 비교해 <b>삭제·생성·이동·수정</b> 최소 연산을 계산합니다.
+        이동 최소화에 <b>LIS(최장 증가 부분수열)</b>를 씁니다 — 한 장이 빠지고 끼어 <em>밀린 것</em>은 이동으로 세지 않습니다.
+        <br>레이어 번호 규약: <b>0 = Baseline(맨 아래)</b>, 위로 갈수록 증가.
+    </p>
+
+    <div class="toolbar">
+        <div class="toolbar-row">
+            <button type="button" id="addBtn">+ 레이어 추가</button>
+            <button type="button" id="resetBtn">되돌리기 (후 ← 전)</button>
+            <button type="button" id="rebaseBtn">기준 재설정 (전 ← 후)</button>
+            <button type="button" id="initBtn">↺ 초기화</button>
+        </div>
+        <div class="toolbar-row presets">
+            <label>프리셋</label>
+            <button type="button" class="preset" data-preset="doc">문서 예제 ABCDEFG→ABGDECF</button>
+            <button type="button" class="preset" data-preset="insert0">0번 위에 삽입</button>
+            <button type="button" class="preset" data-preset="mixed">삭제+이동+수정 혼합</button>
+        </div>
+    </div>
+
+    <div class="panels">
+        <div class="panel">
+            <h2>편집 전 (before) — base 스냅샷</h2>
+            <table class="stack readonly">
+                <thead><tr><th class="no">#</th><th>Material Name</th><th class="num">Thick</th><th class="num">Rough</th></tr></thead>
+                <tbody id="beforeBody"></tbody>
+            </table>
+        </div>
+        <div class="panel">
+            <h2>편집 후 (after) — 추가 / 삭제 / 드래그로 순서이동</h2>
+            <table class="stack">
+                <thead><tr><th></th><th class="no">#</th><th>Material Name</th><th class="num">Thick</th><th class="num">Rough</th><th></th></tr></thead>
+                <tbody id="afterBody"></tbody>
+            </table>
+            <div class="hint">행을 드래그하면 순서가 바뀝니다. ✕로 삭제, 입력창에서 값 수정.</div>
+        </div>
+    </div>
+
+    <form id="diffForm" method="post" action="/diff" class="send-row">
+        <input type="hidden" name="beforeJson" id="beforeInput" th:value="${beforeJson}">
+        <input type="hidden" name="afterJson" id="afterInput" th:value="${afterJson}">
+        <button type="submit" class="primary send">전송 — Diff 계산 ▶</button>
+    </form>
+
+    <!-- ─────────────── 결과 ─────────────── -->
+    <div class="results" th:if="${result != null}">
+
+        <div class="verify" th:classappend="${result.verified()} ? 'ok' : 'fail'"
+             th:text="${result.verified()}
+                ? '✅ 메모리 사전검증 통과 — 계산된 op을 before에 적용하니 after와 정확히 일치합니다 (§5.1).'
+                : '❌ 메모리 사전검증 실패 — op 적용 결과가 after와 다릅니다. OLSA를 건드리지 않고 중단해야 합니다.'">
+        </div>
+
+        <div class="summary" th:with="s=${result.summary()}">
+            <div class="chip"><span class="k">전 → 후</span><span class="v" th:text="${s.beforeSize()} + ' → ' + ${s.afterSize()}"></span></div>
+            <div class="chip d"><span class="k">삭제 DELETE</span><span class="v" th:text="${s.deletes()}"></span></div>
+            <div class="chip i"><span class="k">생성 INSERT</span><span class="v" th:text="${s.inserts()}"></span></div>
+            <div class="chip m"><span class="k">이동 MOVE</span><span class="v" th:text="${s.moves()}"></span></div>
+            <div class="chip u"><span class="k">수정 UPDATE</span><span class="v" th:text="${s.updates()}"></span></div>
+            <div class="minimality">
+                이동 최소성 — 공통 <b th:text="${s.common()}"></b>개 중 앵커 |LIS| = <b th:text="${s.anchors()}"></b>
+                → 이동 <b th:text="${s.moves()}"></b>개 <small>(= 공통 − 앵커, 수학적 최소)</small>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>① after 스택 분석 <small>— 스택 그림과 동일하게 맨 아래가 layer 0. 공통 레이어는 before 위치번호로 치환해 LIS(최장 증가 길이 L)를 태운다. LIS에 든 것이 앵커(유지), 벗어난 것이 이동, before가 없으면 생성.</small></h3>
+            <table class="lis">
+                <thead><tr>
+                    <th>after 위치</th><th>Material</th><th>before 위치 (수열)</th><th>L</th><th>상태</th>
+                </tr></thead>
+                <tbody>
+                    <tr th:each="row : ${result.lisTable()}" th:classappend="${row.state()}">
+                        <td th:text="${row.afterIndex()}"></td>
+                        <td class="name" th:text="${row.model()}"></td>
+                        <td th:classappend="${row.beforePos() == null ? 'dash' : ''}" th:text="${row.beforePos() != null ? row.beforePos() : '—'}"></td>
+                        <td th:classappend="${row.lisLen() == null ? 'dash' : ''}" th:text="${row.lisLen() != null ? row.lisLen() : '—'}"></td>
+                        <td th:classappend="${'st-' + row.state()}"
+                            th:text="${row.state() == 'anchor' ? '● 유지' : (row.state() == 'move' ? '이동' : '＋ 생성')}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(result.lisTable())}"><td colspan="5" class="empty">after 레이어 없음</td></tr>
+                </tbody>
+            </table>
+
+            <div class="deleted" th:if="${not #lists.isEmpty(result.deletedRows())}">
+                <p class="deleted-h">삭제된 레이어 <small>— after에 없어 LIS 수열에서 제외 (before 위치)</small></p>
+                <table class="lis del">
+                    <thead><tr><th>before 위치</th><th>Material</th><th>상태</th></tr></thead>
+                    <tbody>
+                        <tr th:each="d : ${result.deletedRows()}">
+                            <td th:text="${d.beforePos()}"></td>
+                            <td class="name" th:text="${d.model()}"></td>
+                            <td class="st-delete">✕ 삭제</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid2">
+            <div class="card">
+                <h3>② 논리 연산 <small>(무엇이 바뀌었나)</small></h3>
+                <ul class="ops">
+                    <li th:each="op : ${result.deletes()}"><span class="badge DELETE">DELETE</span><span th:text="${op.note()}"></span></li>
+                    <li th:each="op : ${result.inserts()}"><span class="badge INSERT">INSERT</span><span th:text="${op.note()}"></span></li>
+                    <li th:each="op : ${result.moves()}"><span class="badge MOVE">MOVE</span><span th:text="${op.note()}"></span></li>
+                    <li th:each="op : ${result.updates()}"><span class="badge UPDATE">UPDATE</span><span th:text="${op.note()}"></span></li>
+                    <li th:if="${#lists.isEmpty(result.deletes()) and #lists.isEmpty(result.inserts()) and #lists.isEmpty(result.moves()) and #lists.isEmpty(result.updates())}"
+                        class="empty">변경 없음 — before 와 after 가 동일합니다.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>③ OLSA 실행 계획 <small>(§6 — 삭제 desc → 삽입 asc, MOVE=삭제+재삽입)</small></h3>
+                <ul class="ops">
+                    <li th:each="op : ${result.executionPlan()}">
+                        <span class="badge" th:classappend="${op.type()}" th:text="${op.type()}"></span>
+                        <span th:text="${op.note()}"></span>
+                    </li>
+                    <li th:if="${#lists.isEmpty(result.executionPlan())}" class="empty">실행할 op 없음</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>④ 메모리 사전검증 로그 <small>— apply(before, ops) 단계별 스냅샷 → == after ?</small></h3>
+            <pre class="log" th:text="${result.verifyLog()}"></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── 상태: 내부는 top-to-bottom(배열 앞=위쪽 행), 와이어/알고리즘은 bottom-up(index0=Baseline).
+    //    로드 때 뒤집어 들이고, 전송 때 다시 뒤집어 내보낸다.
+    const beforeInput = document.getElementById('beforeInput');
+    const afterInput = document.getElementById('afterInput');
+    let before = JSON.parse(beforeInput.value).reverse();
+    let after = JSON.parse(afterInput.value).reverse();
+    let nid = 1; // 새로 추가하는 레이어 id 카운터
+
+    const afterBody = document.getElementById('afterBody');
+    const beforeBody = document.getElementById('beforeBody');
+
+    const clone = l => ({ ...l });
+    const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const fmt = n => (Number.isFinite(n) && Math.floor(n) === n) ? String(n) : String(n);
+
+    function rowHtml(layer, no, editable) {
+        const baseline = no === 0 ? '<span class="tag">Baseline</span>' : '';
+        if (!editable) {
+            return `<tr data-id="${esc(layer.id)}">
+                <td class="no">${no}</td>
+                <td class="model">${esc(layer.model)}${baseline}</td>
+                <td class="num">${fmt(layer.thickness)}</td>
+                <td class="num">${fmt(layer.roughness)}</td></tr>`;
+        }
+        return `<tr data-id="${esc(layer.id)}" draggable="true">
+            <td class="drag" title="드래그로 이동">⋮⋮</td>
+            <td class="no">${no}</td>
+            <td class="model"><input data-field="model" value="${esc(layer.model)}">${baseline}</td>
+            <td class="num"><input data-field="thickness" type="number" step="any" value="${layer.thickness}"></td>
+            <td class="num"><input data-field="roughness" type="number" step="any" value="${layer.roughness}"></td>
+            <td class="act"><button type="button" class="del" title="삭제">✕</button></td></tr>`;
+    }
+
+    function render() {
+        // 배열 앞이 위쪽 행. 레이어 번호는 bottom-up이므로 (길이-1-i).
+        afterBody.innerHTML = after.map((l, i) => rowHtml(l, after.length - 1 - i, true)).join('');
+        beforeBody.innerHTML = before.map((l, i) => rowHtml(l, before.length - 1 - i, false)).join('');
+    }
+
+    // 값 수정 (재렌더 없이 포커스 유지)
+    afterBody.addEventListener('input', e => {
+        const inp = e.target;
+        if (!inp.dataset.field) return;
+        const id = inp.closest('tr').dataset.id;
+        const layer = after.find(l => l.id === id);
+        if (!layer) return;
+        const f = inp.dataset.field;
+        layer[f] = (f === 'model') ? inp.value : parseFloat(inp.value || '0');
+    });
+
+    // 삭제
+    afterBody.addEventListener('click', e => {
+        if (!e.target.classList.contains('del')) return;
+        const id = e.target.closest('tr').dataset.id;
+        const idx = after.findIndex(l => l.id === id);
+        if (idx >= 0) { after.splice(idx, 1); render(); }
+    });
+
+    // ── 네이티브 드래그 순서이동 ─────────────────────────────
+    afterBody.addEventListener('dragstart', e => {
+        const tr = e.target.closest('tr');
+        if (tr) { tr.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
+    });
+    afterBody.addEventListener('dragend', e => {
+        const tr = e.target.closest('tr');
+        if (tr) tr.classList.remove('dragging');
+        syncAfterFromDom();
+        render();
+    });
+    afterBody.addEventListener('dragover', e => {
+        e.preventDefault();
+        const dragging = afterBody.querySelector('.dragging');
+        if (!dragging) return;
+        const ref = getDragAfterElement(afterBody, e.clientY);
+        if (ref == null) afterBody.appendChild(dragging);
+        else afterBody.insertBefore(dragging, ref);
+    });
+    function getDragAfterElement(container, y) {
+        const els = [...container.querySelectorAll('tr:not(.dragging)')];
+        let best = null, bestOffset = Number.NEGATIVE_INFINITY;
+        for (const child of els) {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > bestOffset) { bestOffset = offset; best = child; }
+        }
+        return best;
+    }
+    function syncAfterFromDom() {
+        const rows = [...afterBody.querySelectorAll('tr')];
+        const byId = new Map(after.map(l => [l.id, l]));
+        after = rows.map(r => byId.get(r.dataset.id)).filter(Boolean);
+    }
+
+    // ── 툴바 ────────────────────────────────────────────────
+    document.getElementById('addBtn').onclick = () => {
+        after.unshift({ id: 'ADD' + (nid++), model: 'NEW_LAYER', thickness: 0, roughness: 0 });
+        render();
+    };
+    document.getElementById('resetBtn').onclick = () => { after = before.map(clone); render(); };
+    document.getElementById('rebaseBtn').onclick = () => { before = after.map(clone); render(); };
+    // 초기화: 최초 로드 상태(샘플 스택, 결과 없음)로 완전히 되돌림
+    document.getElementById('initBtn').onclick = () => { location.href = '/'; };
+
+    // ── 프리셋 (bottom-up으로 정의 → 내부 저장 시 뒤집기) ───────
+    function setState(beforeBU, afterBU) {
+        before = beforeBU.slice().reverse();
+        after = afterBU.slice().reverse();
+        render();
+    }
+    // 기본 스택: index 0 = Baseline, 그 위로 총 50장. (컨트롤러 sampleStack()과 동일)
+    const base = () => {
+        const arr = [{ id: 'L0', model: 'GKB_SI', thickness: 0, roughness: 0 }];
+        for (let i = 1; i < 50; i++) arr.push({ id: 'L' + i, model: 'GKB_LAYER_' + i, thickness: 0, roughness: 0 });
+        return arr;
+    };
+    const presets = {
+        // 문서 §4.4 워크스루: 전부 이동 케이스. LIS 표가 문서와 동일해야 한다.
+        doc: () => {
+            const mk = m => ({ id: m, model: m, thickness: 0, roughness: 0 });
+            setState(['A', 'B', 'C', 'D', 'E', 'F', 'G'].map(mk),
+                     ['A', 'B', 'G', 'D', 'E', 'C', 'F'].map(mk));
+        },
+        // 사용자 예시: 0번(Baseline) 위에 한 장 삽입 → 50장 중 INSERT 1개, 이동 0개.
+        insert0: () => {
+            const b = base();
+            const a = b.map(clone);
+            a.splice(1, 0, { id: 'NEW', model: 'GKB_OXIDE', thickness: 3, roughness: 0 });
+            setState(b, a);
+        },
+        // 혼합: 큰 스택(50)에서 소수만 변경 — 이동 1 + 수정 1 + 삭제 1 + 생성 1.
+        mixed: () => {
+            const b = base();
+            const a = b.map(clone);
+            [a[1], a[2]] = [a[2], a[1]];                 // 이동: L1/L2 스왑
+            a[3] = { ...a[3], roughness: 50 };            // 수정: 거칠기 0→50
+            a.splice(5, 1);                               // 삭제: 한 장
+            a.splice(10, 0, { id: 'N1', model: 'GKB_CAP', thickness: 2, roughness: 0 }); // 생성
+            setState(b, a);
+        },
+    };
+    document.querySelectorAll('button[data-preset]').forEach(btn =>
+        btn.onclick = () => presets[btn.dataset.preset]());
+
+    // ── 전송: 내부(top-to-bottom) → 와이어(bottom-up) ──────────
+    document.getElementById('diffForm').addEventListener('submit', () => {
+        beforeInput.value = JSON.stringify(before.slice().reverse());
+        afterInput.value = JSON.stringify(after.slice().reverse());
+    });
+
+    render();
+    // 결과가 있으면 그쪽으로 스크롤
+    const res = document.querySelector('.results');
+    if (res) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+</script>
+</body>
+</html>

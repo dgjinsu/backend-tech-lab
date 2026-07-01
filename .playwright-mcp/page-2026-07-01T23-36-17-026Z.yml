@@ -1,0 +1,126 @@
+- generic [ref=e2]:
+  - heading "FILM 레이어 증분편집 — LIS Diff PoC" [level=1] [ref=e3]
+  - paragraph [ref=e4]:
+    - text: 편집 전(before) / 후(after) 스냅샷을 비교해 삭제·생성·이동·수정 최소 연산을 계산합니다. 이동 최소화에 LIS(최장 증가 부분수열)를 씁니다 — 한 장이 빠지고 끼어
+    - emphasis [ref=e5]: 밀린 것
+    - text: 은 이동으로 세지 않습니다.
+    - text: "레이어 번호 규약: 0 = Baseline(맨 아래), 위로 갈수록 증가."
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - button "+ 레이어 추가" [ref=e8] [cursor=pointer]
+      - button "되돌리기 (후 ← 전)" [ref=e9] [cursor=pointer]
+      - button "기준 재설정 (전 ← 후)" [ref=e10] [cursor=pointer]
+      - button "↺ 초기화" [ref=e11] [cursor=pointer]
+    - generic [ref=e12]:
+      - generic [ref=e13]: 프리셋
+      - button "문서 예제 ABCDEFG→ABGDECF" [ref=e14] [cursor=pointer]
+      - button "0번 위에 삽입" [ref=e15] [cursor=pointer]
+      - button "삭제+이동+수정 혼합" [ref=e16] [cursor=pointer]
+  - generic [ref=e17]:
+    - generic [ref=e18]:
+      - heading "편집 전 (before) — base 스냅샷" [level=2] [ref=e19]
+      - table [ref=e20]:
+        - rowgroup [ref=e21]:
+          - row "# Material Name Thick Rough" [ref=e22]:
+            - columnheader "#" [ref=e23]
+            - columnheader "Material Name" [ref=e24]
+            - columnheader "Thick" [ref=e25]
+            - columnheader "Rough" [ref=e26]
+        - rowgroup [ref=e27]:
+          - row "4 GKB_ROUGHNESS 0 0" [ref=e28]:
+            - cell "4" [ref=e29]
+            - cell "GKB_ROUGHNESS" [ref=e30]
+            - cell "0" [ref=e31]
+            - cell "0" [ref=e32]
+          - row "3 GKB_W_V1 0 20" [ref=e33]:
+            - cell "3" [ref=e34]
+            - cell "GKB_W_V1" [ref=e35]
+            - cell "0" [ref=e36]
+            - cell "20" [ref=e37]
+          - row "2 GKB_SIO2 0 0" [ref=e38]:
+            - cell "2" [ref=e39]
+            - cell "GKB_SIO2" [ref=e40]
+            - cell "0" [ref=e41]
+            - cell "0" [ref=e42]
+          - row "1 GKB_SI_N 0 0" [ref=e43]:
+            - cell "1" [ref=e44]
+            - cell "GKB_SI_N" [ref=e45]
+            - cell "0" [ref=e46]
+            - cell "0" [ref=e47]
+          - row "0 GKB_SI Baseline 0 0" [ref=e48]:
+            - cell "0" [ref=e49]
+            - cell "GKB_SI Baseline" [ref=e50]:
+              - text: GKB_SI
+              - generic [ref=e51]: Baseline
+            - cell "0" [ref=e52]
+            - cell "0" [ref=e53]
+    - generic [ref=e54]:
+      - heading "편집 후 (after) — 추가 / 삭제 / 드래그로 순서이동" [level=2] [ref=e55]
+      - table [ref=e56]:
+        - rowgroup [ref=e57]:
+          - row "# Material Name Thick Rough" [ref=e58]:
+            - columnheader [ref=e59]
+            - columnheader "#" [ref=e60]
+            - columnheader "Material Name" [ref=e61]
+            - columnheader "Thick" [ref=e62]
+            - columnheader "Rough" [ref=e63]
+            - columnheader [ref=e64]
+        - rowgroup [ref=e65]:
+          - row "⋮⋮ 4 GKB_ROUGHNESS 0 0 ✕" [ref=e66]:
+            - cell "⋮⋮" [ref=e67]
+            - cell "4" [ref=e68]
+            - cell "GKB_ROUGHNESS" [ref=e69]:
+              - textbox [ref=e70]: GKB_ROUGHNESS
+            - cell "0" [ref=e71]:
+              - spinbutton [ref=e72]: "0"
+            - cell "0" [ref=e73]:
+              - spinbutton [ref=e74]: "0"
+            - cell "✕" [ref=e75]:
+              - button "✕" [ref=e76] [cursor=pointer]
+          - row "⋮⋮ 3 GKB_W_V1 0 20 ✕" [ref=e77]:
+            - cell "⋮⋮" [ref=e78]
+            - cell "3" [ref=e79]
+            - cell "GKB_W_V1" [ref=e80]:
+              - textbox [ref=e81]: GKB_W_V1
+            - cell "0" [ref=e82]:
+              - spinbutton [ref=e83]: "0"
+            - cell "20" [ref=e84]:
+              - spinbutton [ref=e85]: "20"
+            - cell "✕" [ref=e86]:
+              - button "✕" [ref=e87] [cursor=pointer]
+          - row "⋮⋮ 2 GKB_SIO2 0 0 ✕" [ref=e88]:
+            - cell "⋮⋮" [ref=e89]
+            - cell "2" [ref=e90]
+            - cell "GKB_SIO2" [ref=e91]:
+              - textbox [ref=e92]: GKB_SIO2
+            - cell "0" [ref=e93]:
+              - spinbutton [ref=e94]: "0"
+            - cell "0" [ref=e95]:
+              - spinbutton [ref=e96]: "0"
+            - cell "✕" [ref=e97]:
+              - button "✕" [ref=e98] [cursor=pointer]
+          - row "⋮⋮ 1 GKB_SI_N 0 0 ✕" [ref=e99]:
+            - cell "⋮⋮" [ref=e100]
+            - cell "1" [ref=e101]
+            - cell "GKB_SI_N" [ref=e102]:
+              - textbox [ref=e103]: GKB_SI_N
+            - cell "0" [ref=e104]:
+              - spinbutton [ref=e105]: "0"
+            - cell "0" [ref=e106]:
+              - spinbutton [ref=e107]: "0"
+            - cell "✕" [ref=e108]:
+              - button "✕" [ref=e109] [cursor=pointer]
+          - row "⋮⋮ 0 GKB_SI Baseline 0 0 ✕" [ref=e110]:
+            - cell "⋮⋮" [ref=e111]
+            - cell "0" [ref=e112]
+            - cell "GKB_SI Baseline" [ref=e113]:
+              - textbox [ref=e114]: GKB_SI
+              - generic [ref=e115]: Baseline
+            - cell "0" [ref=e116]:
+              - spinbutton [ref=e117]: "0"
+            - cell "0" [ref=e118]:
+              - spinbutton [ref=e119]: "0"
+            - cell "✕" [ref=e120]:
+              - button "✕" [ref=e121] [cursor=pointer]
+      - generic [ref=e122]: 행을 드래그하면 순서가 바뀝니다. ✕로 삭제, 입력창에서 값 수정.
+  - button "전송 — Diff 계산 ▶" [ref=e124] [cursor=pointer]
