@@ -1,0 +1,40 @@
+# PWM 주간보고 자동화 — 로컬 PoC용 n8n
+# 실행:  docker compose up -d   /   중지: docker compose down
+# 데이터(워크플로우·자격증명·Data Table)는 named volume(n8n_data)에 영구 저장된다.
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest   # 운영 배포 시엔 버전 태그 고정 권장 (예: :1.previous-stable)
+    container_name: pwm-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # --- 접속/웹훅 ---
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      # 폼/웹훅 URL의 베이스. 팀원이 실제 접속하는 주소와 반드시 일치해야 함.
+      # 로컬 PoC=localhost, 사내 배포 시 http://192.168.70.143:5678/ 로 교체.
+      - WEBHOOK_URL=http://localhost:5678/
+      # http://localhost 접속 시 로그인 쿠키 차단 방지 (로컬 전용)
+      - N8N_SECURE_COOKIE=false
+
+      # --- 타임존 (요구사항: Asia/Seoul) ---
+      - GENERIC_TIMEZONE=Asia/Seoul
+      - TZ=Asia/Seoul
+
+      # --- 자격증명 암호화 키 (.env 에서 주입) ---
+      # 고정·백업 필수! 바뀌면 저장된 Notion 시크릿 등 복호화 실패.
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+
+      # --- 기타 ---
+      - N8N_RUNNERS_ENABLED=true          # 최신 n8n 권장 (Code 노드 task runner)
+      - N8N_DIAGNOSTICS_ENABLED=false     # 텔레메트리 비활성화
+      - N8N_PERSONALIZATION_ENABLED=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+      # 파일 기반 대체 저장(Data Tables 미지원 버전) 또는 로컬 파일 출력용. (선택)
+      - ./files:/files
+
+volumes:
+  n8n_data:

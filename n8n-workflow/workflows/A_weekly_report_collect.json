@@ -1,0 +1,151 @@
+{
+  "name": "A — PWM 주간보고 수집 (Form → Data Table)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Seoul"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "PWM 주간보고",
+        "formDescription": "이번 주 할 일 · 진행 이슈 · 논의사항을 입력해 주세요. (작성자별로 각각 제출)",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "작성자",
+              "fieldName": "author",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "홍길동"
+                  },
+                  {
+                    "option": "김철수"
+                  },
+                  {
+                    "option": "이영희"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "금주 할 일",
+              "fieldName": "todo",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "진행 이슈",
+              "fieldName": "issue",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "논의사항",
+              "fieldName": "discuss",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {
+          "formSubmittedText": "제출 완료되었습니다 ✅"
+        }
+      },
+      "id": "a1b2c3d4-0001-4a01-8a01-000000000001",
+      "name": "주간보고 폼 (Form)",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "f0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-0001-weekkey",
+              "name": "weekKey",
+              "value": "={{ $now.toFormat(\"kkkk-'W'WW\") }}",
+              "type": "string"
+            },
+            {
+              "id": "set-0002-submittedat",
+              "name": "submittedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-4a02-8a02-000000000002",
+      "name": "파생값 추가 (weekKey/submittedAt)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "weekly_submissions"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0003-4a03-8a03-000000000003",
+      "name": "제출 저장 (Data Table Insert)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        480,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "주간보고 폼 (Form)": {
+      "main": [
+        [
+          {
+            "node": "파생값 추가 (weekKey/submittedAt)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "파생값 추가 (weekKey/submittedAt)": {
+      "main": [
+        [
+          {
+            "node": "제출 저장 (Data Table Insert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}
