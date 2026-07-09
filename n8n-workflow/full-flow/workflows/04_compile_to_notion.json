@@ -1,0 +1,189 @@
+{
+  "name": "04 — 취합 → Notion 회의록 → 완료 알림",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Seoul"
+  },
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "n4-0001",
+      "name": "테스트 실행 (Manual)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "pwm_weekly"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "weekKey",
+              "condition": "eq",
+              "keyValue": "={{ $now.toFormat(\"kkkk-'W'WW\") }}"
+            }
+          ]
+        },
+        "matchType": "all",
+        "options": {}
+      },
+      "alwaysOutputData": true,
+      "id": "n4-0002",
+      "name": "이번 주 제출분 조회 (Data Table)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst wy = $now.toFormat('kkkk');\nconst ww = $now.toFormat('WW');\nconst week = `${wy}-W${ww}`;\nconst title = `${wy}년 WW${ww} 주간 회의`;\nconst today = $now.toFormat('yyyy-MM-dd');\nconst v = (s) => (s && String(s).trim()) ? s : '-';\nconst authors = rows.map(r => r.author).join(', ') || '(없음)';\n\nconst rich = (t) => [{ type: 'text', text: { content: (t || '').slice(0, 1990) } }];\nconst H = (t) => ({ object: 'block', type: 'heading_2', heading_2: { rich_text: rich(t) } });\nconst P = (t) => ({ object: 'block', type: 'paragraph', paragraph: { rich_text: rich(t) } });\nconst Callout = (t) => ({ object: 'block', type: 'callout', callout: { rich_text: rich(t), icon: { emoji: '📌' } } });\nconst Divider = () => ({ object: 'block', type: 'divider', divider: {} });\n\n// 페이지 상단 메타데이터(문서 위에 따로 표시)\nconst meta = `주차: ${week}\n생성일: ${today}\n취합 인원: ${rows.length}명\n작성자: ${authors}`;\n\nconst children = [ Callout(meta), Divider(), H('팀원별 보고') ];\nif (rows.length === 0) {\n  children.push(P('이번 주 제출된 보고가 없습니다.'));\n} else {\n  for (const r of rows) {\n    children.push(P(`👤 ${r.author}\n• 팀 할일(정기): ${v(r.teamTasks)}\n• 프로젝트 활동: ${v(r.projectActivity)}\n• PWM 활동: ${v(r.pwmActivity)}\n• 휴가 계획: ${v(r.vacationPlan)}`));\n  }\n}\n\nconst body = {\n  parent: { page_id: 'REPLACE_WITH_PARENT_PAGE_ID' },  // ← 부모 페이지 id로 교체\n  properties: { title: { title: rich(title) } },        // 페이지 부모일 땐 키가 항상 'title'\n  children,\n};\n\nreturn [{ json: { title, count: rows.length, body } }];"
+      },
+      "id": "n4-0003",
+      "name": "회의 정보 조립 (Notion)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            }
+          ]
+        }
+      },
+      "id": "n4-0004",
+      "name": "Notion 페이지 생성 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const info = $('회의 정보 조립 (Notion)').first().json;\nconst res = $input.first().json;\nconst pageUrl = res && res.url ? res.url : '(URL 확인 불가)';\nconst text = `✅ Notion 주간회의 회의록 작성 완료\n• ${info.title} (${info.count}명 취합)\n• ${pageUrl}`;\nreturn [{ json: { slackBody: { channel: 'U07TD4739UG', text } } }];"
+      },
+      "id": "n4-0005",
+      "name": "완료 알림 조립 (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.slackBody }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "slackApi"
+      },
+      "id": "n4-0006",
+      "name": "Slack 완료 알림 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "테스트 실행 (Manual)": {
+      "main": [
+        [
+          {
+            "node": "이번 주 제출분 조회 (Data Table)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "이번 주 제출분 조회 (Data Table)": {
+      "main": [
+        [
+          {
+            "node": "회의 정보 조립 (Notion)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "회의 정보 조립 (Notion)": {
+      "main": [
+        [
+          {
+            "node": "Notion 페이지 생성 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion 페이지 생성 (HTTP)": {
+      "main": [
+        [
+          {
+            "node": "완료 알림 조립 (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "완료 알림 조립 (Code)": {
+      "main": [
+        [
+          {
+            "node": "Slack 완료 알림 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

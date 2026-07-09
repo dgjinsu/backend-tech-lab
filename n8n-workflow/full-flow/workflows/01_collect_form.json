@@ -1,0 +1,168 @@
+{
+  "name": "01 — PWM 주간보고 수집 폼",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Seoul"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "pwm-weekly",
+        "formTitle": "PWM 주간보고",
+        "formDescription": "이번 주 보고 내용을 입력해 주세요. (작성자별로 각각 제출)",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "작성자",
+              "fieldName": "author",
+              "fieldType": "dropdown",
+              "requiredField": true,
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "송충석"
+                  },
+                  {
+                    "option": "안성윤"
+                  },
+                  {
+                    "option": "김진수"
+                  },
+                  {
+                    "option": "한슬희"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "팀 할일 (정기)",
+              "fieldName": "teamTasks",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "프로젝트 활동",
+              "fieldName": "projectActivity",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "PWM 활동",
+              "fieldName": "pwmActivity",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "휴가 계획",
+              "fieldName": "vacationPlan",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {
+          "formSubmittedText": "제출 완료되었습니다 ✅"
+        }
+      },
+      "id": "f1-0001",
+      "name": "주간보고 폼 (Form)",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "f0000000-0000-4000-8000-0000000000f1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s-week",
+              "name": "weekKey",
+              "value": "={{ $now.toFormat(\"kkkk-'W'WW\") }}",
+              "type": "string"
+            },
+            {
+              "id": "s-sub",
+              "name": "submittedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f1-0002",
+      "name": "파생값 추가 (weekKey/submittedAt)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "pwm_weekly"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "weekKey": "={{ $json.weekKey }}",
+            "author": "={{ $json.author }}",
+            "teamTasks": "={{ $json.teamTasks }}",
+            "projectActivity": "={{ $json.projectActivity }}",
+            "pwmActivity": "={{ $json.pwmActivity }}",
+            "vacationPlan": "={{ $json.vacationPlan }}",
+            "submittedAt": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "id": "f1-0003",
+      "name": "제출 저장 (Data Table Insert)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        480,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "주간보고 폼 (Form)": {
+      "main": [
+        [
+          {
+            "node": "파생값 추가 (weekKey/submittedAt)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "파생값 추가 (weekKey/submittedAt)": {
+      "main": [
+        [
+          {
+            "node": "제출 저장 (Data Table Insert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

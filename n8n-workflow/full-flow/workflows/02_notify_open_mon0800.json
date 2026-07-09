@@ -1,0 +1,89 @@
+{
+  "name": "02 — 월 08:00 주간보고 안내 발송 (Slack)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Seoul"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "f2-0001",
+      "name": "매주 월 08:00 (Schedule)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ROSTER = [\n  { name: '김진수', slackId: 'U07TD4739UG' },          // 테스트: 본인만\n  // 운영 시 아래 주석 해제 + 실제 member ID 입력\n  // { name: '송충석', slackId: 'U_REPLACE_송충석' },\n  // { name: '안성윤', slackId: 'U_REPLACE_안성윤' },\n  // { name: '한슬희', slackId: 'U_REPLACE_한슬희' },\n];\nconst FORM_URL = 'http://localhost:5678/form/884a40ad-17ea-4083-8c1a-c2632a9b2a5f';\nconst week = $now.toFormat(\"kkkk'년 WW'WW\");\nreturn ROSTER.map(r => ({ json: { slackBody: {\n  channel: r.slackId,\n  text: `📝 [${week}] 주간보고 작성 요청\\n안녕하세요 ${r.name}님, 이번 주 주간보고를 작성해 주세요.\\n▶ ${FORM_URL}`\n} } }));"
+      },
+      "id": "f2-0002",
+      "name": "수신자·메시지 생성 (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.slackBody }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "slackApi"
+      },
+      "id": "f2-0003",
+      "name": "Slack DM 발송 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "매주 월 08:00 (Schedule)": {
+      "main": [
+        [
+          {
+            "node": "수신자·메시지 생성 (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "수신자·메시지 생성 (Code)": {
+      "main": [
+        [
+          {
+            "node": "Slack DM 발송 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

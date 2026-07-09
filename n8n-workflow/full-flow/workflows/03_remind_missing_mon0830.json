@@ -1,0 +1,133 @@
+{
+  "name": "03 — 월 08:30 미제출 리마인드 (Slack)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Seoul"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 8 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "f3-0001",
+      "name": "매주 월 08:30 (Schedule)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "pwm_weekly"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "weekKey",
+              "condition": "eq",
+              "keyValue": "={{ $now.toFormat(\"kkkk-'W'WW\") }}"
+            }
+          ]
+        },
+        "matchType": "all",
+        "options": {}
+      },
+      "alwaysOutputData": true,
+      "id": "f3-0002",
+      "name": "이번 주 제출분 조회 (Data Table)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ROSTER = [\n  { name: '김진수', slackId: 'U07TD4739UG' },          // 테스트: 본인만\n  // 운영 시 아래 주석 해제 + 실제 member ID 입력\n  // { name: '송충석', slackId: 'U_REPLACE_송충석' },\n  // { name: '안성윤', slackId: 'U_REPLACE_안성윤' },\n  // { name: '한슬희', slackId: 'U_REPLACE_한슬희' },\n];\nconst FORM_URL = 'http://localhost:5678/form/884a40ad-17ea-4083-8c1a-c2632a9b2a5f';\nconst week = $now.toFormat(\"kkkk'년 WW'WW\");\nconst submitted = new Set($input.all().map(i => i.json.author));\nconst missing = ROSTER.filter(r => !submitted.has(r.name));\n// 전원 제출 시 0건 → 이후 Slack 노드는 실행되지 않음\nreturn missing.map(r => ({ json: { slackBody: {\n  channel: r.slackId,\n  text: `⏰ [${week}] 주간보고 미제출 리마인드\\n${r.name}님, 아직 주간보고가 제출되지 않았습니다. 작성 부탁드립니다.\\n▶ ${FORM_URL}`\n} } }));"
+      },
+      "id": "f3-0003",
+      "name": "미제출자 계산 (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.slackBody }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "slackApi"
+      },
+      "id": "f3-0004",
+      "name": "Slack 리마인드 발송 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "매주 월 08:30 (Schedule)": {
+      "main": [
+        [
+          {
+            "node": "이번 주 제출분 조회 (Data Table)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "이번 주 제출분 조회 (Data Table)": {
+      "main": [
+        [
+          {
+            "node": "미제출자 계산 (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "미제출자 계산 (Code)": {
+      "main": [
+        [
+          {
+            "node": "Slack 리마인드 발송 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

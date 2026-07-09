@@ -1,0 +1,254 @@
+{
+  "name": "04 — 취합 → Monday 회의록 → 완료 알림",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Seoul"
+  },
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f4-0001",
+      "name": "테스트 실행 (Manual)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "pwm_weekly"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "weekKey",
+              "condition": "eq",
+              "keyValue": "={{ $now.toFormat(\"kkkk-'W'WW\") }}"
+            }
+          ]
+        },
+        "matchType": "all",
+        "options": {}
+      },
+      "alwaysOutputData": true,
+      "id": "f4-0002",
+      "name": "이번 주 제출분 조회 (Data Table)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst wy = $now.toFormat('kkkk');\nconst ww = $now.toFormat('WW');\nconst title = `${wy}년 WW${ww} 주간 회의`;\nconst today = $now.toFormat('yyyy-MM-dd');\nconst v = (s) => (s && String(s).trim()) ? s : '-';\n\nlet body = `<h2>PWM 주간보고 (${title})</h2>`;\nif (rows.length === 0) {\n  body += '<p>이번 주 제출된 보고가 없습니다.</p>';\n} else {\n  for (const r of rows) {\n    body += `<h3>👤 ${r.author}</h3>`;\n    body += `<p><b>팀 할일(정기):</b> ${v(r.teamTasks)}</p>`;\n    body += `<p><b>프로젝트 활동:</b> ${v(r.projectActivity)}</p>`;\n    body += `<p><b>PWM 활동:</b> ${v(r.pwmActivity)}</p>`;\n    body += `<p><b>휴가 계획:</b> ${v(r.vacationPlan)}</p>`;\n  }\n}\n\nconst columnValues = JSON.stringify({\n  \"label\": { label: \"주간 회의\" },\n  \"date_mkz9v6pk\": { date: today },\n});\n\nconst createItemBody = {\n  query: `mutation ($board: ID!, $group: String!, $name: String!, $cols: JSON!) {\n    create_item (board_id: $board, group_id: $group, item_name: $name, column_values: $cols) { id url }\n  }`,\n  variables: { board: '7915084866', group: '____98157__1', name: title, cols: columnValues },\n};\n\nreturn [{ json: { title, body, columnValues, createItemBody, count: rows.length } }];"
+      },
+      "id": "f4-0003",
+      "name": "회의 정보 조립 (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.createItemBody }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "API-Version",
+              "value": "2024-10"
+            }
+          ]
+        }
+      },
+      "id": "f4-0004",
+      "name": "Monday 아이템 생성 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const res = $input.first().json;\nconst itemId = res?.data?.create_item?.id;\nconst itemUrl = res?.data?.create_item?.url;\nif (!itemId) { throw new Error('create_item 실패: ' + JSON.stringify(res)); }\nconst info = $('회의 정보 조립 (Code)').first().json;\nconst updateBody = {\n  query: `mutation ($item: ID!, $body: String!) { create_update (item_id: $item, body: $body) { id } }`,\n  variables: { item: itemId, body: info.body },\n};\nreturn [{ json: { itemId, itemUrl, title: info.title, count: info.count, updateBody } }];"
+      },
+      "id": "f4-0005",
+      "name": "회의록 update 조립 (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.updateBody }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "API-Version",
+              "value": "2024-10"
+            }
+          ]
+        }
+      },
+      "id": "f4-0006",
+      "name": "Monday 회의록(update) 작성 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const u = $('회의록 update 조립 (Code)').first().json;\nconst text = `✅ Monday 주간회의 회의록 작성 완료\\n• ${u.title} (${u.count}명 취합)\\n• ${u.itemUrl}`;\nreturn [{ json: { slackBody: { channel: 'U07TD4739UG', text } } }];"
+      },
+      "id": "f4-0007",
+      "name": "완료 알림 조립 (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.slackBody }}",
+        "options": {},
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "slackApi"
+      },
+      "id": "f4-0008",
+      "name": "Slack 완료 알림 (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "테스트 실행 (Manual)": {
+      "main": [
+        [
+          {
+            "node": "이번 주 제출분 조회 (Data Table)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "이번 주 제출분 조회 (Data Table)": {
+      "main": [
+        [
+          {
+            "node": "회의 정보 조립 (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "회의 정보 조립 (Code)": {
+      "main": [
+        [
+          {
+            "node": "Monday 아이템 생성 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday 아이템 생성 (HTTP)": {
+      "main": [
+        [
+          {
+            "node": "회의록 update 조립 (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "회의록 update 조립 (Code)": {
+      "main": [
+        [
+          {
+            "node": "Monday 회의록(update) 작성 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday 회의록(update) 작성 (HTTP)": {
+      "main": [
+        [
+          {
+            "node": "완료 알림 조립 (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "완료 알림 조립 (Code)": {
+      "main": [
+        [
+          {
+            "node": "Slack 완료 알림 (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}
